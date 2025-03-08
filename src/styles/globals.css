@@ -1,26 +1,129 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  --color-*: initial;
+
+  --color-background: hsl(140, 2%, 100%);
+  --color-foreground: hsla(48, 95%, 52%, 1);
+  --color-yellow: hsl(48, 95%, 60%);
+
+  --color-black: hsl(0, 0%, 10.2%);
+  --color-white: hsl(0, 0%, 100%);
+  --color-muted: hsl(0, 0%, 60%);
+
+  --color-gray-light: hsl(0, 0%, 90%);
+  --color-gray: hsl(0, 0%, 50%);
+  --color-gray-dark: hsl(0, 0%, 40%);
+
+  --color-error-light: hsl(0, 100%, 90%);
+  --color-error: hsl(0, 100%, 70%);
+  --color-error-dark: hsl(0, 100%, 50%);
+
+  --color-success-light: hsl(120, 100%, 90%);
+  --color-success: hsl(120, 100%, 70%);
+  --color-success-dark: hsl(120, 100%, 50%);
+
+  --color-warning-light: hsl(40, 100%, 90%);
+  --color-warning: hsl(40, 100%, 70%);
+  --color-warning-dark: hsl(40, 100%, 50%);
+}
+
+@theme {
+  --aspect-section-xs: 768/75;
+  --aspect-section-sm: 384/75;
+  --aspect-section: 192/75;
+  --aspect-section-md: 256/75;
+  --aspect-section-lg: 128/75;
+}
+
+@layer base {
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: textfield;
+    margin: 0;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .bg-white *,
+  .bg-background *,
+  main * {
+    @apply text-black;
+  }
+
+  .bg-black * {
+    @apply text-white;
+  }
+
+  h1 {
+    @apply text-6xl font-semibold;
+  }
+
+  h2 {
+    @apply text-4xl font-semibold;
+  }
+
+  h3 {
+    @apply text-3xl font-semibold;
+  }
+
+  h4 {
+    @apply text-2xl font-medium;
+  }
+
+  h5 {
+    @apply text-xl font-medium;
+  }
+
+  h6 {
+    @apply text-lg font-normal;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply uppercase;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--background);
+    overflow-x: hidden;
+    color: var(--foreground);
+    @apply font-sans text-sm md:text-[1rem] gap-20 place-content-evenly;
+  }
+
+  .main,
+  footer,
+  header {
+    @apply flex-grow px-5 md:px-10 lg:px-20;
+  }
+
+  .main > div {
+    @apply container mx-auto flex flex-col gap-10;
+  }
+
+  .main > div > section {
+    @apply py-10;
+  }
+
+  a {
+    @apply text-muted hover:text-gray-light transition-colors;
+  }
+
+  section {
+    @apply w-full;
+  }
 }
