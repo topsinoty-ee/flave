@@ -3,7 +3,6 @@
 import { FC, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button } from "../button";
@@ -38,7 +37,6 @@ export const RecipeCard: FC<RecipeCardProps> = ({
   const [imageError, setImageError] = useState(false);
   const fallbackImage = "/images/culinary-fallback.png";
   const rating = Math.min(Math.max(ratingsAvg, 0), 5).toFixed(1);
-  const router = useRouter();
 
   const handleImageError = () => {
     console.warn("Image failed to load:", src);

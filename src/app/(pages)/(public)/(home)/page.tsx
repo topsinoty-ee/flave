@@ -1,7 +1,5 @@
 import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
 import { Categories, Hero, OurFeatures } from "./components";
-import Image from "next/image";
-import clsx from "clsx";
 import { ArrowRight } from "lucide-react";
 
 export default async function Home() {
