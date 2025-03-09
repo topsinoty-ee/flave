@@ -93,6 +93,11 @@
     @apply uppercase;
   }
 
+  h5,
+  h6 {
+    @apply capitalize;
+  }
+
   .body {
     display: flex;
     flex-direction: column;
