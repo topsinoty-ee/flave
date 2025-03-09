@@ -19,7 +19,7 @@ export const Categories = () => {
               alt={text}
               width={100}
               height={100}
-              className="w-full border rounded-full aspect-square min-w-20 max-w-40 border-yellow"
+              className="w-full golden-circle min-w-20 max-w-40"
             />
             <h5 className="uppercase">{text}</h5>
           </div>

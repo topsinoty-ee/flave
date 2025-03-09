@@ -127,3 +127,15 @@
     @apply w-full;
   }
 }
+
+@layer components {
+  .golden-circle {
+    @apply border rounded-full aspect-square border-yellow;
+  }
+}
+
+@layer utilities {
+  div:has(img).image-flex {
+    display: flex !important;
+  }
+}
