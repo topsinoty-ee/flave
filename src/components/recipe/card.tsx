@@ -1,12 +1,12 @@
 "use client";
 
-import { FC, useState } from "react";
-import Image from "next/image";
+import { FC } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button } from "../button";
 import { Recipe } from "@/types/recipe";
+import { Image } from "../image";
 
 export type RecipeCardProps = Omit<Recipe, "description">;
 
@@ -15,15 +15,13 @@ interface CardFallback {
   reset?: () => void;
 }
 
-const FallbackComponent: FC<CardFallback> = ({ reset, error }) => {
-  return (
-    <div className="w-full p-5 overflow-hidden text-center transition-all rounded-md shadow-md bg-background outline-error min-w-80 max-w-80 hover:shadow-lg">
-      <p className="text-sm text-gray-500">Something went wrong.</p>
-      {error && <p className="text-xs text-error">{error.message}</p>}
-      <Button onClick={reset}>Retry</Button>
-    </div>
-  );
-};
+const FallbackComponent: FC<CardFallback> = ({ reset, error }) => (
+  <div className="w-full p-5 overflow-hidden text-center transition-all rounded-md shadow-md bg-background outline-error min-w-80 max-w-80 hover:shadow-lg">
+    <p className="text-sm text-gray-500">Something went wrong.</p>
+    {error && <p className="text-xs text-error">{error.message}</p>}
+    <Button onClick={reset}>Retry</Button>
+  </div>
+);
 
 export const RecipeCard: FC<RecipeCardProps> = ({
   _id,
@@ -34,14 +32,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
   ratingsAvg = 0,
   user,
 }) => {
-  const [imageError, setImageError] = useState(false);
-  const fallbackImage = "/images/culinary-fallback.png";
   const rating = Math.min(Math.max(ratingsAvg, 0), 5).toFixed(1);
-
-  const handleImageError = () => {
-    console.warn("Image failed to load:", src);
-    setImageError(true);
-  };
 
   return (
     <ErrorBoundary fallback={<FallbackComponent />}>
@@ -51,15 +42,12 @@ export const RecipeCard: FC<RecipeCardProps> = ({
       >
         <div className="relative w-full aspect-video">
           <Image
-            src={imageError ? fallbackImage : src}
+            src={src}
             alt={alt || title}
             fill
             className={clsx(
-              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105",
-              { "bg-background": imageError }
+              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105"
             )}
-            onError={handleImageError}
-            unoptimized={imageError}
           />
         </div>
 
