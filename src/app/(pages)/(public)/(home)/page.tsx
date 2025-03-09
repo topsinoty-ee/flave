@@ -1,4 +1,9 @@
-import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
+import {
+  Button,
+  isRecipe,
+  RecipeDisplayBlock,
+  SectionHeader,
+} from "@/components";
 import { Categories, Hero, OurFeatures } from "./components";
 import { ArrowRight } from "lucide-react";
 
@@ -57,4 +62,21 @@ export default async function Home() {
       </section>
     </>
   );
+}
+
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const { data: recipes } = await fetch(
+    `${process.env.BACKEND_URL}/recipes`
+  ).then((res) => res.json());
+
+  return recipes.map((recipe: unknown) => {
+    if (isRecipe(recipe)) {
+      return {
+        _id: String(recipe._id),
+      };
+    }
+    throw new Error("Invalid recipe data");
+  });
 }
