@@ -42,13 +42,11 @@ export const ClientRecipeDisplay = ({
   children,
 }: Pick<RecipeContentProps, "rows"> & {
   children: React.ReactNode;
-}) => {
-  return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => window.location.reload()}
-    >
-      <Suspense fallback={<RecipeSkeletons rows={rows} />}>{children}</Suspense>
-    </ErrorBoundary>
-  );
-};
+}) => (
+  <ErrorBoundary
+    FallbackComponent={ErrorFallback}
+    onReset={() => window.location.reload()}
+  >
+    <Suspense fallback={<RecipeSkeletons rows={rows} />}>{children}</Suspense>
+  </ErrorBoundary>
+);
