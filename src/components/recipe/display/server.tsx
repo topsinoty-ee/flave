@@ -18,12 +18,13 @@ const fetchRecipes = async (
     const validParams = params.filter((p) => p !== "all" && !p.startsWith("/"));
 
     if (params.includes("all")) {
-      url.pathname = `${backendUrl}/recipes`;
+      url.pathname = `/recipes`;
     } else if (validParams.length > 0) {
       validParams.forEach((param) => url.searchParams.append("tags", param));
     }
 
     url.searchParams.append("limit", String(4 * rows));
+    console.log(url.toString());
 
     const response = await fetch(url.toString(), { signal });
     if (!response.ok) throw new Error(`Request failed: ${response.status}`);
@@ -53,6 +54,8 @@ export const RecipeContent = async ({
 }: RecipeContentProps): Promise<JSX.Element> => {
   try {
     const recipes = await fetchRecipes(params, rows);
+    console.log(params);
+    console.log(recipes);
 
     if (!recipes?.length) return <span>No recipes found</span>;
 
