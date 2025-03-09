@@ -10,7 +10,7 @@ export default function AuthLayout({
       <main className="main">
         <div>{children}</div>
       </main>
-      {Footer}
+      <Footer />
     </div>
   );
 }

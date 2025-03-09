@@ -16,7 +16,7 @@ export default function ProtectedLayout({
       <main className="main">
         <div>{children}</div>
       </main>
-      {Footer}
+      <Footer />
     </div>
   );
 }

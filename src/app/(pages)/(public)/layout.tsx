@@ -20,7 +20,7 @@ export default function PublicLayout({
       <main className="main">
         <div>{children}</div>
       </main>
-      {Footer}
+      <Footer />
     </div>
   );
 }

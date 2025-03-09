@@ -2,10 +2,10 @@
 import Link from "next/link";
 import { Logo } from "./logo";
 
-export const Footer = (
+export const Footer = () => (
   <footer className="flex w-full py-20 text-gray-200 bg-black text-white min-h-[40%] max-h-96 place-content-between">
     <div className="flex flex-col gap-6 w-80">
-      <div className="w-20">{Logo}</div>
+      <div className="w-20">{<Logo />}</div>
 
       <div>
         <p className="text-white">
