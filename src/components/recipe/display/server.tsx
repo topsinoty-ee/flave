@@ -24,7 +24,6 @@ const fetchRecipes = async (
     }
 
     url.searchParams.append("limit", String(4 * rows));
-    console.log(url.toString());
 
     const response = await fetch(url.toString(), { signal });
     if (!response.ok) throw new Error(`Request failed: ${response.status}`);
@@ -54,8 +53,6 @@ export const RecipeContent = async ({
 }: RecipeContentProps): Promise<JSX.Element> => {
   try {
     const recipes = await fetchRecipes(params, rows);
-    console.log(params);
-    console.log(recipes);
 
     if (!recipes?.length) return <span>No recipes found</span>;
 
