@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const Logo = (
+export const Logo = () => (
   <Image
     width={108}
     height={46}
