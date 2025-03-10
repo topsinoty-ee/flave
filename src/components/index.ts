@@ -4,6 +4,7 @@ export * from "./section-header";
 export * from "./slider";
 export * from "./footer";
 export * from "./navbar";
+export * from "./tag-image";
 
 export * from "./form";
 export * from "./recipe";
