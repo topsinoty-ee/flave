@@ -1,9 +1,9 @@
 import {
-  isRecipe,
   Tag,
   Image,
   RecipeDisplayBlock,
   SectionHeader,
+  Button,
 } from "@/components";
 // import { Clock, Microwave } from "lucide-react";
 import Link from "next/link";
@@ -11,7 +11,6 @@ import { Suspense } from "react";
 import { ClientSide } from "./client";
 import { Recipe } from "@/types/recipe";
 import clsx from "clsx";
-import { Button } from "../../../../../components/button";
 import {
   ArrowRight,
   ChevronRight,
@@ -21,12 +20,14 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { ResolvingMetadata, Metadata } from "next";
+import { fetchRecipes, isRecipe } from "@/util";
 
-type Props = {
-  params: Promise<{ _id: string }>;
-};
 export async function generateMetadata(
-  { params }: Props,
+  {
+    params,
+  }: {
+    params: Promise<{ _id: string }>;
+  },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { _id } = await params;
@@ -65,8 +66,6 @@ const getDurationBucket = (duration: number): [number, number] => {
 
   return [start, end];
 };
-
-export const revalidate = 60;
 
 function LoadingFallback() {
   return (
@@ -310,12 +309,14 @@ export default async function RecipePage({
   );
 }
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   try {
-    const res = await fetch(`${process.env.BACKEND_URL}/recipes`);
-    if (!res.ok) throw new Error("Failed to fetch recipes");
-    const { data: recipes } = await res.json();
-    return recipes.map((recipe: Recipe) => ({ _id: recipe._id }));
+    const recipes = await fetchRecipes();
+    return recipes.map((recipe) => ({
+      _id: String(recipe._id),
+    }));
   } catch (error) {
     console.error("generateStaticParams error:", error);
     return [];

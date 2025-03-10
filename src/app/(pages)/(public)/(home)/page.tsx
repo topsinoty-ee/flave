@@ -1,11 +1,7 @@
-import {
-  Button,
-  isRecipe,
-  RecipeDisplayBlock,
-  SectionHeader,
-} from "@/components";
+import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
 import { Categories, Hero, OurFeatures } from "./components";
 import { ArrowRight } from "lucide-react";
+import { fetchRecipes } from "@/util";
 
 export default async function Home() {
   return (
@@ -67,16 +63,13 @@ export default async function Home() {
 export const revalidate = 300;
 
 export async function generateStaticParams() {
-  const { data: recipes } = await fetch(
-    `${process.env.BACKEND_URL}/recipes`
-  ).then((res) => res.json());
-
-  return recipes.map((recipe: unknown) => {
-    if (isRecipe(recipe)) {
-      return {
-        _id: String(recipe._id),
-      };
-    }
-    throw new Error("Invalid recipe data");
-  });
+  try {
+    const recipes = await fetchRecipes();
+    return recipes.map((recipe) => ({
+      _id: String(recipe._id),
+    }));
+  } catch (error) {
+    console.error("generateStaticParams error:", error);
+    return [];
+  }
 }
