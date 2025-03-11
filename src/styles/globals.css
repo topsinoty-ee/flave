@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: var(--font-jakarta-sans);
+:root {
+  --muted: hsl(0, 0%, 30%);
 }
 
-@theme {
+@theme inline {
+  --font-sans: var(--font-jakarta-sans);
+
   --color-*: initial;
 
   --color-background: hsl(140, 2%, 100%);
@@ -13,11 +15,12 @@
 
   --color-black: hsl(0, 0%, 10.2%);
   --color-white: hsl(0, 0%, 100%);
-  --color-muted: hsl(0, 0%, 60%);
+
+  --color-muted: var(--muted);
 
   --color-gray-light: hsl(0, 0%, 90%);
-  --color-gray: hsl(0, 0%, 50%);
-  --color-gray-dark: hsl(0, 0%, 40%);
+  --color-gray: hsl(0, 0%, 70%);
+  --color-gray-dark: hsl(0, 0%, 50%);
 
   --color-error-light: hsl(0, 100%, 90%);
   --color-error: hsl(0, 100%, 70%);
@@ -60,7 +63,12 @@
   }
 
   .bg-black * {
+    --muted: hsl(0, 0%, 60%);
     @apply text-white;
+  }
+
+  .bg-black a {
+    @apply text-muted hover:text-gray-light;
   }
 
   h1 {
@@ -125,7 +133,7 @@
   }
 
   a {
-    @apply text-muted hover:text-gray-light transition-colors;
+    @apply transition-colors text-muted hover:text-gray-dark;
   }
 
   section {
