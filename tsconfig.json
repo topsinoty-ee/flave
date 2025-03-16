@@ -21,29 +21,11 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-    "types": ["node", "next", "react", "react-dom"],
-    "typeRoots": ["src/types", "node_modules/@types"],
+    "types": ["node", "next", "react", "react-dom", "jest"],
     "pretty": true,
-    "plugins": [
-      { "name": "next" },
-      { "name": "@next/bundle-analyzer" },
-      { "name": "fork-ts-checker-webpack-plugin" },
-      { "name": "next-security" },
-      { "name": "@builder.io/partytown" }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@context/*": ["./src/context/*"],
-      "@types/*": ["./src/types/*"],
-      "@util/*": ["./src/util/*"],
-      "@axios/*": ["./src/axios/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@app/*": ["./src/app/*"],
-      "@auth-forms/*": ["./src/app/(pages)/(auth)/*"],
-      "@protected/*": ["./src/app/(pages)/(protected)/*"],
-      "@public/*": ["./src/app/(pages)/(public)/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

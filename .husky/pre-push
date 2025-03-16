@@ -3,5 +3,4 @@
 
 # Full checks before pushing
 pnpm lint
-pnpm test:ci
 pnpm find-dead

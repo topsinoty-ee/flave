@@ -6,7 +6,7 @@ import type { UseFormReturn, FieldValues, FieldError } from "react-hook-form";
 import { get } from "lodash";
 
 export function useServerForm<
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 >() {
   const methods = useFormContext<TFieldValues>();
   const { pending } = useFormStatus();

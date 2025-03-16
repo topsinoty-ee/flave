@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 export async function setCookiesFromHeader(
-  setCookieHeader: string | string[] | undefined
+  setCookieHeader: string | string[] | undefined,
 ) {
   if (!setCookieHeader) return;
 
@@ -22,16 +22,19 @@ export async function setCookiesFromHeader(
       const value = valueParts.join("=");
       if (!name) continue;
 
-      const attributes = attributeParts.reduce((acc, part) => {
-        const trimmedPart = part.trim();
-        const [attrName, ...attrValueParts] = trimmedPart.split("=");
-        const attrKey = attrName?.toLowerCase();
-        if (attrKey) {
-          acc[attrKey] =
-            attrValueParts.length > 0 ? attrValueParts.join("=") : "true";
-        }
-        return acc;
-      }, {} as Record<string, string>);
+      const attributes = attributeParts.reduce(
+        (acc, part) => {
+          const trimmedPart = part.trim();
+          const [attrName, ...attrValueParts] = trimmedPart.split("=");
+          const attrKey = attrName?.toLowerCase();
+          if (attrKey) {
+            acc[attrKey] =
+              attrValueParts.length > 0 ? attrValueParts.join("=") : "true";
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
 
       const options = {
         httpOnly: Boolean(attributes.httponly),

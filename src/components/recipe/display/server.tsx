@@ -7,7 +7,7 @@ import Link from "next/link";
 const fetchRecipes = async (
   params: string[],
   rows: number,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<RecipeCardProps[] | null> => {
   const backendUrl = process.env.BACKEND_URL;
   if (!backendUrl)
@@ -32,12 +32,12 @@ const fetchRecipes = async (
     if (!Array.isArray(data)) throw new Error("Invalid response format");
 
     return (data as RecipeCardProps[]).sort(
-      (a, b) => (b.ratingsAvg ?? 0) - (a.ratingsAvg ?? 0)
+      (a, b) => (b.ratingsAvg ?? 0) - (a.ratingsAvg ?? 0),
     );
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") return null;
     throw new Error(
-      error instanceof Error ? error.message : "Failed to fetch recipes"
+      error instanceof Error ? error.message : "Failed to fetch recipes",
     );
   }
 };
@@ -104,11 +104,11 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayProps> = ({
           text: "See more",
           useParams: true,
         }
-      : endpoint ?? {
+      : (endpoint ?? {
           href: "/search",
           text: "See more",
           useParams: true,
-        };
+        });
 
   const href = resolvedEndpoint.useParams
     ? buildHref(resolvedEndpoint.href, params)

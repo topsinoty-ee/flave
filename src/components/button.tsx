@@ -61,7 +61,7 @@ export const Button = ({
     shapeClasses,
     disabledClasses,
     iconOnlyClasses,
-    className
+    className,
   );
 
   if (as === "link" && href) {

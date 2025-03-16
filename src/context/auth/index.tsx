@@ -4,6 +4,8 @@ import { createContext, useEffect, useState } from "react";
 import { User } from "@/types";
 import * as actions from "./actions";
 
+export * from "./hook";
+
 type AuthContextType = {
   user: User | null;
   error: string | null;
@@ -35,7 +37,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // basically constantly fetch the user
   useEffect(() => {
     refetchUser();
   }, []);

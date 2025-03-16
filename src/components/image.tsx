@@ -64,7 +64,7 @@ const ImageComponent: React.FC<ImageProps> = ({
       className={clsx(
         "relative overflow-hidden",
         fill ? "w-full h-full" : "inline-block",
-        className
+        className,
       )}
       role="img"
       aria-label={alt || "Image content"}
@@ -86,7 +86,7 @@ const ImageComponent: React.FC<ImageProps> = ({
           {
             "opacity-0": !loaded,
             "opacity-100": loaded,
-          }
+          },
         )}
         onLoad={handleLoad}
         onError={handleError}

@@ -46,7 +46,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             alt={alt || title}
             fill
             className={clsx(
-              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105"
+              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105",
             )}
           />
         </div>

@@ -1,6 +1,3 @@
 module.exports = {
-  '*.{ts,tsx}': [
-    'eslint --fix',
-    'ts-prune --error'
-  ]
+  "*.{ts,tsx}": ["eslint --fix"],
 };

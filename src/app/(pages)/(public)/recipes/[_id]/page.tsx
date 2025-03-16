@@ -28,7 +28,7 @@ export async function generateMetadata(
   }: {
     params: Promise<{ _id: string }>;
   },
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { _id } = await params;
 
@@ -122,7 +122,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               <Link
                 href={`/users/${recipe.user._id}`}
                 className={clsx(
-                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5"
+                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5",
                   // "hover:bg-gray transition-all"
                 )}
               >

@@ -19,7 +19,7 @@ type FormProviderProps<T extends ZodObject<ZodRawShape>> = {
   schema: T;
   action: (
     prevState: ServerActionResult<z.infer<T>> | null,
-    formData: FormData
+    formData: FormData,
   ) => Promise<ServerActionResult<z.infer<T>>>;
   children: React.ReactNode;
   defaultValues?: DefaultValues<z.infer<T>>;
