@@ -1,0 +1,25 @@
+{
+  "ignore-bin-package": true,
+  "skip-missing": true,
+  "ignores": [
+    "@types/*",
+    "eslint*",
+    "@next/*",
+    "jest*",
+    "ts-node",
+    "husky",
+    "lint-staged",
+    "@types/*",
+    "eslint*",
+    "@next/*",
+    "jest*",
+    "ts-node",
+    "husky",
+    "lint-staged",
+    "tailwindcss",
+    "@tailwindcss/*",
+    "fork-ts-checker-webpack-plugin",
+    "@builder.io/partytown",
+    "next-security"
+  ]
+}
