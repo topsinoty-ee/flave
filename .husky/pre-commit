@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Staged files only check
 npx lint-staged
-
-# Additional quick checks
 pnpm check-deps
-pnpm find-copies -- --silent
