@@ -1,5 +1,6 @@
 import Link from "next/link";
 import clsx from "clsx";
+import { ButtonHTMLAttributes } from "react";
 
 export const Variant = {
   primary: "bg-highlight text-text",
@@ -18,10 +19,9 @@ export const Shape = {
   button: "rounded-lg",
 } as const;
 
-export interface ButtonProps {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   as?: "button" | "link";
   href?: string;
-  onClick?: () => void;
   disabled?: boolean;
   variant?: keyof typeof Variant;
   shape?: keyof typeof Shape;
@@ -40,6 +40,8 @@ export const Button = ({
   icon,
   children,
   className,
+  type = "button",
+  ...props
 }: ButtonProps) => {
   const baseClasses =
     "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all outline-1 outline outline-offset-0 w-max no-underline";
@@ -72,7 +74,13 @@ export const Button = ({
   }
 
   return (
-    <button onClick={onClick} disabled={disabled} className={buttonClasses}>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={buttonClasses}
+      {...props}
+    >
       {icon && <span>{icon}</span>}
       {children}
     </button>
