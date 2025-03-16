@@ -11,7 +11,10 @@
 
   --color-background: hsl(140, 2%, 100%);
   --color-foreground: hsla(48, 95%, 52%, 1);
+
+  --color-yellow-light: hsl(48, 95%, 80%);
   --color-yellow: hsl(48, 95%, 60%);
+  --color-yellow-dark: hsl(48, 95%, 40%);
 
   --color-black: hsl(0, 0%, 10.2%);
   --color-white: hsl(0, 0%, 100%);
