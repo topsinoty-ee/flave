@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const client = axios.create({
-  baseURL: process.env.BACKEND_URL,
+  baseURL: "https://api.flave.ee",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -15,14 +15,4 @@ client.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error)
-);
-
-client.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      console.warn("Unauthorized — maybe session expired");
-    }
-    return Promise.reject(error);
-  }
 );
