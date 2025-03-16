@@ -1,6 +1,4 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Full checks before pushing
 pnpm lint
+pnpm format
 pnpm find-dead

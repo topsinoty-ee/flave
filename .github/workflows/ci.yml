@@ -2,7 +2,7 @@ name: Code Quality Gate
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, making-pages]
 
 jobs:
   quality-check:
