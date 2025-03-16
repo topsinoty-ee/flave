@@ -7,7 +7,6 @@ import type { ComponentProps } from "react";
 import type { FieldValues, Path, FieldError } from "react-hook-form";
 import clsx from "clsx";
 import { get } from "lodash";
-import classes from "@/styles/form.module.css";
 
 type FormInputProps<TFieldValues extends FieldValues = FieldValues> =
   ComponentProps<"input"> & {
@@ -86,7 +85,7 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
           htmlFor={name}
           className={clsx(
             "block text-base font-medium text-gray-dark",
-            labelClass,
+            labelClass
           )}
         >
           {label}
@@ -128,9 +127,9 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
               "pl-10": Icon && iconPosition === "start",
               "pr-10": (Icon && iconPosition === "end") || isPassword,
             },
-            classes.password,
+            "password",
             inputClass,
-            className,
+            className
           )}
           {...props}
         />
@@ -173,7 +172,7 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
           aria-live="polite"
           className={clsx(
             "text-xs text-error-dark transition-opacity duration-300 message",
-            errorClass,
+            errorClass
           )}
         >
           {fieldError.message}

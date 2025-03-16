@@ -155,3 +155,10 @@
     display: flex !important;
   }
 }
+
+.password::-ms-clear,
+.password::-ms-reveal,
+input::-ms-clear,
+input::-ms-reveal {
+  display: none;
+}
