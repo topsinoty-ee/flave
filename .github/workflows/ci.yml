@@ -1,0 +1,47 @@
+name: Code Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type Check
+        run: pnpm tsc --noEmit
+
+      - name: Tests
+        run: pnpm test:ci
+
+      - name: Dead Code Scan
+        run: pnpm find-dead --error
+
+      - name: Duplicate Check
+        run: pnpm find-copies --fail
+
+      - name: Dependency Check
+        run: pnpm check-deps -- --depcheck-timeout=3000
+
+      - name: Bundle Analysis
+        if: always()
+        run: pnpm analyze
+        env:
+          ANALYZE: true
