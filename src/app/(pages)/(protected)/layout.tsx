@@ -1,4 +1,5 @@
 import { Footer, Navbar } from "@/components";
+import { ProtectedRoute } from "@/context/auth/components/protected-route";
 
 export default function ProtectedLayout({
   children,
@@ -14,7 +15,9 @@ export default function ProtectedLayout({
         ]}
       />
       <main className="main">
-        <div>{children}</div>
+        <div>
+          <ProtectedRoute>{children}</ProtectedRoute>
+        </div>
       </main>
       <Footer />
     </div>
