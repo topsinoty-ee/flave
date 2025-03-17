@@ -1,6 +1,6 @@
-import { User } from '@/types';
+import { User } from "@/types";
 
-import { LoginPayload, SignupPayload } from './payload';
+import { LoginPayload, SignupPayload } from "./payload";
 
 export type AuthContextType = {
   user: User | null;

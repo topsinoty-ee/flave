@@ -5,7 +5,7 @@ import { useCallback, useContext, useState } from "react";
 import { AuthContext } from "@/context";
 import { isResource, Maybe, Resource } from "@/types/";
 import { AuthError } from "./error";
-import { LoginPayload, SignupPayload } from "./types";
+import type { LoginPayload, SignupPayload } from "./types";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
