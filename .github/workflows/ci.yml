@@ -50,8 +50,9 @@ jobs:
         id: dup-check
         uses: ./.github/actions/duplicate-check
         with:
-          warning-threshold: 10
-          failure-threshold: 30
+          warning-threshold: 5
+          failure-threshold: 10
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
       - name: Post PR Comment

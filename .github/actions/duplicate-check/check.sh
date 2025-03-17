@@ -1,4 +1,6 @@
 #!/bin/bash
+set -eo pipefail
+
 WARNING_THRESHOLD=$1
 FAILURE_THRESHOLD=$2
 
