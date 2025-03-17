@@ -63,13 +63,16 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const fs = require('fs');
-            const output = fs.readFileSync('${{ github.workflow }}-${{ github.ref }}.log', 'utf8');
-            // Use the report-duplication.js script here
-            // Add custom formatting for the comment
+            const { data: comment } = await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `⚠️ Code Duplication Warning (${process.env.DUPLICATION_PERCENT}%)!\n` +
+                    `Please review the [workflow run](${context.serverUrl}/${context.repo.repo}/actions/runs/${context.runId}) for details.`
+            });
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DUPLICATION-PERCENT: ${{ steps.dup-check.outputs.duplication-percent }}
+          DUPLICATION_PERCENT: ${{ steps.dup-check.outputs.duplication-percent }}
 
       - name: Fail build if over threshold
         if: steps.dup-check.outcome == 'failure'
