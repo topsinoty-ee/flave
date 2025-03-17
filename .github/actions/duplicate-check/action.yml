@@ -1,23 +1,23 @@
-name: 'Duplicate Code Check'
-description: 'Check for code duplication with configurable thresholds'
+name: "Duplicate Code Check"
+description: "Check for code duplication with configurable thresholds"
 inputs:
   warning-threshold:
-    description: 'Percentage threshold for warning'
-    default: '5'
+    description: "Percentage threshold for warning"
+    default: "5"
     required: false
   failure-threshold:
-    description: 'Percentage threshold for failure'
-    default: '10'
+    description: "Percentage threshold for failure"
+    default: "10"
     required: false
-  github-token:  # Add this input
-    description: 'GitHub token'
+  github-token: # Add this input
+    description: "GitHub token"
     required: true
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Run duplication check
       shell: bash
       run: ./check.sh ${{ inputs.warning-threshold }} ${{ inputs.failure-threshold }}
       env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}  # Use input instead of secret
+        GITHUB_TOKEN: ${{ inputs.github-token }} # Use input instead of secret
