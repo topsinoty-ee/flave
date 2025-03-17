@@ -9,7 +9,7 @@ inputs:
     description: "Percentage threshold for failure"
     default: "10"
     required: false
-  github-token: 
+  github-token:
     description: "GitHub token"
     required: true
 
