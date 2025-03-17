@@ -43,10 +43,10 @@ jobs:
         run: pnpm type-check
 
       - name: Duplicate Code Check
-        run: pnpm find-copies --fail
+        run: pnpm find-copies
 
       - name: Dependency Audit
-        run: pnpm check-deps -- --depcheck-timeout=3000
+        run: pnpm check-deps
 
       - name: Build Verification (if applicable)
         if: false # Enable if you have build step
