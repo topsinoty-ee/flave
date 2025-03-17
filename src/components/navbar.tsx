@@ -1,7 +1,8 @@
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { Logo } from "./logo";
+
 import { Button } from "./button";
+import { Logo } from "./logo";
 
 interface NavbarProps {
   links?: Array<{ label: string; href: string }>;

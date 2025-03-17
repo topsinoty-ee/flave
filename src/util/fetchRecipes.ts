@@ -1,4 +1,5 @@
 import { Recipe } from "@/types/recipe";
+
 import { isRecipe } from "./validators/type-guard";
 
 export async function fetchRecipes(): Promise<Recipe[]> {

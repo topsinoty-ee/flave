@@ -1,9 +1,10 @@
 // ProtectedRoute component
 "use client";
 
-import { useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+import { useAuth } from "@/hooks/useAuth";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isLoading, isAuthenticated } = useAuth();

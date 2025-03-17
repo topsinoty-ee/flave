@@ -1,7 +1,8 @@
 "use client";
-import { Button, RecipeContentProps } from "@/components";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+
+import { Button, RecipeContentProps } from "@/components";
 
 export const ErrorFallback = ({
   error,

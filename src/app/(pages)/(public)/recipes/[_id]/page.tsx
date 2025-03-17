@@ -1,15 +1,3 @@
-import {
-  Tag,
-  Image,
-  RecipeDisplayBlock,
-  SectionHeader,
-  Button,
-} from "@/components";
-// import { Clock, Microwave } from "lucide-react";
-import Link from "next/link";
-import { Suspense } from "react";
-import { ClientSide } from "./client";
-import { Recipe } from "@/types/recipe";
 import clsx from "clsx";
 import {
   ArrowRight,
@@ -19,8 +7,22 @@ import {
   Heart,
   MessageSquare,
 } from "lucide-react";
-import { ResolvingMetadata, Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
+// import { Clock, Microwave } from "lucide-react";
+import Link from "next/link";
+import { Suspense } from "react";
+
+import {
+  Button,
+  Image,
+  RecipeDisplayBlock,
+  SectionHeader,
+  Tag,
+} from "@/components";
+import { Recipe } from "@/types/recipe";
 import { fetchRecipes, isRecipe } from "@/util";
+
+import { ClientSide } from "./client";
 
 export async function generateMetadata(
   {

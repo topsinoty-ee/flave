@@ -1,8 +1,10 @@
-import { JSX } from "react";
-import { RecipeCard, RecipeCardProps } from "../card";
-import { SectionHeader, SectionHeaderProps } from "@/components";
-import { ClientRecipeDisplay } from "./client";
 import Link from "next/link";
+import { JSX } from "react";
+
+import { SectionHeader, SectionHeaderProps } from "@/components";
+
+import { RecipeCard, RecipeCardProps } from "../card";
+import { ClientRecipeDisplay } from "./client";
 
 const fetchRecipes = async (
   params: string[],
@@ -26,9 +28,11 @@ const fetchRecipes = async (
     url.searchParams.append("limit", String(4 * rows));
 
     const response = await fetch(url.toString(), { signal });
+    console.log(response);
     if (!response.ok) throw new Error(`Request failed: ${response.status}`);
 
     const { data } = await response.json();
+    console.log(data);
     if (!Array.isArray(data)) throw new Error("Invalid response format");
 
     return (data as RecipeCardProps[]).sort(
@@ -53,6 +57,7 @@ export const RecipeContent = async ({
 }: RecipeContentProps): Promise<JSX.Element> => {
   try {
     const recipes = await fetchRecipes(params, rows);
+    console.log(recipes);
 
     if (!recipes?.length) return <span>No recipes found</span>;
 
@@ -113,6 +118,8 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayProps> = ({
   const href = resolvedEndpoint.useParams
     ? buildHref(resolvedEndpoint.href, params)
     : resolvedEndpoint.href;
+
+  console.log("href:", href);
 
   return (
     <section className="flex flex-col gap-10">

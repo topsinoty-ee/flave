@@ -1,5 +1,6 @@
-import { RecipeDisplayBlock, Image } from "@/components";
 import Link from "next/link";
+
+import { Image, RecipeDisplayBlock } from "@/components";
 
 export default async function Browse() {
   // const images = ["https://placehold.co/600x400"];

@@ -1,9 +1,10 @@
 "use server";
 
-import { ApiError, request } from "@/axios/request";
-import { BackendResponse, User } from "@/types";
 import { AxiosHeaders } from "axios";
 import { cookies } from "next/headers";
+
+import { ApiError, request } from "@/axios/request";
+import { BackendResponse, User } from "@/types";
 
 export const getCurrentUser = async () => {
   try {

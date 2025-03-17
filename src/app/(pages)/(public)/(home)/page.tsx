@@ -1,7 +1,9 @@
-import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
-import { Categories, Hero, OurFeatures } from "./components";
 import { ArrowRight } from "lucide-react";
+
+import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
 import { fetchRecipes } from "@/util";
+
+import { Categories, Hero, OurFeatures } from "./components";
 
 export default async function Home() {
   return (

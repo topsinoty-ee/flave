@@ -1,11 +1,12 @@
 "use client";
 
-import { z } from "zod";
-import { lazy, Suspense } from "react";
-import { FormInput, SubmitButton, ServerError } from "@/components/form";
-import { FormProvider } from "@/context/form";
 import { Lock, Mail } from "lucide-react";
+import { lazy, Suspense } from "react";
+import { z } from "zod";
+
+import { FormInput, ServerError, SubmitButton } from "@/components/form";
 import { createFormAction } from "@/components/form/utils/createFormAction";
+import { FormProvider } from "@/context/form";
 import { useAuth } from "@/hooks/useAuth";
 
 const LoginSchema = z.object({

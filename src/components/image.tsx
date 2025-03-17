@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import NextImage from "next/image";
-import { useState, memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 
 interface ImageProps {
   src?: string;

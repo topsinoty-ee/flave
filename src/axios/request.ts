@@ -1,10 +1,11 @@
 import {
+  AxiosError,
+  AxiosHeaders,
   AxiosRequestConfig,
   AxiosResponse,
-  AxiosError,
   Method,
-  AxiosHeaders,
 } from "axios";
+
 import { client } from "./client";
 
 type RequestOptions = {

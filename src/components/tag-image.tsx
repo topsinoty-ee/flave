@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { isRecipe } from "@/util";
-import { Image } from "./image";
+import { useEffect, useState } from "react";
+
 import { Tag } from "@/types/tag";
+import { isRecipe } from "@/util";
+
+import { Image } from "./image";
 
 type TagImageProps = Omit<Tag, "recipes">;
 

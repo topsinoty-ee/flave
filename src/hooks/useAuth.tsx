@@ -1,13 +1,14 @@
 // hooks/useAuth.tsx
 "use client";
-import { useContext, useState, useCallback } from "react";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { useCallback, useContext, useState } from "react";
+
 import { AuthContext } from "@/context";
 import { LoginPayload, SignupPayload } from "@/context/auth/actions";
-import { AxiosError } from "axios";
-import { Maybe } from "@/types/util";
 import { Resource } from "@/types/";
 import { isResource } from "@/types/guard/";
+import { Maybe } from "@/types/util";
 
 class AuthError extends Error {
   constructor(message: string) {

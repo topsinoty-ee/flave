@@ -1,8 +1,9 @@
 "use client";
 
-import { Button } from "@/components";
 import { ReactNode } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+
+import { Button } from "@/components";
 
 function ErrorFallback({
   error,

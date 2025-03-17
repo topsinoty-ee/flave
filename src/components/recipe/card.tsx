@@ -1,11 +1,13 @@
 "use client";
 
-import { FC } from "react";
-import Link from "next/link";
 import clsx from "clsx";
+import Link from "next/link";
+import { FC } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Button } from "../button";
+
 import { Recipe } from "@/types/recipe";
+
+import { Button } from "../button";
 import { Image } from "../image";
 
 export type RecipeCardProps = Omit<Recipe, "description">;

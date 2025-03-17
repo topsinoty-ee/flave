@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
-import clsx from "clsx";
 import "@/styles/globals.css";
+
+import clsx from "clsx";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
 import { ContextProvider } from "@/context";
 
 const jakarta = Plus_Jakarta_Sans({
