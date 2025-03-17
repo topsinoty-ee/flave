@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import classes from "@/styles/form.module.css";
 
 import clsx from "clsx";
 import { Plus_Jakarta_Sans } from "next/font/google";
@@ -24,7 +25,11 @@ export default function RootLayout({
     <ContextProvider>
       <html lang="en">
         <body
-          className={clsx(jakarta.variable, " antialiased w-full min-h-screen")}
+          className={clsx(
+            jakarta.variable,
+            " antialiased w-full min-h-screen",
+            classes.test,
+          )}
         >
           {children}
         </body>
