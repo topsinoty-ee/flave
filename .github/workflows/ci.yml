@@ -46,6 +46,11 @@ jobs:
       - name: Type Check
         run: pnpm type-check
 
+      - name: Prepare scripts
+        run: |
+          chmod +x .github/actions/duplicate-check/check.sh
+          ls -l .github/actions/duplicate-check/check.sh  # Verify permissions
+
       - name: Duplicate Code Check
         id: dup-check
         uses: ./.github/actions/duplicate-check

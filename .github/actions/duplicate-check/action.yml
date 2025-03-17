@@ -9,7 +9,7 @@ inputs:
     description: "Percentage threshold for failure"
     default: "10"
     required: false
-  github-token: # Add this input
+  github-token: 
     description: "GitHub token"
     required: true
 
@@ -18,6 +18,6 @@ runs:
   steps:
     - name: Run duplication check
       shell: bash
-      run: ./check.sh ${{ inputs.warning-threshold }} ${{ inputs.failure-threshold }}
+      run: ${{ github.action_path }}/check.sh ${{ inputs.warning-threshold }} ${{ inputs.failure-threshold }}
       env:
-        GITHUB_TOKEN: ${{ inputs.github-token }} # Use input instead of secret
+        GITHUB_TOKEN: ${{ inputs.github-token }}
