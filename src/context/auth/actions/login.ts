@@ -3,11 +3,7 @@
 import { ApiError, request } from "@/axios/request";
 import { AuthResponse, User } from "@/types";
 import { setCookiesFromHeader } from "@/util/cookies";
-
-export type LoginPayload = {
-  email: string;
-  password: string;
-};
+import { LoginPayload } from "../types";
 
 export const login = async (data: LoginPayload) => {
   try {

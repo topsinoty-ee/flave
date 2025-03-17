@@ -1,23 +1,9 @@
 "use client";
 
 import { createContext, useEffect, useState } from "react";
-
 import { User } from "@/types";
-
 import * as actions from "./actions";
-
-export * from "./hook";
-
-type AuthContextType = {
-  user: User | null;
-  error: string | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  login: (credentials: actions.LoginPayload) => Promise<void>;
-  logout: () => Promise<void>;
-  signup: (credentials: actions.SignupPayload) => Promise<void>;
-  refetchUser: () => Promise<void>;
-};
+import { AuthContextType, LoginPayload, SignupPayload } from "./types";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -43,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     refetchUser();
   }, []);
 
-  const login = async (credentials: actions.LoginPayload) => {
+  const login = async (credentials: LoginPayload) => {
     try {
       setIsLoading(true);
       const response = await actions.login(credentials);
@@ -58,7 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async (credentials: actions.SignupPayload) => {
+  const signup = async (credentials: SignupPayload) => {
     try {
       setIsLoading(true);
       const response = await actions.signup(credentials);
@@ -103,3 +89,5 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     </AuthContext.Provider>
   );
 };
+
+export * from "./hook";
