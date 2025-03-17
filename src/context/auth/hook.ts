@@ -46,7 +46,7 @@ export const useAuth = () => {
         setAuthLoading((prev) => ({ ...prev, login: false }));
       }
     },
-    [context, router]
+    [context, router],
   );
 
   const enhancedSignup = useCallback(
@@ -75,7 +75,7 @@ export const useAuth = () => {
         setAuthLoading((prev) => ({ ...prev, signup: false }));
       }
     },
-    [context, router]
+    [context, router],
   );
 
   const enhancedLogout = useCallback(
@@ -93,7 +93,7 @@ export const useAuth = () => {
         setAuthLoading((prev) => ({ ...prev, logout: false }));
       }
     },
-    [context, router]
+    [context, router],
   );
 
   const isOwner = useCallback(
@@ -110,7 +110,7 @@ export const useAuth = () => {
 
       return false;
     },
-    [context.user]
+    [context.user],
   );
 
   const isLoading = context.isLoading;
