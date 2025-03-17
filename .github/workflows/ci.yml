@@ -3,6 +3,8 @@ name: Code Quality Gate
 on:
   pull_request:
     branches: [main, making-pages]
+  push:
+    branches: [main, making-pages]
 
 jobs:
   quality-check:
