@@ -1,1 +1,1 @@
-export * from "./maybe";
+export type Maybe<T> = T | null | undefined;

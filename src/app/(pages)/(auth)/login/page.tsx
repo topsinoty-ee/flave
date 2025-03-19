@@ -25,7 +25,9 @@ export default async function LoginPage({
 }) {
   const params = await searchParams;
   const redirectPath =
-    typeof params.continue === "string" ? params.continue : "profile";
+    typeof params.continue === "string" && params.continue != ""
+      ? params.continue
+      : "profile";
 
   return (
     <div className="min-h-screen flex items-center justify-center">

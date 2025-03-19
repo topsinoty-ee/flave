@@ -3,14 +3,15 @@
 import clsx from "clsx";
 import { get } from "lodash";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useRef, useState } from "react";
+
+import { useForm } from "../hook";
 
 import type { ComponentProps } from "react";
 import type { FieldValues, Path, FieldError } from "react-hook-form";
-type FormInputProps<TFieldValues extends FieldValues = FieldValues> =
+type FormInputProps<TypeOfFieldValues extends FieldValues = FieldValues> =
   ComponentProps<"input"> & {
-    name: Path<TFieldValues>;
+    name: Path<TypeOfFieldValues>;
     label?: string;
     type?: "text" | "email" | "password" | "number";
     icon?: React.ComponentType<{ className?: string }>;
@@ -22,7 +23,7 @@ type FormInputProps<TFieldValues extends FieldValues = FieldValues> =
     hideErrorMessage?: boolean;
   };
 
-export function FormInput<TFieldValues extends FieldValues = FieldValues>({
+export const FormInput = <TypeOfFieldValues extends FieldValues = FieldValues>({
   name,
   label,
   type = "text",
@@ -37,41 +38,18 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
   onBlur: customOnBlur,
   onFocus: customOnFocus,
   ...props
-}: FormInputProps<TFieldValues>) {
-  const context = useFormContext<TFieldValues>();
+}: FormInputProps<TypeOfFieldValues>) => {
+  const {
+    register,
+    formState: { errors },
+  } = useForm();
   const [showPassword, setShowPassword] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const isPassword = type === "password";
-
-  if (!context) {
-    throw new Error("FormInput must be used within a FormProvider");
-  }
-
-  const {
-    register,
-    formState: { errors },
-  } = context;
   const fieldError = get(errors, name) as FieldError | undefined;
-
-  const { ref, onBlur: fieldOnBlur, ...fieldProps } = register(name);
-
   const shouldShowError = fieldError && isTouched;
-
-  const handleClickOutside = useCallback((event: MouseEvent | TouchEvent) => {
-    if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-      setIsTouched(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("touchstart", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, [handleClickOutside]);
+  const { ref, onBlur: fieldOnBlur, ...fieldProps } = register(name);
 
   const handlePasswordToggle = () => {
     setShowPassword((prev) => !prev);
@@ -85,7 +63,7 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
           htmlFor={name}
           className={clsx(
             "block text-base font-medium text-gray-dark",
-            labelClass,
+            labelClass
           )}
         >
           {label}
@@ -129,7 +107,7 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
             },
             "password",
             inputClass,
-            className,
+            className
           )}
           {...props}
         />
@@ -158,7 +136,7 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
 
           {shouldShowError && (
             <AlertCircle
-              className="h-5 w-5 text-error transition-opacity duration-300"
+              className="h-5 w-5 stroke-error transition-opacity duration-300"
               aria-hidden="true"
             />
           )}
@@ -172,7 +150,7 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
           aria-live="polite"
           className={clsx(
             "text-xs text-error-dark transition-opacity duration-300 message",
-            errorClass,
+            errorClass
           )}
         >
           {fieldError.message}
@@ -180,4 +158,4 @@ export function FormInput<TFieldValues extends FieldValues = FieldValues>({
       )}
     </div>
   );
-}
+};

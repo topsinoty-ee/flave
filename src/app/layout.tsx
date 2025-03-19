@@ -24,7 +24,7 @@ export default function RootLayout({
     <ContextProvider>
       <html lang="en">
         <body
-          className={clsx(jakarta.variable, " antialiased w-full min-h-screen")}
+          className={clsx(jakarta.variable, "antialiased w-full min-h-screen")}
         >
           {children}
         </body>

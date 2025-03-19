@@ -2,9 +2,12 @@
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useContext, useState } from "react";
+
 import { AuthContext } from "@/context";
 import { isResource, Maybe, Resource } from "@/types/";
+
 import { AuthError } from "./error";
+
 import type { LoginPayload, SignupPayload } from "./types";
 
 export const useAuth = () => {

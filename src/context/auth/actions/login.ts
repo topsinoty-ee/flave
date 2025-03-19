@@ -3,6 +3,7 @@
 import { ApiError, request } from "@/axios/request";
 import { AuthResponse, User } from "@/types";
 import { setCookiesFromHeader } from "@/util/cookies";
+
 import { LoginPayload } from "../types";
 
 export const login = async (data: LoginPayload) => {

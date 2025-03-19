@@ -1,48 +1,49 @@
 "use client";
 
 import { Lock, Mail } from "lucide-react";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { z } from "zod";
 
-import { FormInput, ServerError, SubmitButton } from "@/components/form";
-import { createFormAction } from "@/components/form/utils/createFormAction";
-import { FormProvider } from "@/context/form";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context";
+import { createAction, FormProvider } from "@/context/form";
+import { FormHeader, FormInput, SubmitButton } from "@/context/form/components";
 
 const LoginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  email: z.string().email(),
+  password: z.string().min(8),
 });
-
-const LazyFormHeader = lazy(() => import("@/components/form/header"));
 
 export const LoginForm = ({ redirectPath = "/recipes/browse" }) => {
   const { login, loginError, authLoading } = useAuth();
 
-  const loginAction = createFormAction(async (formData) => {
-    const email = formData.get("email")?.toString();
-    const password = formData.get("password")?.toString();
+  const loginAction = createAction(LoginSchema, async (formData) => {
+    try {
+      const { email, password } = formData;
+      const success = await login({ email, password }, redirectPath);
 
-    if (!email || !password) {
-      return {
-        errors: {
-          email: email ? undefined : "Email is required",
-          password: password ? undefined : "Password is required",
-        },
-        message: "Please fill in all required fields",
-      };
-    }
+      if (!success) {
+        return {
+          success: false,
+          message: loginError || "Invalid credentials",
+        };
+      }
 
-    const success = await login({ email, password }, redirectPath);
-    if (success) {
-      return { message: "Login successful" };
-    } else {
       return {
-        errors: {},
-        message: `${
-          loginError || "Login Failed"
-        }. Please check your credentials.`,
+        success: true,
+        message: "Login successful!",
       };
+    } catch (error) {
+      if (error instanceof Error)
+        return {
+          success: false,
+          message: `An unexpected error occurred: ${error.message}`,
+        };
+      else {
+        return {
+          success: false,
+          message: `An unexpected error occurred: ${String(error)}`,
+        };
+      }
     }
   });
 
@@ -61,7 +62,7 @@ export const LoginForm = ({ redirectPath = "/recipes/browse" }) => {
           />
         }
       >
-        <LazyFormHeader title="Login" description="Welcome back" />
+        <FormHeader title="Login" description="Welcome back" />
         <div className="flex flex-col gap-5">
           <FormInput
             name="email"
@@ -78,7 +79,6 @@ export const LoginForm = ({ redirectPath = "/recipes/browse" }) => {
             aria-required="true"
           />
         </div>
-        <ServerError />
         <SubmitButton
           loading={authLoading.login}
           className="bg-black text-white w-full py-2.5 rounded-md transition-colors"

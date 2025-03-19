@@ -1,7 +1,9 @@
 "use client";
 
 import { createContext, useEffect, useState } from "react";
+
 import { User } from "@/types";
+
 import * as actions from "./actions";
 import { AuthContextType, LoginPayload, SignupPayload } from "./types";
 

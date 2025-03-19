@@ -2,6 +2,7 @@
 import { ApiError, request } from "@/axios/request";
 import { AuthResponse, User } from "@/types";
 import { setCookiesFromHeader } from "@/util/cookies";
+
 import { SignupPayload } from "../types";
 
 export const signup = async (data: SignupPayload) => {

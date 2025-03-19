@@ -3,97 +3,112 @@
 import clsx from "clsx";
 import { defaultTo } from "lodash";
 import {
+  createContext,
   startTransition,
-  useActionState as useFormState,
+  useActionState,
   useEffect,
 } from "react";
 import {
+  DefaultValues,
   FormProvider as ReactHookFormProvider,
+  Path,
   useForm,
 } from "react-hook-form";
 import { z, ZodObject, ZodRawShape } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import type { DefaultValues, FieldValues } from "react-hook-form";
-export type ServerActionResult<T extends FieldValues> = {
-  errors?: Partial<Record<keyof T, string>>;
-  message?: string;
-};
+import { ActionStateFor, FormContextConfig } from "./types";
 
-type FormProviderProps<T extends ZodObject<ZodRawShape>> = {
-  schema: T;
+export const FormContext = createContext<FormContextConfig | undefined>(
+  undefined,
+);
+
+type FormProviderProps<Schema extends ZodObject<ZodRawShape>> = {
+  schema: Schema;
   action: (
-    prevState: ServerActionResult<z.infer<T>> | null,
+    _prevState: ActionStateFor<z.infer<Schema>> | null,
     formData: FormData,
-  ) => Promise<ServerActionResult<z.infer<T>>>;
+  ) => Promise<ActionStateFor<z.infer<Schema>>>;
   children: React.ReactNode;
-  defaultValues?: DefaultValues<z.infer<T>>;
-  resetOnSuccess?: boolean;
+  onSubmit?: (data: z.infer<Schema>) => void;
+  defaultValues?: DefaultValues<z.infer<Schema>>;
   className?: string;
   formProps?: React.ComponentProps<"form">;
 };
 
-export function FormProvider<T extends ZodObject<ZodRawShape>>({
+export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
   schema,
   action,
+  onSubmit,
   children,
   defaultValues,
-  resetOnSuccess = true,
   className,
   formProps,
-}: FormProviderProps<T>) {
-  const [state, formAction] = useFormState(action, null);
-  const methods = useForm<z.infer<T>>({
+  ...rest
+}: FormProviderProps<Schema>) => {
+  const [state, formAction, isPending] = useActionState(action, null);
+  const methods = useForm<z.infer<Schema>>({
     resolver: zodResolver(schema),
     defaultValues,
-    mode: "onChange",
   });
 
   useEffect(() => {
-    if (state?.errors) {
-      methods.setError("root.server", {
-        type: "server",
-        message: state.message || "Form submission failed",
+    if (state?.fieldErrors) {
+      Object.entries(state.fieldErrors).forEach(([field, message]) => {
+        if (field === "root") {
+          methods.setError("root.server", {
+            type: "server",
+            message: message as string,
+          });
+        } else {
+          methods.setError(field as Path<z.infer<Schema>>, {
+            type: "server",
+            message: message as string,
+          });
+        }
       });
-
-      // forOwn(state.errors, (message, key) => {
-      //   if (has(schema.shape, key)) {
-      //     methods.setError(key as Path<z.infer<T>>, {
-      //       type: "server",
-      //       message: String(message),
-      //     });
-      //   }
-      // });
     }
-  }, [state, methods, schema.shape]);
 
-  useEffect(() => {
-    if (state?.message && !state?.errors && resetOnSuccess) {
+    if (state?.message && !state?.fieldErrors) {
       methods.reset(defaultTo(defaultValues, {}));
     }
-  }, [state, methods, resetOnSuccess, defaultValues]);
+  }, [state, methods, defaultValues]);
 
-  const handleFormSubmit = (data: z.infer<T>) => {
+  const handleSubmit = (data: z.infer<Schema>) => {
+    if (onSubmit) {
+      onSubmit(data);
+    }
     startTransition(() => {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value as string);
+        formData.append(key, value as string | Blob);
       });
       formAction(formData);
     });
   };
 
   return (
-    <ReactHookFormProvider {...methods}>
-      <form
-        action={formAction}
-        onSubmit={methods.handleSubmit(handleFormSubmit)}
-        {...formProps}
-        className={clsx("w-full", className)}
-      >
-        {children}
-      </form>
-    </ReactHookFormProvider>
+    <FormContext.Provider
+      value={{
+        isPending,
+        state,
+      }}
+    >
+      <ReactHookFormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(handleSubmit)}
+          className={clsx(className)}
+          {...formProps}
+          {...rest}
+        >
+          {children}
+          {state?.message && <small aria-live="polite">{state.message}</small>}
+        </form>
+      </ReactHookFormProvider>
+    </FormContext.Provider>
   );
-}
+};
+
+export * from "./fn";
+export * from "./hook";
