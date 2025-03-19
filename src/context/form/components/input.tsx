@@ -63,7 +63,7 @@ export const FormInput = <TypeOfFieldValues extends FieldValues = FieldValues>({
           htmlFor={name}
           className={clsx(
             "block text-base font-medium text-gray-dark",
-            labelClass
+            labelClass,
           )}
         >
           {label}
@@ -107,7 +107,7 @@ export const FormInput = <TypeOfFieldValues extends FieldValues = FieldValues>({
             },
             "password",
             inputClass,
-            className
+            className,
           )}
           {...props}
         />
@@ -150,7 +150,7 @@ export const FormInput = <TypeOfFieldValues extends FieldValues = FieldValues>({
           aria-live="polite"
           className={clsx(
             "text-xs text-error-dark transition-opacity duration-300 message",
-            errorClass
+            errorClass,
           )}
         >
           {fieldError.message}
