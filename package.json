@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
     "type-check:watch": "tsc --noEmit --watch",
-    "prepare": "husky",
+    "prepare": "husky init",
     "find-copies": "jscpd src --min-lines 5 --min-tokens 30",
     "check-deps": "depcheck"
   },
@@ -63,8 +63,13 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier --write",
-      "eslint --max-warnings 0 ."
+      "pnpm format",
+      "eslint --fix",
+      "pnpm type-check"
+    ],
+    "*.{,js,jsx,json,md,yml,yaml,css,scss}": [
+      "pnpm format",
+      "eslint --fix"
     ]
   }
 }
