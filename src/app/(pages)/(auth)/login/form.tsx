@@ -3,7 +3,7 @@
 import { Lock, Mail } from "lucide-react";
 import { Suspense } from "react";
 import { z } from "zod";
-
+import Link from "next/link";
 import { useAuth } from "@/context";
 import { createAction, FormProvider } from "@/context/form";
 import { FormHeader, FormInput, SubmitButton } from "@/context/form/components";
@@ -79,12 +79,15 @@ export const LoginForm = ({ redirectPath = "/recipes/browse" }) => {
             aria-required="true"
           />
         </div>
-        <SubmitButton
-          loading={authLoading.login}
-          className="bg-black text-white w-full py-2.5 rounded-md transition-colors"
-        >
-          Login
-        </SubmitButton>
+        <div className="flex gap-5 items-center">
+          <SubmitButton
+            loading={authLoading.login}
+            className="bg-black text-white w-full py-2.5 rounded-md transition-colors"
+          >
+            Login
+          </SubmitButton>
+          <Link href="/signup">Sign up instead</Link>
+        </div>
       </Suspense>
     </FormProvider>
   );

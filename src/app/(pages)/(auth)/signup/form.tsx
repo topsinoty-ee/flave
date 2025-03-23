@@ -7,6 +7,7 @@ import { z } from "zod";
 import { useAuth } from "@/context";
 import { createAction, FormProvider } from "@/context/form";
 import { FormHeader, FormInput, SubmitButton } from "@/context/form/components";
+import Link from "next/link";
 
 const SignupSchema = z.object({
   firstName: z
@@ -40,7 +41,7 @@ const SignupSchema = z.object({
       },
       {
         message: "Email is already registered",
-      }
+      },
     ),
 
   password: z
@@ -55,7 +56,7 @@ const SignupSchema = z.object({
     .regex(/[0-9]/, "Password must contain at least one number")
     .refine(
       (password) => !password.includes(" "),
-      "Password cannot contain spaces"
+      "Password cannot contain spaces",
     ),
 });
 
@@ -77,7 +78,7 @@ export const SignupForm = ({ redirectPath = "/recipes/browse" }) => {
       const { firstName, lastName, email, password } = formData;
       const success = await signup(
         { firstName, lastName, email, password },
-        redirectPath
+        redirectPath,
       );
 
       if (!success) {
@@ -152,12 +153,15 @@ export const SignupForm = ({ redirectPath = "/recipes/browse" }) => {
             aria-required="true"
           />
         </div>
-        <SubmitButton
-          loading={authLoading.signup}
-          className="bg-black text-white w-full py-2.5 rounded-md transition-colors"
-        >
-          Signup
-        </SubmitButton>
+        <div className="flex gap-5 items-center">
+          <SubmitButton
+            loading={authLoading.signup}
+            className="bg-black text-white w-full py-2.5 rounded-md transition-colors"
+          >
+            Signup
+          </SubmitButton>
+          <Link href="/login">Login instead</Link>
+        </div>
       </Suspense>
     </FormProvider>
   );

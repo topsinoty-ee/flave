@@ -6,7 +6,7 @@ import { Button } from "@/components";
 export const Hero = () => {
   return (
     <section className="aspect-[64/27] flex w-full p-10 bg-foreground rounded-lg">
-      <div className="flex flex-col w-full h-full rounded-md filter backdrop-blur-md justify-evenly">
+      <div className="flex flex-col w-full h-full rounded-md filter justify-evenly">
         <div className="flex flex-col gap-2">
           <h1 className="font-semibold uppercase text-7xl">
             <span>

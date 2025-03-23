@@ -1,4 +1,7 @@
-export type BackendResponse<RequestedDataType extends object> = {
+export type BackendResponse<
+  RequestedDataType extends Extension,
+  Extension = object,
+> = {
   status: string;
   data: RequestedDataType;
 };

@@ -221,7 +221,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
 
       {/* Bottom Row: Ingredients + Instructions */}
       <div className="flex gap-10">
-        <div className="flex flex-col bg-gray-light gap-5 w-[70%] rounded-lg backdrop-blur-3xl h-max p-10 min-h-80">
+        <div className="flex flex-col bg-gray-light gap-5 w-[70%] rounded-lg backdrop-blur-xs h-max p-10 min-h-80">
           <h3 className="text-3xl font-semibold uppercase">Ingredients</h3>
           <ul className="list-none gap-1 flex flex-col">
             {recipe.ingredients.map(({ value, quantity }, idx) => (

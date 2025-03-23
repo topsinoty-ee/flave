@@ -18,7 +18,7 @@ function ErrorFallback({
       <p className="mb-4">{error.message}</p>
       <Button
         onClick={resetErrorBoundary}
-        className="bg-error-dark backdrop-blur-3xl text-background"
+        className="bg-error-dark text-background"
       >
         Try Again
       </Button>

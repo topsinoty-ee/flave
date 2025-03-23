@@ -154,6 +154,19 @@
   div:has(img).image-flex {
     display: flex !important;
   }
+  section.bg-foreground,
+  section.bg-yellow,
+  .body.bg-foreground,
+  .body.yellow,
+  .section.bg-foreground,
+  .section.bg-yellow {
+    background-image: url("../../public/yellow-pattern-bg.png");
+    background-repeat:;
+  }
+
+  .drafts-hero-bg {
+    background-image: url("../../public/images/drafts-bg.png");
+  }
 }
 
 .password::-ms-clear,

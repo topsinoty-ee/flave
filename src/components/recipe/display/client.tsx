@@ -2,7 +2,8 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-import { Button, RecipeContentProps } from "@/components";
+import { Button } from "@/components";
+import { RecipeDisplayProps } from "./types";
 
 export const ErrorFallback = ({
   error,
@@ -25,8 +26,10 @@ export const ErrorFallback = ({
   </div>
 );
 
-const RecipeSkeletons = ({ rows }: { rows: number }) => (
-  <div className="grid grid-cols-4 gap-4">
+const RecipeSkeletons = ({ rows, grid }: { rows: number; grid?: string }) => (
+  <div
+    className={grid || "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"}
+  >
     {Array.from({ length: 4 * rows }).map((_, idx) => (
       <div key={idx} className="space-y-3 animate-pulse">
         <div className="h-48 bg-gray-light rounded-lg"></div>
@@ -41,13 +44,16 @@ const RecipeSkeletons = ({ rows }: { rows: number }) => (
 export const ClientRecipeDisplay = ({
   rows,
   children,
-}: Pick<RecipeContentProps, "rows"> & {
+  gridLayout,
+}: Pick<RecipeDisplayProps, "rows" | "gridLayout"> & {
   children: React.ReactNode;
 }) => (
   <ErrorBoundary
     FallbackComponent={ErrorFallback}
     onReset={() => window.location.reload()}
   >
-    <Suspense fallback={<RecipeSkeletons rows={rows} />}>{children}</Suspense>
+    <Suspense fallback={<RecipeSkeletons rows={rows || 1} grid={gridLayout} />}>
+      {children}
+    </Suspense>
   </ErrorBoundary>
 );
