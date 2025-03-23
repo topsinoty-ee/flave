@@ -3,8 +3,8 @@ import Link from "next/link";
 import { ButtonHTMLAttributes, AnchorHTMLAttributes, MouseEvent } from "react";
 
 export const Variant = {
-  primary: "bg-highlight text-text",
-  secondary: "bg-accent text-text",
+  primary: "bg-black text-white",
+  secondary: "bg-gray outline-none",
   outline: "bg-muted text-background border-border border",
   danger: "bg-error-dark",
   disabled: "bg-muted text-text cursor-not-allowed pointer-events-none",
@@ -19,7 +19,6 @@ export const Shape = {
   button: "rounded-lg",
 } as const;
 
-// Import Next.js LinkProps type
 import { LinkProps } from "next/link";
 
 type BaseButtonProps = {
@@ -61,7 +60,7 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const baseClasses =
-    "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all outline-1 outline outline-offset-0 w-max no-underline";
+    "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all outline-1 outline outline-offset-0 w-max no-underline shadow-sm";
   const variantClasses = Variant[variant];
   const shapeClasses = Shape[shape];
   const disabledClasses = disabled
@@ -74,7 +73,7 @@ export const Button = ({
     shapeClasses,
     disabledClasses,
     iconOnlyClasses,
-    className,
+    className
   );
 
   if (as === "link" && href) {

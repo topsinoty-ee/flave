@@ -13,8 +13,8 @@ export default function PublicLayout({
           { href: "/about", label: "All Recipes" },
         ]}
         actions={[
-          { href: "/signup", label: "Sign up", type: "primary" },
-          { href: "/login", label: "Login", type: "secondary" },
+          { href: "/signup", children: "Sign up", variant: "primary" },
+          { href: "/login", children: "Login", variant: "secondary" },
         ]}
       />
       <main className="main">
