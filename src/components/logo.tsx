@@ -5,7 +5,7 @@ export const Logo = () => (
     width={108}
     height={46}
     className="w-full aspect-[54/23]"
-    src="/logo.png"
+    src="/logo.svg"
     alt="flave logo"
   />
 );
