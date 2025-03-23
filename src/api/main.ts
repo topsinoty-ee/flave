@@ -2,25 +2,30 @@ import { ZodSchema, infer as ZodInfer } from "zod";
 import { ApiError } from "./error";
 import { ValidationError } from "@/lib/validation-error";
 
+const DEFAULT_TIMEOUT = 10000;
+
 type ApiConfig = RequestInit & {
   fetch?: typeof fetch;
+  timeout?: number;
 };
 
 class Api {
   private baseUrl: string;
   private defaultOptions: RequestInit;
   private fetch: typeof fetch;
+  private defaultTimeout: number;
 
-  constructor(baseUrl: string, defaultOptions: ApiConfig = {}) {
+  constructor(baseUrl: string, config: ApiConfig = {}) {
     this.baseUrl = baseUrl;
-    this.fetch = defaultOptions.fetch || fetch;
+    this.fetch = config.fetch || fetch;
+    this.defaultTimeout = config.timeout || DEFAULT_TIMEOUT;
     this.defaultOptions = {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        ...defaultOptions.headers,
+        ...config.headers,
       },
-      ...defaultOptions,
+      ...config,
     };
   }
 
@@ -43,6 +48,13 @@ class Api {
     schema?: SchemaType
   ): Promise<unknown> {
     const url = new URL(endpoint, this.baseUrl);
+    const controller = new AbortController();
+
+    const timeoutSignal = AbortSignal.timeout(this.defaultTimeout);
+    const combinedSignal = options.signal
+      ? AbortSignal.any([options.signal, timeoutSignal])
+      : timeoutSignal;
+
     const mergedOptions: RequestInit = {
       ...this.defaultOptions,
       ...options,
@@ -50,6 +62,7 @@ class Api {
         ...this.defaultOptions.headers,
         ...options.headers,
       }),
+      signal: combinedSignal,
     };
 
     try {
@@ -60,7 +73,7 @@ class Api {
       }
 
       const contentType = response.headers.get("Content-Type");
-      if (!contentType?.includes("application/json")) {
+      if (!contentType?.match(/^application\/json/)) {
         throw new ApiError(
           `Non-JSON response from ${url.href}`,
           500,
@@ -69,11 +82,7 @@ class Api {
       }
 
       const jsonData = await response.json();
-      if (
-        typeof jsonData === "object" &&
-        jsonData !== null &&
-        "data" in jsonData
-      ) {
+      if (jsonData?.data) {
         const responseData = jsonData.data;
 
         if (schema) {
@@ -88,37 +97,54 @@ class Api {
         }
 
         return responseData as unknown;
-      } else {
-        throw new ApiError(
-          `Invalid response structure from ${url.href}`,
-          500,
-          "Missing 'data' property in response"
-        );
       }
+
+      throw new ApiError(
+        `Invalid response structure from ${url.href}`,
+        500,
+        "Missing 'data' property in response"
+      );
     } catch (error) {
       if (error instanceof ApiError || error instanceof ValidationError) {
         throw error;
       }
 
-      console.error(`Request to ${url.href} failed:`, error);
-      throw ApiError.fromError(error);
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          throw new ApiError(`Request to ${url.href} timed out`, 0, "TIMEOUT");
+        }
+        throw ApiError.fromError(error);
+      }
+
+      throw new ApiError(
+        "Unknown error occurred",
+        0,
+        "UNKNOWN_ERROR",
+        String(error)
+      );
+    } finally {
+      controller.abort();
     }
   }
 
-  async get<T>(endpoint: string, schema: ZodSchema<T>): Promise<T>;
-  async get<T>(endpoint: string): Promise<T>;
-  async get<T>(endpoint: string, schema?: ZodSchema<T>): Promise<T> {
-    return this.request(endpoint, { method: "GET" }, schema!);
+  async get<T>(
+    endpoint: string,
+    schema?: ZodSchema<T>,
+    options?: RequestInit
+  ): Promise<T> {
+    return this.request(endpoint, { ...options, method: "GET" }, schema!);
   }
 
   async post<T>(
     endpoint: string,
     body: unknown,
-    schema?: ZodSchema<T>
+    schema?: ZodSchema<T>,
+    options?: RequestInit
   ): Promise<T> {
     return this.request(
       endpoint,
       {
+        ...options,
         method: "POST",
         body: JSON.stringify(body),
       },
@@ -129,11 +155,13 @@ class Api {
   async put<T>(
     endpoint: string,
     body: unknown,
-    schema?: ZodSchema<T>
+    schema?: ZodSchema<T>,
+    options?: RequestInit
   ): Promise<T> {
     return this.request(
       endpoint,
       {
+        ...options,
         method: "PUT",
         body: JSON.stringify(body),
       },
@@ -141,8 +169,12 @@ class Api {
     );
   }
 
-  async delete<T>(endpoint: string, schema?: ZodSchema<T>): Promise<T> {
-    return this.request(endpoint, { method: "DELETE" }, schema!);
+  async delete<T>(
+    endpoint: string,
+    schema?: ZodSchema<T>,
+    options?: RequestInit
+  ): Promise<T> {
+    return this.request(endpoint, { ...options, method: "DELETE" }, schema!);
   }
 
   private cleanHeaders(
@@ -150,8 +182,11 @@ class Api {
   ): Record<string, string> {
     return Object.fromEntries(
       Object.entries(headers)
-        .filter(([_, value]) => value !== undefined)
-        .map(([key, value]) => [key, String(value)])
+        .filter(([_, value]) => value !== undefined && value !== null)
+        .map(([key, value]) => [
+          key,
+          String(value as NonNullable<typeof value>),
+        ])
     );
   }
 }
