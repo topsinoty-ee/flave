@@ -1,30 +1,48 @@
-import Image from "next/image";
+import React from "react";
+import { Image } from "@/components";
 
-export const Categories = () => {
+type CategoryItem = [string, string];
+
+interface CategoryMarqueeProps {
+  items: CategoryItem[];
+  speed?: number;
+}
+
+const MarqueeItem: React.FC<{ text: string; src: string }> = ({
+  text,
+  src,
+}) => (
+  <div className="flex flex-col items-center gap-2.5 w-60 px-5">
+    <div className="relative aspect-square w-full overflow-hidden golden-circle rounded-full">
+      <Image src={src} alt={text || "Category image"} fill quality={80} />
+    </div>
+    <h5 className="uppercase truncate max-w-[90%]">{text}</h5>
+  </div>
+);
+
+export const CategoryMarquee: React.FC<CategoryMarqueeProps> = ({
+  items,
+  speed = 30,
+}) => {
+  if (!items.length) return null;
+
+  const loopItems = [...items, ...items, ...items, ...items];
+
   return (
-    <section className="flex gap-10">
-      {Object.entries({
-        veggies: "/images/culinary-fallback.png",
-        protein: "/images/culinary-fallback.png",
-        dairy: "/images/culinary-fallback.png",
-        seafood: "/images/culinary-fallback.png",
-        desserts: "/images/culinary-fallback.png",
-        smoothies: "/images/culinary-fallback.png",
-        "low-calorie": "/images/culinary-fallback.png",
-      }).map(([text, src], idx) => {
-        return (
-          <div key={idx} className="flex flex-col items-center w-full gap-5">
-            <Image
-              src={src}
-              alt={text}
-              width={100}
-              height={100}
-              className="w-full golden-circle min-w-20 max-w-40"
-            />
-            <h5 className="uppercase">{text}</h5>
-          </div>
-        );
-      })}
+    <section className="relative overflow-hidden py-10">
+      {/* Edge mask */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white to-transparent z-10" />
+
+      <div
+        style={{ "--speed": `${speed}s` } as React.CSSProperties}
+        className="flex w-max animate-marquee hover:slow-on-hover will-change-auto"
+        aria-hidden
+      >
+        {loopItems.map(([text, src], index) => (
+          <MarqueeItem key={`${text}-${index}`} text={text} src={src} />
+        ))}
+      </div>
     </section>
   );
 };
