@@ -3,42 +3,61 @@ import { ArrowRight } from "lucide-react";
 import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
 import { fetchRecipes } from "@/util";
 
-import { Categories, Hero, OurFeatures } from "./components";
+import { CategoryMarquee, Hero, OurFeatures } from "./components";
 
 export default async function Home() {
   return (
     <>
       <Hero />
-      <OurFeatures />
-      <Categories />
+      <CategoryMarquee
+        items={Object.entries({
+          veggies: "",
+          protein: "",
+          dairy: "",
+          seafood: "",
+          desserts: "",
+          smoothies: "",
+          "low-calories": "",
+        })}
+        speed={25}
+      />
       <RecipeDisplayBlock
         title={"Currently Hot"}
         description={"Explore what our users have rated highly"}
         params={["all"]}
-        endpoint={{ href: "/recipes/browse", text: "Browse all" }}
+        seeMore
       />
-      <section className="w-full bg-yellow rounded-lg flex aspect-section-md">
-        <div className="w-full" />
-        <div className="w-full h-full flex flex-col justify-between">
-          <div className="flex flex-col gap-2.5">
-            <h2 className="uppercase">Want to upload your own recipes?</h2>
-            <p>Start now. It&apos;s simple really</p>
+      <section className="flex aspect-section-lg bg-black">
+        <div className="w-full flex items-center justify-center">
+          <div className="aspect-[123/100]  bg-black h-full">
+            <div className="w-full h-full p-20 flex flex-col items-center justify-center text-center gap-20">
+              <h2>Tons of recipes in our database</h2>
+              <div className="flex text-center items-center justify-center flex-col gap-10">
+                <h4>
+                  Interested in contributing? <br />
+                  Or looking for more recipes?
+                </h4>
+                <div className="flex gap-5 uppercase font-extrabold">
+                  <Button as="link" shape="square" href="/recipes/browse">
+                    Browse recipes
+                  </Button>
+                  <Button
+                    as="link"
+                    href="/recipes/create"
+                    variant="primary"
+                    shape="square"
+                  >
+                    Create recipe
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col gap-5">
-            <Button
-              className=""
-              variant="primary"
-              as="link"
-              href="/recipes/browse"
-              icon={<ArrowRight />}
-            >
-              Get started
-            </Button>
-            <small>You can save your recipe as a draft and edit it later</small>
-          </div>
+          <div className="diamond-pattern-bg bg-[47.5%] w-full h-full" />
         </div>
+        <div className="aspect-[720/660] bg-cover bg-no-repeat home-food-collage-for-hero-bg" />
       </section>
-      <section className="aspect-section gap-10 w-full flex flex-col">
+      <section className="aspect-section gap-10 w-full flex flex-col p-20">
         <SectionHeader title="Customer reviews" />
         <div className="w-full h-full flex justify-evenly gap-5">
           {Array.from({ length: 5 }).map((_, idx) => (
@@ -46,7 +65,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
-      <section className="aspect-section-lg gap-10 w-full flex flex-col">
+      <section className="aspect-section-lg gap-10 w-full flex flex-col p-20">
         <SectionHeader title="Frequently asked questions" />
         <div className="w-full h-full flex flex-col justify-evenly gap-5">
           {Array.from({ length: 4 }).map((_, idx) => (
