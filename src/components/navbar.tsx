@@ -10,7 +10,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ links, actions }) => (
-  <header className="relative flex items-center justify-between py-5 shadow-lg rounded-b-3xl bg-background h-25">
+  <header className="relative flex items-center justify-between py-5 shadow-lg rounded-b-3xl bg-background h-25 z-999">
     <div className="flex items-center gap-5">
       {links?.map(({ label, href }, idx) => (
         <Link href={href} key={idx} className="uppercase">

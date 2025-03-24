@@ -16,7 +16,7 @@
   --color-yellow: hsl(48, 95%, 60%);
   --color-yellow-dark: hsl(48, 95%, 40%);
 
-  --color-black: hsl(0, 0%, 10.2%);
+  --color-black: #141414;
   --color-white: hsl(0, 0%, 100%);
 
   --color-muted: var(--muted);
@@ -43,7 +43,7 @@
   --aspect-section-sm: 384/75;
   --aspect-section: 192/75;
   --aspect-section-md: 256/75;
-  --aspect-section-lg: 128/75;
+  --aspect-section-lg: 192/75;
 }
 
 @layer base {
@@ -118,22 +118,21 @@
     background-color: var(--background);
     overflow-x: hidden;
     color: var(--foreground);
-    @apply font-sans text-sm md:text-[1rem] gap-20 place-content-evenly;
+    @apply font-sans text-sm md:text-[1rem] place-content-evenly;
   }
 
-  .main,
   footer,
   header {
     @apply flex-grow px-5 md:px-10 lg:px-20;
   }
-
+  /* 
   .main > div {
     @apply container mx-auto flex flex-col gap-10;
-  }
+  } */
 
-  .main > div > section {
-    @apply py-10;
-  }
+  /* .main > div > * {
+    @apply px-5 md:px-10 lg:px-20;
+  } */
 
   a {
     @apply transition-colors text-muted hover:text-gray-dark;
@@ -161,11 +160,49 @@
   .section.bg-foreground,
   .section.bg-yellow {
     background-image: url("../../public/yellow-pattern-bg.png");
-    background-repeat:;
+    background-attachment: fixed;
   }
 
   .drafts-hero-bg {
     background-image: url("../../public/images/drafts-bg.png");
+  }
+
+  .diamond-pattern-bg {
+    background-image: url("../../public/images/diamond-pattern.png");
+  }
+  .home-food-collage-for-hero-bg {
+    background-image: url("../../public/images/collage-for-home-page.png");
+  }
+}
+
+@layer utilities {
+  @keyframes scroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: scroll var(--speed, 30s) linear infinite;
+    animation-name: scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    transition: --speed 1s ease;
+  }
+
+  .slow-on-hover:hover {
+    --speed: 60s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
   }
 }
 
