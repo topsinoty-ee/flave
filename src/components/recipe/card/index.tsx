@@ -7,10 +7,13 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import { Recipe } from "@/types/recipe";
 
-import { Button } from "../button";
-import { Image } from "../image";
+import { Button } from "../../button";
+import { Image } from "../../image";
 
-export type RecipeCardProps = Omit<Recipe, "description">;
+export * from "./skeleton";
+export type RecipeCardProps = Omit<Recipe, "description"> & {
+  className: string;
+};
 
 interface CardFallback {
   error?: Error;
@@ -33,6 +36,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
   reviews = [],
   ratingsAvg = 0,
   user,
+  className,
 }) => {
   const rating = Math.min(Math.max(ratingsAvg, 0), 5).toFixed(1);
 
@@ -40,7 +44,10 @@ export const RecipeCard: FC<RecipeCardProps> = ({
     <ErrorBoundary fallback={<FallbackComponent />}>
       <Link
         href={`/recipes/${_id}`}
-        className="relative w-full overflow-hidden transition-all rounded-md shadow-md cursor-pointer min-w-72 max-w-80 bg-background group hover:shadow-lg"
+        className={clsx(
+          "relative w-full overflow-hidden transition-all rounded-md shadow-md cursor-pointer min-w-72 max-w-80 bg-background group hover:shadow-lg",
+          className
+        )}
       >
         <div className="relative w-full aspect-video">
           <Image
@@ -48,7 +55,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             alt={alt || title}
             fill
             className={clsx(
-              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105",
+              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105"
             )}
           />
         </div>
