@@ -4,6 +4,7 @@ export function isResource(resource: unknown): resource is Resource {
   return (
     typeof resource === "object" &&
     resource !== null &&
+    "_id" in resource &&
     "user" in resource &&
     typeof (resource as { user: unknown }).user === "object" &&
     (resource as { user: object }).user !== null &&
