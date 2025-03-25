@@ -9,7 +9,7 @@ export default function PublicLayout({
     <div className="body">
       <Navbar
         links={[
-          { href: "/", label: "Browse" },
+          { href: "/recipes/browse", label: "Browse" },
           { href: "/about", label: "All Recipes" },
         ]}
         actions={[

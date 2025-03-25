@@ -47,7 +47,9 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
           <div className="w-full flex items-center justify-end">
             <Link
               className="font-semibold uppercase"
-              href={typeof seeMore === "object" ? seeMore.href : "/browse"}
+              href={
+                typeof seeMore === "object" ? seeMore.href : "/recipes/browse"
+              }
             >
               {typeof seeMore === "object" ? seeMore.text : "See More"}
             </Link>
