@@ -161,6 +161,8 @@
   .section.bg-yellow {
     background-image: url("../../public/yellow-pattern-bg.png");
     background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 
   .drafts-hero-bg {
