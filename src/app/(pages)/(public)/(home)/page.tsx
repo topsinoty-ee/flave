@@ -3,7 +3,8 @@ import { ArrowRight } from "lucide-react";
 import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
 import { fetchRecipes } from "@/util";
 
-import { CategoryMarquee, Hero, OurFeatures } from "./components";
+import { CategoryMarquee, FAQBlock, Hero, OurFeatures } from "./components";
+import { ReviewsList } from "./components/reviews";
 
 export default async function Home() {
   return (
@@ -57,26 +58,8 @@ export default async function Home() {
         </div>
         <div className="aspect-[720/660] bg-cover bg-no-repeat home-food-collage-for-hero-bg" />
       </section>
-      <section className="aspect-section gap-10 w-full flex flex-col p-20">
-        <SectionHeader title="Customer reviews" />
-        <div className="w-full h-full flex justify-evenly gap-5">
-          {Array.from({ length: 5 }).map((_, idx) => (
-            <div key={idx} className="w-full h-full rounded-lg bg-gray-light" />
-          ))}
-        </div>
-      </section>
-      <section className="aspect-section-lg gap-10 w-full flex flex-col p-20">
-        <SectionHeader title="Frequently asked questions" />
-        <div className="w-full h-full flex flex-col justify-evenly gap-5">
-          {Array.from({ length: 4 }).map((_, idx) => (
-            <div key={idx} className="w-full h-full rounded-lg bg-gray-light" />
-          ))}
-          <small className="text-gray-dark">
-            If you happen to have any other questions, feel free to contact us.
-            Contact details can be found below.
-          </small>
-        </div>
-      </section>
+      <ReviewsList />
+      {/* <FAQBlock /> */}
     </>
   );
 }

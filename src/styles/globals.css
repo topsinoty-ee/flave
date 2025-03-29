@@ -2,6 +2,12 @@
 
 :root {
   --muted: hsl(0, 0%, 30%);
+  --font-jakarta-sans: Plus Jakarta Sans;
+  --overlay: #141414af;
+}
+
+body {
+  font-family: var(--font-jakarta-sans), Arial, Helvetica, sans-serif;
 }
 
 @theme inline {
@@ -153,8 +159,7 @@
   div:has(img).image-flex {
     display: flex !important;
   }
-  section.bg-foreground,
-  section.bg-yellow,
+
   .body.bg-foreground,
   .body.yellow,
   .section.bg-foreground,
@@ -174,6 +179,13 @@
   }
   .home-food-collage-for-hero-bg {
     background-image: url("../../public/images/collage-for-home-page.png");
+  }
+  .browse-hero-bg {
+    background-image: url("../../public/NEW-BROWSE-HERO-IMAGE.jpg");
+    background-color: var(--overlay);
+    background-size: 100%;
+    background-position: 50% 75%;
+    background-blend-mode: multiply;
   }
 }
 

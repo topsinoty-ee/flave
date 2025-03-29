@@ -10,14 +10,15 @@ export default function PublicLayout({
       <Navbar
         links={[
           { href: "/recipes/browse", label: "Browse" },
-          { href: "/about", label: "All Recipes" },
+          { href: "/recipes", label: "All Recipes" },
+          { href: "/recipes/create", label: "Create recipe" },
         ]}
         actions={[
           { href: "/signup", children: "Sign up", variant: "primary" },
           { href: "/login", children: "Login", variant: "secondary" },
         ]}
       />
-      <main className="main">
+      <main className="main mt-25">
         <div>{children}</div>
       </main>
       <Footer />
