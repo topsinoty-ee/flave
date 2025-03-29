@@ -85,6 +85,8 @@ export class ApiError extends Error {
   }
 
   static async fromResponse(response: Response): Promise<ApiError> {
+    const responseClone = response.clone();
+
     try {
       const data = await response.json();
       return new ApiError(
@@ -98,7 +100,7 @@ export class ApiError extends Error {
         `HTTP Error ${response.status} (Failed to parse error body)`,
         response.status,
         response.statusText,
-        { responseBody: await response.text() }
+        { responseBody: await responseClone.text() }
       );
     }
   }

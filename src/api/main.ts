@@ -69,7 +69,7 @@ class Api {
       const response = await this.fetch(url.href, mergedOptions);
 
       if (!response.ok) {
-        throw await ApiError.fromResponse(response);
+        throw await ApiError.fromResponse(response.clone());
       }
 
       const contentType = response.headers.get("Content-Type");
