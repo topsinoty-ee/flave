@@ -31,14 +31,14 @@ export const Marquee: React.FC<CategoryMarqueeProps> = ({
   return (
     <section className="flex flex-col gap-10 py-10 bg-black">
       <SectionHeader
-        className="px-10"
+        className="px-20"
         title="Hungry for more?"
         description="Check these out! Sure to be a hit."
       />
       <div className="relative overflow-hidden">
         {/* Edge mask */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-black/75 to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-black/75 to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-25 bg-gradient-to-r from-black to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-25 bg-gradient-to-l from-black to-transparent z-10" />
 
         <div
           style={{ "--speed": `${speed}s` } as React.CSSProperties}
