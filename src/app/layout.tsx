@@ -15,7 +15,7 @@ const jakarta = Plus_Jakarta_Sans({
   fallback: ["Arial", "Helvetica", "sans-serif"],
 });
 
-const knewave = Knewave({
+export const knewave = Knewave({
   variable: "--font-knewave",
   subsets: ["latin"],
   display: "swap",
