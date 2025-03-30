@@ -187,6 +187,13 @@ body {
     background-position: 50% 75%;
     background-blend-mode: multiply;
   }
+  .recipes-hero-bg {
+    background-image: url("../../public/NEW-HERO-IMG-TOP-3.jpg");
+    background-color: var(--overlay);
+    background-size: 100%;
+    background-position: 50% 75%;
+    background-blend-mode: multiply;
+  }
 }
 
 @layer utilities {
