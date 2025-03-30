@@ -10,7 +10,6 @@ export type DisplayResourceProps<Resource extends object> =
     data?: Resource | Resource[];
     className?: string;
     itemClassName?: string;
-    fallback?: ReactNode;
     after?: ReactNode;
   };
 
@@ -19,7 +18,6 @@ export const DisplayResource = <Resource extends object>({
   data,
   className,
   itemClassName,
-  fallback,
   after,
   ...headerProps
 }: DisplayResourceProps<Resource>) => (

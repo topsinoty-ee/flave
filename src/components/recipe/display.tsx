@@ -1,10 +1,10 @@
 import { API } from "@/api/main";
 import { DisplayResource } from "../display";
 import { SectionHeaderProps } from "../section-header";
-import { RecipeCard, RecipeCardProps, RecipeCardSkeleton } from "./card";
+import { RecipeCard, RecipeCardProps } from "./card";
 import Link from "next/link";
 
-type RecipeDisplayConfig = SectionHeaderProps & {
+type RecipeDisplayConfig = Partial<SectionHeaderProps> & {
   params: string[];
   limit?: number;
   fallbackMessage?: string;
@@ -27,7 +27,7 @@ const DEFAULT_RESTRICTIONS = {
 export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   params,
   limit = 4,
-  fallbackMessage = "No recipes found",
+  // fallbackMessage = "No recipes found",
   seeMore,
   restricted,
   ...headerProps
@@ -44,11 +44,12 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   const endpoint =
     matchedParam && finalRestrictions[matchedParam]
       ? finalRestrictions[matchedParam]
-      : `/recipes/search?${cleanParams
+      : `/recipes?${cleanParams
           .map((t) => `tags=${encodeURIComponent(t)}`)
           .join("&")}&limit=${limit}`;
   console.log("endpoint: ", endpoint);
-  const recipes = (await API.get<RecipeCardProps[]>(endpoint || "/")) || [];
+  const recipes =
+    (await API.get<RecipeCardProps[]>(endpoint || "/recipes")) || [];
 
   const seeMoreEndpoint = `/recipes/search?${cleanParams
     .map((t) => `tags=${encodeURIComponent(t)}`)
@@ -60,7 +61,6 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
     <DisplayResource
       Component={RecipeCard}
       data={recipes.slice(0, limit)}
-      fallback={fallbackMessage}
       itemClassName="max-w-full"
       {...headerProps}
       after={
