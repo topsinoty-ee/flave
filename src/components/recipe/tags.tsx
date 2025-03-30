@@ -19,7 +19,7 @@ export const Tag: FC<TagProps> = ({
   const icons = (() => {
     if (Array.isArray(icon)) {
       return icon.filter(
-        (node) => node !== null && node !== undefined && node !== false
+        (node) => node !== null && node !== undefined && node !== false,
       );
     }
     return icon ? [icon] : [];
@@ -37,7 +37,7 @@ export const Tag: FC<TagProps> = ({
           "hover:text-gray-light": animate,
           "cursor-default": !animate,
         },
-        className
+        className,
       )}
     >
       {hasIcons &&

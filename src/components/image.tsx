@@ -1,26 +1,23 @@
 "use client";
 
 import clsx from "clsx";
-import NextImage from "next/image";
-import { useState, memo, useEffect } from "react";
+import NextImage, { ImageProps as NextImageProps } from "next/image";
+import { memo, useEffect, useState } from "react";
 
 interface ImageProps {
   src?: string;
-  alt?: string;
-  fill?: boolean;
   width?: number;
   height?: number;
   className?: string;
   fallbackSrc?: string;
   errorComponent?: React.ReactNode;
-  blurDataURL?: string;
-  priority?: boolean;
-  sizes?: string;
 }
 
 const DEFAULT_FALLBACK = "/images/culinary-fallback.png";
 
-const ImageComponent: React.FC<ImageProps> = ({
+const ImageComponent: React.FC<
+  ImageProps & Omit<NextImageProps, keyof ImageProps>
+> = ({
   src,
   alt = "",
   fill = false,
@@ -32,6 +29,7 @@ const ImageComponent: React.FC<ImageProps> = ({
   blurDataURL,
   priority = false,
   sizes,
+  ...rest
 }) => {
   const [loaded, setLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -64,7 +62,7 @@ const ImageComponent: React.FC<ImageProps> = ({
       className={clsx(
         "relative overflow-hidden",
         fill ? "w-full h-full" : "inline-block",
-        className
+        className,
       )}
       role="img"
       aria-label={alt || "Image content"}
@@ -86,7 +84,7 @@ const ImageComponent: React.FC<ImageProps> = ({
           {
             "opacity-0": !loaded,
             "opacity-100": loaded,
-          }
+          },
         )}
         onLoad={handleLoad}
         onError={handleError}
@@ -95,6 +93,7 @@ const ImageComponent: React.FC<ImageProps> = ({
         priority={priority}
         sizes={sizes}
         unoptimized={!showFallback ? priority : false}
+        {...rest}
       />
     </div>
   );

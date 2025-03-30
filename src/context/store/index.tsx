@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthProvider } from "../auth/context";
+import { AuthProvider } from "../auth/";
 
 export const ContextProvider = ({
   children,

@@ -1,7 +1,7 @@
 import { Review } from "./review";
-import type { Tag } from "./tag";
 import { User } from "./user";
 
+import type { Tag } from "./tag";
 type Ingredient = {
   value: string;
   quantity: number;

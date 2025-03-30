@@ -1,5 +1,6 @@
 /** @format */
 import Link from "next/link";
+
 import { Logo } from "./logo";
 
 export const Footer = () => (

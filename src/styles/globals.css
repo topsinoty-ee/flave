@@ -1,23 +1,35 @@
 @import "tailwindcss";
 
-@theme inline {
-  --font-sans: var(--font-jakarta-sans);
+:root {
+  --muted: hsl(0, 0%, 30%);
+  --font-jakarta-sans: Plus Jakarta Sans;
+  --overlay: #141414af;
 }
 
-@theme {
+body {
+  font-family: var(--font-jakarta-sans), Arial, Helvetica, sans-serif;
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta-sans);
+
   --color-*: initial;
 
   --color-background: hsl(140, 2%, 100%);
   --color-foreground: hsla(48, 95%, 52%, 1);
-  --color-yellow: hsl(48, 95%, 60%);
 
-  --color-black: hsl(0, 0%, 10.2%);
+  --color-yellow-light: hsl(48, 95%, 80%);
+  --color-yellow: hsl(48, 95%, 60%);
+  --color-yellow-dark: hsl(48, 95%, 40%);
+
+  --color-black: #141414;
   --color-white: hsl(0, 0%, 100%);
-  --color-muted: hsl(0, 0%, 60%);
+
+  --color-muted: var(--muted);
 
   --color-gray-light: hsl(0, 0%, 90%);
-  --color-gray: hsl(0, 0%, 50%);
-  --color-gray-dark: hsl(0, 0%, 40%);
+  --color-gray: hsl(0, 0%, 70%);
+  --color-gray-dark: hsl(0, 0%, 50%);
 
   --color-error-light: hsl(0, 100%, 90%);
   --color-error: hsl(0, 100%, 70%);
@@ -37,7 +49,7 @@
   --aspect-section-sm: 384/75;
   --aspect-section: 192/75;
   --aspect-section-md: 256/75;
-  --aspect-section-lg: 128/75;
+  --aspect-section-lg: 192/75;
 }
 
 @layer base {
@@ -60,7 +72,12 @@
   }
 
   .bg-black * {
+    --muted: hsl(0, 0%, 60%);
     @apply text-white;
+  }
+
+  .bg-black a {
+    @apply text-muted hover:text-gray-light;
   }
 
   h1 {
@@ -107,25 +124,24 @@
     background-color: var(--background);
     overflow-x: hidden;
     color: var(--foreground);
-    @apply font-sans text-sm md:text-[1rem] gap-20 place-content-evenly;
+    @apply font-sans text-sm md:text-[1rem] place-content-evenly;
   }
 
-  .main,
   footer,
   header {
     @apply flex-grow px-5 md:px-10 lg:px-20;
   }
-
+  /* 
   .main > div {
     @apply container mx-auto flex flex-col gap-10;
-  }
+  } */
 
-  .main > div > section {
-    @apply py-10;
-  }
+  /* .main > div > * {
+    @apply px-5 md:px-10 lg:px-20;
+  } */
 
   a {
-    @apply text-muted hover:text-gray-light transition-colors;
+    @apply transition-colors text-muted hover:text-gray-dark;
   }
 
   section {
@@ -143,4 +159,77 @@
   div:has(img).image-flex {
     display: flex !important;
   }
+
+  .body.bg-foreground,
+  .body.yellow,
+  .section.bg-foreground,
+  .section.bg-yellow {
+    background-image: url("../../public/yellow-pattern-bg.png");
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .drafts-hero-bg {
+    background-image: url("../../public/images/drafts-bg.png");
+  }
+
+  .diamond-pattern-bg {
+    background-image: url("../../public/images/diamond-pattern.png");
+  }
+  .home-food-collage-for-hero-bg {
+    background-image: url("../../public/images/collage-for-home-page.png");
+  }
+  .browse-hero-bg {
+    background-image: url("../../public/NEW-BROWSE-HERO-IMAGE.jpg");
+    background-color: var(--overlay);
+    background-size: 100%;
+    background-position: 50% 75%;
+    background-blend-mode: multiply;
+  }
+  .recipes-hero-bg {
+    background-image: url("../../public/NEW-HERO-IMG-TOP-3.jpg");
+    background-color: var(--overlay);
+    background-size: 100%;
+    background-position: 50% 75%;
+    background-blend-mode: multiply;
+  }
+}
+
+@layer utilities {
+  @keyframes scroll {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: scroll var(--speed, 30s) linear infinite;
+    animation-name: scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    transition: --speed 1s ease;
+  }
+
+  .slow-on-hover:hover {
+    --speed: 60s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
+}
+
+.password::-ms-clear,
+.password::-ms-reveal,
+input::-ms-clear,
+input::-ms-reveal {
+  display: none;
 }

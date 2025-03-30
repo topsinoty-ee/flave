@@ -1,0 +1,23 @@
+name: "Duplicate Code Check"
+description: "Check for code duplication with configurable thresholds"
+inputs:
+  warning-threshold:
+    description: "Percentage threshold for warning"
+    default: "10"
+    required: false
+  failure-threshold:
+    description: "Percentage threshold for failure"
+    default: "15"
+    required: false
+  github-token:
+    description: "GitHub token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run duplication check
+      shell: bash
+      run: ${{ github.action_path }}/check.sh ${{ inputs.warning-threshold }} ${{ inputs.failure-threshold }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}

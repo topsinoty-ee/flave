@@ -1,8 +1,9 @@
 "use client";
 
-import { Button } from "@/components";
 import { ReactNode } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+
+import { Button } from "@/components";
 
 function ErrorFallback({
   error,
@@ -17,7 +18,7 @@ function ErrorFallback({
       <p className="mb-4">{error.message}</p>
       <Button
         onClick={resetErrorBoundary}
-        className="bg-error-dark backdrop-blur-3xl text-background"
+        className="bg-error-dark text-background"
       >
         Try Again
       </Button>

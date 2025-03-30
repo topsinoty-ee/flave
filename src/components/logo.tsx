@@ -1,11 +1,13 @@
 import Image from "next/image";
 
 export const Logo = () => (
-  <Image
-    width={108}
-    height={46}
-    className="w-full aspect-[54/23]"
-    src="/logo.png"
-    alt="flave logo"
-  />
+  <div className="h-full logo max-h-20">
+    <Image
+      width={420}
+      height={200}
+      className="max-h-20"
+      src="/logo.svg"
+      alt="flave logo"
+    />
+  </div>
 );

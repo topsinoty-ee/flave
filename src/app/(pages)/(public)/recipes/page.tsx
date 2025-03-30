@@ -1,7 +1,13 @@
+import { SearchForm } from "@/components/search";
+import { Hero } from "./_components";
+import { RecipeDisplayBlock } from "@/components";
+
 export default async function Recipes() {
   return (
-    <div>
-      <h1>Recipes</h1>
-    </div>
+    <>
+      <Hero />
+      <SearchForm />
+      <RecipeDisplayBlock params={["all"]} />
+    </>
   );
 }

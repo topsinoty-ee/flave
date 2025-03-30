@@ -1,0 +1,18 @@
+{
+  "skip-missing": true,
+  "ignore-bin-package": true,
+  "ignores": [
+    "@types/*",
+    "eslint*",
+    "@next/*",
+    "jest*",
+    "ts-node",
+    "husky",
+    "lint-staged",
+    "tailwindcss",
+    "@tailwindcss/postcss",
+    "postcss",
+    "jscpd",
+    "depcheck"
+  ]
+}
