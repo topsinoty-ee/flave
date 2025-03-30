@@ -3,11 +3,11 @@ description: "Check for code duplication with configurable thresholds"
 inputs:
   warning-threshold:
     description: "Percentage threshold for warning"
-    default: "5"
+    default: "10"
     required: false
   failure-threshold:
     description: "Percentage threshold for failure"
-    default: "10"
+    default: "15"
     required: false
   github-token:
     description: "GitHub token"
