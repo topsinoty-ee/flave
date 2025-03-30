@@ -180,12 +180,15 @@ body {
   .home-food-collage-for-hero-bg {
     background-image: url("../../public/images/collage-for-home-page.png");
   }
+  .home-hero-bg {
+    background-image: url("../../public/LANDING-PAGE-HERO.png");
+  }
   .browse-hero-bg {
-    background-image: url("../../public/NEW-BROWSE-HERO-IMAGE.jpg");
-    background-color: var(--overlay);
-    background-size: 100%;
-    background-position: 50% 75%;
-    background-blend-mode: multiply;
+    background-image: url("../../public/NEW-BROWSE-FULLHERO-W_TEXT.png");
+    /* background-color: var(--overlay); */
+    background-size: 110%;
+    background-position: 50% 90%;
+    /* background-blend-mode: multiply; */
   }
   .recipes-hero-bg {
     background-image: url("../../public/NEW-HERO-IMG-TOP-3.jpg");
