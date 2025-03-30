@@ -5,7 +5,7 @@ import React, { useState, useEffect, ReactNode } from "react";
 
 type TextMaskProps = {
   children: ReactNode;
-  backgroundImage: string;
+  backgroundImage?: string;
   fallbackColor?: string;
   fontSize?: string | number;
   fontFamily?: string;
@@ -17,7 +17,7 @@ type TextMaskProps = {
 
 export const TextMask = ({
   children,
-  backgroundImage,
+  backgroundImage = "/yellow-pattern-bg.png",
   fallbackColor = "#fffffff0",
   fontSize = "70px",
   fontFamily = "Arial",

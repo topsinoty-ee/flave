@@ -1,4 +1,3 @@
-import { Menu } from "lucide-react";
 import Link from "next/link";
 
 import { Button, ButtonProps } from "./button";

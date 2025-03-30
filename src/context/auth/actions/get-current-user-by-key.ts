@@ -7,12 +7,12 @@ import { ApiError, request } from "@/axios/request";
 import { BackendResponse, User } from "@/types";
 
 export const getCurrentUserByKey = async <Key extends keyof User>(
-  endpoint: Key,
+  endpoint: Key
 ) => {
   try {
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get("session_token")?.value;
-    console.log(sessionToken);
+    // console.log(sessionToken);
 
     if (!sessionToken) {
       throw new ApiError("Authorization required", {
@@ -31,7 +31,6 @@ export const getCurrentUserByKey = async <Key extends keyof User>(
         Authorization: `Bearer ${sessionToken}`,
       }),
     });
-    console.log(res.headers);
     return res.data;
   } catch (error) {
     if (error instanceof ApiError) {

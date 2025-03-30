@@ -1,4 +1,5 @@
 import { client } from "./client";
+import { cookies } from "next/headers";
 
 client.interceptors.response.use(
   (response) => response,
@@ -9,14 +10,13 @@ client.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 // In your axios/request setup
 client.interceptors.request.use(async (config) => {
   if (typeof window === "undefined") {
     // Server-side
-    const { cookies } = await import("next/headers");
     const sessionToken = (await cookies()).get("session_token")?.value;
 
     if (sessionToken) {
