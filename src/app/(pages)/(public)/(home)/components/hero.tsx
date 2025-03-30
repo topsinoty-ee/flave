@@ -2,7 +2,7 @@ import { Image } from "@/components";
 
 export const Hero = () => {
   return (
-    <section className="h-[calc(100vh+2rem)] flex w-full  bg-foreground -mt-5">
+    <section className="h-[calc(100vh+2rem)] flex w-full section bg-foreground -mt-5">
       <div className="w-full h-[calc(90%-28px)] bg-black grid grid-cols-3 grid-rows-2">
         <Image src="/NEW-HERO-IMAGE-TOP-1.png" fill priority alt="" />
         <Image
