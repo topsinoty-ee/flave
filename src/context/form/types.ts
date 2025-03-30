@@ -1,12 +1,12 @@
-export type ActionStateFor<InputType> = {
-  fieldErrors?: Partial<Record<keyof InputType, string>>;
+export type ActionStateFor<InputType, ResultData = Partial<InputType>> = {
+  fieldErrors?: Partial<Record<keyof InputType, string[]>>;
   error?: string | null;
-  data?: Partial<InputType>;
+  data?: ResultData;
   success?: boolean;
   message?: string;
 };
 
 export type FormContextConfig = {
   isPending: boolean;
-  state: ActionStateFor<unknown> | null;
+  state: ActionStateFor<unknown, unknown> | null;
 };

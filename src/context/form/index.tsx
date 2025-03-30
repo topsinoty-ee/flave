@@ -21,15 +21,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionStateFor, FormContextConfig } from "./types";
 
 export const FormContext = createContext<FormContextConfig | undefined>(
-  undefined,
+  undefined
 );
 
-type FormProviderProps<Schema extends ZodObject<ZodRawShape>> = {
+type FormProviderProps<
+  Schema extends ZodObject<ZodRawShape>,
+  DataType = unknown,
+> = {
   schema: Schema;
   action: (
-    _prevState: ActionStateFor<z.infer<Schema>> | null,
-    formData: FormData,
-  ) => Promise<ActionStateFor<z.infer<Schema>>>;
+    _prevState: ActionStateFor<z.infer<Schema>, DataType> | null,
+    formData: FormData
+  ) => Promise<ActionStateFor<z.infer<Schema>, DataType>>;
   children: React.ReactNode;
   onSubmit?: (data: z.infer<Schema>) => void;
   defaultValues?: DefaultValues<z.infer<Schema>>;
@@ -37,7 +40,10 @@ type FormProviderProps<Schema extends ZodObject<ZodRawShape>> = {
   formProps?: React.ComponentProps<"form">;
 };
 
-export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
+export const FormProvider = <
+  Schema extends ZodObject<ZodRawShape>,
+  DataType = unknown,
+>({
   schema,
   action,
   onSubmit,
@@ -46,7 +52,7 @@ export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
   className,
   formProps,
   ...rest
-}: FormProviderProps<Schema>) => {
+}: FormProviderProps<Schema, DataType>) => {
   const [state, formAction, isPending] = useActionState(action, null);
   const methods = useForm<z.infer<Schema>>({
     resolver: zodResolver(schema),
@@ -59,12 +65,12 @@ export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
         if (field === "root") {
           methods.setError("root.server", {
             type: "server",
-            message: message as string,
+            message: String(message),
           });
         } else {
           methods.setError(field as Path<z.infer<Schema>>, {
             type: "server",
-            message: message as string,
+            message: String(message),
           });
         }
       });
