@@ -1,5 +1,5 @@
-import { Image } from "@/components";
-import { TextMask } from "@/components/textMask";
+// import { Image } from "@/components";
+// import { TextMask } from "@/components/textMask";
 
 export const Hero = () => (
   <section className="w-full browse-hero-bg flex flex-col justify-end -mt-15 p-20 h-[calc(100vh-2rem)]">
