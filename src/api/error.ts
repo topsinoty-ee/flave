@@ -61,7 +61,7 @@ export class ApiError extends Error {
         }
       return data !== undefined ? { value: data } : undefined;
     } catch (error) {
-      return { error: "Failed to sanitize error data" };
+      return { error: `Failed to sanitize error data: ${error}` };
     }
   }
 
@@ -97,10 +97,10 @@ export class ApiError extends Error {
       );
     } catch (error) {
       return new ApiError(
-        `HTTP Error ${response.status} (Failed to parse error body)`,
+        `HTTP Error ${response.status} (Failed to parse error body) ${error}`,
         response.status,
         response.statusText,
-        { responseBody: await responseClone.text() }
+        { responseBody: await responseClone.text(), error: error }
       );
     }
   }
