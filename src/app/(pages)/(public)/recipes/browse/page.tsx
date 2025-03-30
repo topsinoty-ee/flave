@@ -1,8 +1,7 @@
-import Link from "next/link";
-
-import { Button, Image, RecipeDisplayBlock } from "@/components";
+import { Button, RecipeDisplayBlock } from "@/components";
 import { Hero } from "./_components";
 import { Marquee } from "./_components/marquee";
+import { knewave } from "@/app/layout";
 
 export default async function Browse() {
   return (
@@ -42,7 +41,7 @@ export default async function Browse() {
       />
       <RecipeDisplayBlock
         title={"super sweet desserts"}
-        params={["sweet", "dessert", "milk"]}
+        params={["sweet", "dessert", "milk", "onion"]}
         seeMore="tags"
       />
       <RecipeDisplayBlock
@@ -52,7 +51,7 @@ export default async function Browse() {
       />
       <section className="aspect-section-sm flex flex-col p-20 justify-between bg-[url('/images/NEW-YELLOW-DECAL-FOOTER.png')] bg-cover bg-center bg-yellow bg-no-repeat">
         <div>
-          <h3>Feeling inspired perhaps?</h3>
+          <h3 className={knewave.className}>Feeling inspired perhaps?</h3>
           <small>
             You can create your own recipe and share it to the world!
           </small>
