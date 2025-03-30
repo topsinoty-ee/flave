@@ -14,7 +14,14 @@ module.exports = {
     project: "./tsconfig.json",
   },
   rules: {
-    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-explicit-any": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
     "@typescript-eslint/explicit-function-return-type": "error",
     "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
     "perfectionist/sort-imports": "error",
