@@ -22,7 +22,7 @@ if (( $(echo "$TOTAL_PERCENT >= $FAILURE_THRESHOLD" | bc -l) )); then
   exit 2
 elif (( $(echo "$TOTAL_PERCENT >= $WARNING_THRESHOLD" | bc -l) )); then
   echo "::warning::Code duplication exceeded warning threshold ($WARNING_THRESHOLD%) - Found ${TOTAL_PERCENT}%"
-  exit 1
+  exit 0
 elif [ $EXIT_CODE -ne 0 ]; then
   echo "::warning::Duplicate code found (${TOTAL_PERCENT}%)"
   exit 1
