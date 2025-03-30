@@ -1,9 +1,7 @@
-import { ArrowRight } from "lucide-react";
+import { Button, RecipeDisplayBlock } from "@/components";
+// import { fetchRecipes } from "@/util";
 
-import { Button, RecipeDisplayBlock, SectionHeader } from "@/components";
-import { fetchRecipes } from "@/util";
-
-import { CategoryMarquee, FAQBlock, Hero, OurFeatures } from "./components";
+import { CategoryMarquee, Hero } from "./components";
 import { ReviewsList } from "./components/reviews";
 
 export default async function Home() {
@@ -64,16 +62,16 @@ export default async function Home() {
   );
 }
 
-export const revalidate = 300;
+// export const revalidate = 300;
 
-export async function generateStaticParams() {
-  try {
-    const recipes = await fetchRecipes();
-    return recipes.map((recipe) => ({
-      _id: String(recipe._id),
-    }));
-  } catch (error) {
-    console.error("generateStaticParams error:", error);
-    return [];
-  }
-}
+// export async function generateStaticParams() {
+//   try {
+//     const recipes = await fetchRecipes();
+//     return recipes.map((recipe) => ({
+//       _id: String(recipe._id),
+//     }));
+//   } catch (error) {
+//     console.error("generateStaticParams error:", error);
+//     return [];
+//   }
+// }

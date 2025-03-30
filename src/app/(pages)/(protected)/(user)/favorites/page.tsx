@@ -8,7 +8,7 @@ export default async function Favorites() {
     `${process.env.BACKEND_URL}/recipes`
   ).then((body) => body.json());
 
-  console.log(recipes);
+  // console.log(recipes);
 
   return (
     <>
