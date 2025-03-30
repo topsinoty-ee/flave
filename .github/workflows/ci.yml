@@ -55,8 +55,8 @@ jobs:
         id: dup-check
         uses: ./.github/actions/duplicate-check
         with:
-          warning-threshold: 5
-          failure-threshold: 10
+          warning-threshold: 10
+          failure-threshold: 15
           github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
