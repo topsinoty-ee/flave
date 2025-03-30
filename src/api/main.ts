@@ -182,6 +182,7 @@ class Api {
   ): Record<string, string> {
     return Object.fromEntries(
       Object.entries(headers)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(([_, value]) => value !== undefined && value !== null)
         .map(([key, value]) => [
           key,
@@ -191,5 +192,7 @@ class Api {
   }
 }
 
-if (!process.env.BACKEND_URL) throw new Error("Backend url not set");
-export const API = new Api(process.env.BACKEND_URL);
+if (typeof window === "undefined" && !process.env.BACKEND_URL) {
+  throw new Error("Backend URL not set (server-side)");
+}
+export const API = new Api(process.env.BACKEND_URL || "https://api.flave.ee");
