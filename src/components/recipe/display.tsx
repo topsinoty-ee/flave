@@ -46,7 +46,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
       ? finalRestrictions[matchedParam]
       : `/recipes?${cleanParams
           .map((t) => `tags=${encodeURIComponent(t)}`)
-          .join("&")}&limit=${limit}`;
+          .join("&")}${limit && limit > 0 && `&limit=${limit}`}`;
   console.log("endpoint: ", endpoint);
   const recipes =
     (await API.get<RecipeCardProps[]>(endpoint || "/recipes")) || [];
@@ -60,7 +60,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   return (
     <DisplayResource
       Component={RecipeCard}
-      data={recipes.slice(0, limit)}
+      data={limit > 0 ? recipes.slice(0, limit) : recipes}
       itemClassName="max-w-full"
       {...headerProps}
       after={
