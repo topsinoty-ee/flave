@@ -15,7 +15,7 @@
 import { API } from "@/api/main";
 import { Recipe } from "@/types/recipe";
 import { Suspense } from "react";
-import { ClientSide } from "./client";
+import { ClientSide, Review } from "./_components";
 import { Metadata, ResolvingMetadata } from "next";
 import {
   Button,
@@ -23,6 +23,7 @@ import {
   SectionHeader,
   Image,
   Tag,
+  DisplayResource,
 } from "@/components";
 import clsx from "clsx";
 import Link from "next/link";
@@ -286,28 +287,22 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
           </div>
         </div>
       </section>
-      <section className="flex flex-col gap-15">
-        {/* Top Row: Image + Info */}
-
-        {/* Bottom Row: Ingredients + Instructions */}
-
-        <RecipeDisplayBlock
-          title={"view similar"}
-          description={"View recipes with the same ingredients"}
-          params={[
-            ...recipe.ingredients.map((ingredient) => ingredient.value),
-            ...recipe.tags.map((tag) => tag.value),
-          ]}
-          exclude={[recipe._id]}
+      <RecipeDisplayBlock
+        title={"view similar"}
+        description={"View recipes with the same ingredients"}
+        params={[
+          ...recipe.ingredients.map((ingredient) => ingredient.value),
+          ...recipe.tags.map((tag) => tag.value),
+        ]}
+        exclude={[recipe._id]}
+      />
+      <section className="w-full flex flex-col gap-5">
+        <SectionHeader
+          icon={<MessageSquare size={32} className="stroke-3" />}
+          title="Leave a review"
         />
-        <div className="w-full flex flex-col gap-5">
-          <SectionHeader
-            icon={<MessageSquare size={32} className="stroke-3" />}
-            title="Leave a review"
-          />
-          <div>
-            <form></form>
-          </div>
+        <div>
+          <DisplayResource Component={Review} data={recipe.reviews} />
         </div>
       </section>
     </>
