@@ -1,17 +1,3 @@
-// // import clsx from "clsx";
-// // import {
-// //   ArrowRight,
-// //   ChevronRight,
-// //   Clock,
-// //   Ham,
-// //   Heart,
-// //   MessageSquare,
-// // } from "lucide-react";
-// import { Metadata, ResolvingMetadata } from "next";
-// // import { Clock, Microwave } from "lucide-react";
-// import Link from "next/link";
-// // import { Suspense } from "react";
-
 import { API } from "@/api/main";
 import { Recipe } from "@/types/recipe";
 import { Suspense } from "react";
@@ -27,25 +13,8 @@ import {
 } from "@/components";
 import clsx from "clsx";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Clock,
-  Ham,
-  Heart,
-  ArrowRight,
-  MessageSquare,
-  Microwave,
-} from "lucide-react";
-
-// import {
-//   Button,
-//   Image,
-//   RecipeDisplayBlock,
-//   SectionHeader,
-//   Tag,
-// } from "@/components";
-// import { Recipe } from "@/types/recipe";
-// import { fetchRecipes, isRecipe } from "@/util";
+import { ChevronRight, Clock, Ham, Heart, MessageSquare } from "lucide-react";
+import { Creator } from "./_components/creator";
 
 export async function generateMetadata(
   {
@@ -53,7 +22,7 @@ export async function generateMetadata(
   }: {
     params: Promise<{ _id: string }>;
   },
-  parent: ResolvingMetadata,
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { _id } = await params;
 
@@ -109,8 +78,8 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
 
   return (
     <>
-      <section className="flex gap-10 w-full aspect-section-md px-20">
-        <div className="flex-1">
+      <section className="flex gap-10 w-full aspect-section px-20">
+        <div className="flex-1 bg-gray bg-blend-multiply rounded-lg hover:bg-gray-dark delay-750 ease-in duration-500 transition-all">
           <Image
             src={recipe.src}
             alt={recipe.alt || recipe.title}
@@ -139,14 +108,14 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               <Link
                 href={`/users/${recipe.user._id}`}
                 className={clsx(
-                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5",
-                  // "hover:bg-gray transition-all"
+                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5"
                 )}
               >
                 <div className="w-15 aspect-square">
                   <Image
                     src={recipe.user.avatar}
                     alt={recipe.user.firstName}
+                    fallbackSrc="/images/user-fallback.png"
                     fill
                     className="golden-circle w-15 bg-background"
                   />
@@ -173,7 +142,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               </Link>
             </div>
           </div>
-          <p className="font-medium text-gray flex-grow line-clamp-10 h-max min-h-60">
+          <p className="font-medium text-gray-dark flex-grow line-clamp-10 h-max min-h-10">
             {recipe.description}
           </p>
           <div className="flex flex-col gap-5">
@@ -216,21 +185,6 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               <Button> See Reviews</Button>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2.5">
-            <Tag icon={<Clock size={16} />}>
-              {`${recipe.cookingDuration} mins`}
-            </Tag>
-
-            {recipe.cookingMethod.map((method, idx) => (
-              <Tag
-                icon={<Microwave size={16} />}
-                key={idx}
-                title={`Cooking method: ${method}`}
-              >
-                {method}
-              </Tag>
-            ))}
-          </div>
         </article>
       </section>
       <section className="flex gap-10 px-20">
@@ -259,34 +213,8 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
           </ol>
         </div>
       </section>
-      <section className="flex w-full bg-black outline-yellow outline-1 aspect-section-md gap-15 p-20">
-        <div className="w-[30%] min-w-48 aspect-square">
-          <Image
-            src={recipe.user.avatar}
-            alt={`${recipe.user.firstName} ${recipe.user.lastName}`}
-            fill
-            className="golden-circle w-full bg-gray-dark"
-          />
-        </div>
-        <div className="w-full flex flex-col justify-between">
-          <article className="w-full flex flex-col gap-5">
-            <h3>
-              About {recipe.user.firstName} {recipe.user.lastName}
-            </h3>
-            <p className="text-gray">It&apos;s all over 🥺 </p>
-          </article>
-          <div className="w-max flex gap-5">
-            <Button
-              as="link"
-              href={`/users/${recipe.user._id}`}
-              icon={<ArrowRight className="order-1 stroke-black" />}
-              className="bg-foreground outline-0 text-black"
-            >
-              See more
-            </Button>
-          </div>
-        </div>
-      </section>
+
+      <DisplayResource Component={Creator} data={recipe.user} />
       <RecipeDisplayBlock
         title={"view similar"}
         description={"View recipes with the same ingredients"}
@@ -296,7 +224,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
         ]}
         exclude={[recipe._id]}
       />
-      <section className="w-full flex flex-col gap-5">
+      <section className="w-full flex flex-col gap-10 px-20">
         <SectionHeader
           icon={<MessageSquare size={32} className="stroke-3" />}
           title="Leave a review"
@@ -319,7 +247,7 @@ export default async function RecipePage({
     <ClientSide>
       <Suspense fallback={<LoadingFallback />}>
         <RecipeContent _id={_id} />
-      </Suspense>{" "}
+      </Suspense>
     </ClientSide>
   );
 }
@@ -332,7 +260,7 @@ export async function generateStaticParams() {
     console.log(
       recipes.map((recipe) => ({
         _id: String(recipe._id),
-      })),
+      }))
     );
     return recipes.map((recipe) => ({
       _id: String(recipe._id),
