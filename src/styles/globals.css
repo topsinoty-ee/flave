@@ -65,19 +65,22 @@ body {
     appearance: textfield;
   }
 
+  .bg-white,
+  .bg-background,
   .bg-white *,
   .bg-background *,
   main * {
     @apply text-black;
   }
 
+  .bg-black,
   .bg-black * {
     --muted: hsl(0, 0%, 60%);
     @apply text-white;
   }
 
   .bg-black a {
-    @apply text-muted hover:text-gray-light;
+    @apply hover:text-gray-light;
   }
 
   h1 {
