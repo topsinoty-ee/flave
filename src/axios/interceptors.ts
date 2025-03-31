@@ -10,7 +10,7 @@ client.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // In your axios/request setup

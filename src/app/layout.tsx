@@ -41,7 +41,7 @@ export default function RootLayout({
           className={clsx(
             jakarta.variable,
             knewave.variable,
-            "antialiased w-full min-h-screen"
+            "antialiased w-full min-h-screen",
           )}
         >
           {children}

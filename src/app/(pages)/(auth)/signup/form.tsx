@@ -41,7 +41,7 @@ const SignupSchema = z.object({
       },
       {
         message: "Email is already registered",
-      }
+      },
     ),
 
   password: z
@@ -56,7 +56,7 @@ const SignupSchema = z.object({
     .regex(/[0-9]/, "Password must contain at least one number")
     .refine(
       (password) => !password.includes(" "),
-      "Password cannot contain spaces"
+      "Password cannot contain spaces",
     ),
 });
 
@@ -76,7 +76,7 @@ export const SignupForm = ({ redirectPath = "/recipes/browse" }) => {
       const { firstName, lastName, email, password } = formData;
       const success = await signup(
         { firstName, lastName, email, password },
-        redirectPath
+        redirectPath,
       );
 
       if (!success) {

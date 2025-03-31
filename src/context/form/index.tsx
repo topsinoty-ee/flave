@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ActionStateFor, FormContextConfig } from "./types";
 
 export const FormContext = createContext<FormContextConfig | undefined>(
-  undefined
+  undefined,
 );
 
 type FormProviderProps<
@@ -31,7 +31,7 @@ type FormProviderProps<
   schema: Schema;
   action: (
     _prevState: ActionStateFor<z.infer<Schema>, DataType> | null,
-    formData: FormData
+    formData: FormData,
   ) => Promise<ActionStateFor<z.infer<Schema>, DataType>>;
   children: React.ReactNode;
   onSubmit?: (data: z.infer<Schema>) => void;

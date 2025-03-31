@@ -31,7 +31,7 @@ export const TextMask = ({
   useEffect(() => {
     setIsTextClipSupported(
       CSS.supports("background-clip", "text") ||
-        CSS.supports("-webkit-background-clip", "text")
+        CSS.supports("-webkit-background-clip", "text"),
     );
   }, []);
 

@@ -5,15 +5,15 @@ import { ActionStateFor } from "../types";
 
 export function createAction<InputType extends FieldValues, DataType = unknown>(
   schema: ZodSchema<InputType>,
-  action: (payload: InputType) => Promise<ActionStateFor<InputType, DataType>>
+  action: (payload: InputType) => Promise<ActionStateFor<InputType, DataType>>,
 ) {
   return async (
     _prevState: ActionStateFor<InputType, DataType> | null,
-    formData: FormData
+    formData: FormData,
   ) => {
     try {
       const payload = await schema.parseAsync(
-        Object.fromEntries(formData.entries())
+        Object.fromEntries(formData.entries()),
       );
       return await action(payload);
     } catch (error) {
