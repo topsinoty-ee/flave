@@ -29,7 +29,7 @@ export async function generateMetadata(
   }: {
     params: Promise<{ _id: string }>;
   },
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { _id } = await params;
 
@@ -115,7 +115,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               <Link
                 href={`/users/${recipe.user._id}`}
                 className={clsx(
-                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5"
+                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5",
                 )}
               >
                 <div className="w-15 aspect-square">
@@ -258,7 +258,7 @@ export async function generateStaticParams() {
     console.log(
       recipes.map((recipe) => ({
         _id: String(recipe._id),
-      }))
+      })),
     );
     return recipes.map((recipe) => ({
       _id: String(recipe._id),
