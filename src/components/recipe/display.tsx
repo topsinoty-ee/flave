@@ -51,7 +51,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   const recipes =
     (await API.get<RecipeCardProps[]>(endpoint || "/recipes")) || [];
 
-  const seeMoreEndpoint = `/recipes/search?${cleanParams
+  const seeMoreEndpoint = `/recipes?${cleanParams
     .map((t) => `tags=${encodeURIComponent(t)}`)
     .join("&")}`;
 
