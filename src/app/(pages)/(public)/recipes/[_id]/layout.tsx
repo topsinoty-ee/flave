@@ -1,5 +1,3 @@
-import { Footer, Navbar } from "@/components";
-
 export default function RecipePageLayout({
   children,
 }: Readonly<{

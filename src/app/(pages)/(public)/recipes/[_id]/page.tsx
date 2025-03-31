@@ -13,14 +13,7 @@ import {
 } from "@/components";
 import clsx from "clsx";
 import Link from "next/link";
-import {
-  ChevronRight,
-  Clock,
-  Ham,
-  Heart,
-  Loader2,
-  MessageSquare,
-} from "lucide-react";
+import { Clock, Ham, Heart, Loader2, MessageSquare } from "lucide-react";
 import { Creator } from "./_components/creator";
 
 export async function generateMetadata(
