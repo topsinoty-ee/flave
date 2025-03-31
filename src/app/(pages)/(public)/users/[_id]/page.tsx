@@ -16,8 +16,11 @@ export default async function UserPage({
     <>
       <section className="w-full bg-cover flex justify-end -mt-25 p-20 pt-45 gap-20 h-screen aspect-section-lg  bg-yellow user-hero-bg">
         <div className="w-full">
-          <h1 className={clsx("text-9xl", knewave.className)}>
-            {user.username ?? `${user.firstName} ${user.lastName}`}
+          <h1
+            className={clsx("text-9xl", knewave.className)}
+            title={"@" + user.username}
+          >
+            {`${user.firstName} ${user.lastName}`}
           </h1>
           <div className="border-black border-t-4 max-w-20 py-5" />
           <p
