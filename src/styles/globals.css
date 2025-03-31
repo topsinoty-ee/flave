@@ -186,6 +186,11 @@ body {
   .home-hero-bg {
     background-image: url("../../public/LANDING-PAGE-HERO.png");
   }
+  .user-hero-bg {
+    background-image: url("../../public/NEW-YELLOW-DECAL-WITH-MAN.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
   .browse-hero-bg {
     background-image: url("../../public/NEW-BROWSE-FULLHERO-W_TEXT.png");
     /* background-color: var(--overlay); */
