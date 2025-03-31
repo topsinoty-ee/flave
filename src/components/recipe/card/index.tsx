@@ -12,7 +12,7 @@ import { Image } from "../../image";
 
 export * from "./skeleton";
 export type RecipeCardProps = Omit<Recipe, "description"> & {
-  className: string;
+  className?: string;
 };
 
 interface CardFallback {
@@ -46,7 +46,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
         href={`/recipes/${_id}`}
         className={clsx(
           "relative w-full overflow-hidden transition-all rounded-md shadow-md cursor-pointer min-w-72 max-w-80 bg-background group hover:shadow-lg",
-          className,
+          className
         )}
       >
         <div className="relative w-full aspect-video">
@@ -55,7 +55,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             alt={alt || title}
             fill
             className={clsx(
-              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105",
+              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105"
             )}
           />
         </div>

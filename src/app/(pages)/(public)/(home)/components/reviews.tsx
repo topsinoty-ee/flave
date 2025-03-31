@@ -9,25 +9,25 @@ export const ReviewsList = () => (
         content:
           "Lorem ipsum odor amet, consectetuer adipiscing elit. Luctus aliquam elit natoque risus et finibus tristique. Rutrum curae habitant tincidunt mus maximus sollicitudin. ",
         avatar: "https://placehold.co/",
-        userName: "JohnDoe",
+        username: "JohnDoe",
       },
       {
         content:
           "Lorem ipsum odor amet, consectetuer adipiscing elit. Luctus aliquam elit natoque risus et finibus tristique. Rutrum curae habitant tincidunt mus maximus sollicitudin. ",
         avatar: "https://placehold.co/",
-        userName: "JohnDoe",
+        username: "JohnRoe",
       },
       {
         content:
           "Lorem ipsum odor amet, consectetuer adipiscing elit. Luctus aliquam elit natoque risus et finibus tristique. Rutrum curae habitant tincidunt mus maximus sollicitudin. ",
         avatar: "https://placehold.co/",
-        userName: "JohnDoe",
+        username: "JohnBoe",
       },
       {
         content:
           "Lorem ipsum odor amet, consectetuer adipiscing elit. Luctus aliquam elit natoque risus et finibus tristique. Rutrum curae habitant tincidunt mus maximus sollicitudin. ",
         avatar: "https://placehold.co/",
-        userName: "JohnDoe",
+        username: "JohnToe",
       },
     ]}
     title="Customer reviews"

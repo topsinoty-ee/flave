@@ -1,15 +1,17 @@
+import { Recipe } from "./recipe";
+
 export interface User {
   _id: string;
-  userName?: string;
+  username?: string;
   firstName: string;
   lastName: string;
   email: string;
   avatar: string | { url: string };
   role: "User" | "Admin";
-  recipes: Array<string>;
-  drafts: Array<string>;
+  recipes: Array<Recipe>;
+  savedDrafts: Array<Recipe>;
   reviews: Array<string>;
-  favouritedRecipes: Array<string>;
+  favouritedRecipes: Array<Recipe>;
   weightedTags: Array<{ tags: string; weight: number }>;
   description?: string;
 }
