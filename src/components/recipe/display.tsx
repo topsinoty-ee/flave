@@ -24,7 +24,7 @@ const getTagsQuery = (params: string[]) =>
 
 const getSeeMoreLink = (
   seeMore: RecipeDisplayConfig["seeMore"],
-  tagsQuery: string
+  tagsQuery: string,
 ) => {
   if (!seeMore) return null;
 
@@ -58,7 +58,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   const finalRestrictions = { ...DEFAULT_RESTRICTIONS, ...restricted };
   const matchedParam = cleanParams.find(
     (param): param is keyof typeof finalRestrictions =>
-      param in finalRestrictions
+      param in finalRestrictions,
   );
   const tagsQuery = getTagsQuery(cleanParams);
 
@@ -69,7 +69,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   const recipes = (await API.get<RecipeCardProps[]>(endpoint)) || [];
 
   const filteredRecipes = recipes.filter(
-    (recipe) => !exclude?.includes(recipe._id)
+    (recipe) => !exclude?.includes(recipe._id),
   );
   const slicedRecipes =
     limit > 0 ? filteredRecipes.slice(0, limit) : filteredRecipes;
