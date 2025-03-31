@@ -13,7 +13,14 @@ import {
 } from "@/components";
 import clsx from "clsx";
 import Link from "next/link";
-import { ChevronRight, Clock, Ham, Heart, MessageSquare } from "lucide-react";
+import {
+  ChevronRight,
+  Clock,
+  Ham,
+  Heart,
+  Loader2,
+  MessageSquare,
+} from "lucide-react";
 import { Creator } from "./_components/creator";
 
 export async function generateMetadata(
@@ -63,8 +70,8 @@ const getDurationBucket = (duration: number): [number, number] => {
 
 function LoadingFallback() {
   return (
-    <div className="flex items-center justify-center h-64">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary" />
+    <div className="flex items-center justify-center h-32">
+      <Loader2 className="animate-spin w-full h-full" />
     </div>
   );
 }
@@ -129,15 +136,6 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
                       </h5>
                     </div>
                   </div>
-                  <Button
-                    icon={
-                      <ChevronRight
-                        size={32}
-                        className="stroke-black font-bold outline-black"
-                      />
-                    }
-                    className="bg-foreground"
-                  />
                 </div>
               </Link>
             </div>
@@ -179,10 +177,10 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
             </div>
 
             <div className="flex gap-5 w-full justify-start items-center">
-              <Button icon={<Heart />} className="bg-black text-white">
+              <Button icon={<Heart />} className="bg-black text-white h-full">
                 Favorite
               </Button>
-              <Button> See Reviews</Button>
+              <Button className="h-full"> See Reviews</Button>
             </div>
           </div>
         </article>
