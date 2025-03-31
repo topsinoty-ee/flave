@@ -38,6 +38,9 @@ const nextConfig: NextConfig = {
       {
         hostname: "images.unsplash.com",
       },
+      {
+        hostname: "res.cloudinary.com",
+      },
       // Add more remote patterns here if needed.
     ],
   },

@@ -22,7 +22,7 @@ export async function generateMetadata(
   }: {
     params: Promise<{ _id: string }>;
   },
-  parent: ResolvingMetadata,
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { _id } = await params;
 
@@ -75,16 +75,15 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
   const [start, end] = getDurationBucket(recipe.cookingDuration);
 
   const cookingDuration = `${start}-${end} mins`;
-
+  console.log(recipe.src);
   return (
     <>
       <section className="flex gap-10 w-full aspect-section px-20">
-        <div className="flex-1 bg-gray bg-blend-multiply rounded-lg hover:bg-gray-dark delay-750 ease-in duration-500 transition-all">
+        <div className="flex-1 bg-gray/10 relative rounded-lg hover:bg-gray-dark/10 delay-750 ease-in duration-500 transition-all">
           <Image
-            src={recipe.src}
+            src={typeof recipe.src === "object" ? recipe.src.url : recipe.src}
             alt={recipe.alt || recipe.title}
-            width={400}
-            height={500}
+            fill
             className="w-full h-full flex justify-center items-center image-flex"
             priority
           />
@@ -108,12 +107,16 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               <Link
                 href={`/users/${recipe.user._id}`}
                 className={clsx(
-                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5",
+                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5"
                 )}
               >
                 <div className="w-15 aspect-square">
                   <Image
-                    src={recipe.user.avatar}
+                    src={
+                      typeof recipe.user.avatar === "object"
+                        ? recipe.user.avatar.url
+                        : recipe.user.avatar
+                    }
                     alt={recipe.user.firstName}
                     fallbackSrc="/images/user-fallback.png"
                     fill
@@ -251,7 +254,7 @@ export async function generateStaticParams() {
     console.log(
       recipes.map((recipe) => ({
         _id: String(recipe._id),
-      })),
+      }))
     );
     return recipes.map((recipe) => ({
       _id: String(recipe._id),

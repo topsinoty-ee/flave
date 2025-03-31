@@ -46,16 +46,16 @@ export const RecipeCard: FC<RecipeCardProps> = ({
         href={`/recipes/${_id}`}
         className={clsx(
           "relative w-full overflow-hidden transition-all rounded-md shadow-md cursor-pointer min-w-72 max-w-80 bg-background group hover:shadow-lg",
-          className,
+          className
         )}
       >
         <div className="relative w-full aspect-video">
           <Image
-            src={src}
+            src={typeof src === "object" ? src.url : src}
             alt={alt || title}
             fill
             className={clsx(
-              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105",
+              "object-cover transition-transform duration-300 hover:scale-105 group-hover:scale-105"
             )}
           />
         </div>
