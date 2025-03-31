@@ -4,7 +4,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  avatar: string;
+  avatar: string | { url: string };
   role: "User" | "Admin";
   recipes: Array<string>;
   drafts: Array<string>;

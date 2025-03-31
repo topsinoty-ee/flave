@@ -9,7 +9,7 @@ export class ApiError extends Error {
     message: string,
     statusCode: number,
     statusText: string = "Unknown Status",
-    data?: unknown
+    data?: unknown,
   ) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);
@@ -19,7 +19,7 @@ export class ApiError extends Error {
         : 0;
 
     this.statusText = String(
-      statusText || this.getDefaultStatusText(this.statusCode)
+      statusText || this.getDefaultStatusText(this.statusCode),
     );
     this.data = this.sanitizeData(data);
     this.timestamp = new Date();
@@ -93,14 +93,14 @@ export class ApiError extends Error {
         data?.message || `HTTP Error ${response.status}`,
         response.status,
         response.statusText,
-        data
+        data,
       );
     } catch (error) {
       return new ApiError(
         `HTTP Error ${response.status} (Failed to parse error body) ${error}`,
         response.status,
         response.statusText,
-        { responseBody: await responseClone.text(), error: error }
+        { responseBody: await responseClone.text(), error: error },
       );
     }
   }

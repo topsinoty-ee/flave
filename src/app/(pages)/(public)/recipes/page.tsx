@@ -7,7 +7,7 @@ export default async function Recipes() {
     <>
       <Hero />
       <SearchForm />
-      <RecipeDisplayBlock params={["all"]} />
+      <RecipeDisplayBlock params={["all"]} limit={0} />
     </>
   );
 }

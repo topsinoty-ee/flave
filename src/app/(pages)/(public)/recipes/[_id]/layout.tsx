@@ -1,0 +1,7 @@
+export default function RecipePageLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return <div className="mt-10 flex gap-10 flex-col">{children}</div>;
+}

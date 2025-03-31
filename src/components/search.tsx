@@ -45,7 +45,7 @@ export const SearchForm = () => {
 
       //   console.log(params);
       const data = await API.get<RecipeCardProps[]>(
-        `https://api.flave.ee/recipes/search?${params}`
+        `https://api.flave.ee/recipes/search?${params}`,
       );
       //   console.log(data);
 

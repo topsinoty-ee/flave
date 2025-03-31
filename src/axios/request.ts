@@ -36,7 +36,7 @@ export class ApiError extends Error {
   constructor(
     public override message: string,
     public details: ErrorInfo,
-    code?: string
+    code?: string,
   ) {
     super(message);
     this.name = "ApiError";
@@ -106,7 +106,7 @@ export const request = async <T = unknown>({
       "message" in axiosError.response.data
         ? (axiosError.response.data as { message: string }).message
         : axiosError.message,
-      errorInfo
+      errorInfo,
     );
   }
 };

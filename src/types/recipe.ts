@@ -11,7 +11,7 @@ type Ingredient = {
 export type Recipe = {
   _id: string;
   alt: string;
-  src: string;
+  src: string | { url: string };
   title: string;
   description: string;
   portions: number;

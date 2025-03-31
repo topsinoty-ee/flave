@@ -32,20 +32,20 @@ class Api {
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
     options: RequestInit,
-    schema: SchemaType
+    schema: SchemaType,
   ): Promise<ZodInfer<SchemaType>>;
 
   async request(endpoint: string, options?: RequestInit): Promise<unknown>;
 
   async request<RequestedType>(
     endpoint: string,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<RequestedType>;
 
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
     options: RequestInit = {},
-    schema?: SchemaType
+    schema?: SchemaType,
   ): Promise<unknown> {
     const url = new URL(endpoint, this.baseUrl);
     const controller = new AbortController();
@@ -77,7 +77,7 @@ class Api {
         throw new ApiError(
           `Non-JSON response from ${url.href}`,
           500,
-          "Invalid Content-Type"
+          "Invalid Content-Type",
         );
       }
 
@@ -90,7 +90,7 @@ class Api {
           if (!parseResult.success) {
             throw new ValidationError(
               `Response validation failed for ${url.href}`,
-              parseResult.error.issues
+              parseResult.error.issues,
             );
           }
           return parseResult.data;
@@ -102,7 +102,7 @@ class Api {
       throw new ApiError(
         `Invalid response structure from ${url.href}`,
         500,
-        "Missing 'data' property in response"
+        "Missing 'data' property in response",
       );
     } catch (error) {
       if (error instanceof ApiError || error instanceof ValidationError) {
@@ -120,7 +120,7 @@ class Api {
         "Unknown error occurred",
         0,
         "UNKNOWN_ERROR",
-        String(error)
+        String(error),
       );
     } finally {
       controller.abort();
@@ -130,7 +130,7 @@ class Api {
   async get<T>(
     endpoint: string,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T> {
     return this.request(endpoint, { ...options, method: "GET" }, schema!);
   }
@@ -139,7 +139,7 @@ class Api {
     endpoint: string,
     body: unknown,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T> {
     return this.request(
       endpoint,
@@ -148,7 +148,7 @@ class Api {
         method: "POST",
         body: JSON.stringify(body),
       },
-      schema!
+      schema!,
     );
   }
 
@@ -156,7 +156,7 @@ class Api {
     endpoint: string,
     body: unknown,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T> {
     return this.request(
       endpoint,
@@ -165,20 +165,20 @@ class Api {
         method: "PUT",
         body: JSON.stringify(body),
       },
-      schema!
+      schema!,
     );
   }
 
   async delete<T>(
     endpoint: string,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T> {
     return this.request(endpoint, { ...options, method: "DELETE" }, schema!);
   }
 
   private cleanHeaders(
-    headers: Record<string, unknown>
+    headers: Record<string, unknown>,
   ): Record<string, string> {
     return Object.fromEntries(
       Object.entries(headers)
@@ -187,7 +187,7 @@ class Api {
         .map(([key, value]) => [
           key,
           String(value as NonNullable<typeof value>),
-        ])
+        ]),
     );
   }
 }

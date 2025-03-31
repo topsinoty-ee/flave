@@ -14,7 +14,7 @@ export const CustomerReviewCard: React.FC<CustomerReviewCardProps> = ({
     <Image
       alt={userName || "user"}
       fallbackSrc="/images/user-fallback.png"
-      src={avatar}
+      src={typeof avatar === "object" ? avatar.url : avatar}
       width={100}
       height={100}
       className="rounded-full golden-circle w-max"

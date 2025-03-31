@@ -3,11 +3,11 @@ import Link from "next/link";
 import { ButtonHTMLAttributes, AnchorHTMLAttributes, MouseEvent } from "react";
 
 export const Variant = {
-  primary: "bg-black text-white",
+  primary: "bg-black",
   secondary: "bg-gray outline-none",
-  outline: "bg-muted text-background border-border border",
+  outline: "bg-muted border-border border",
   danger: "bg-error-dark",
-  disabled: "bg-muted text-text cursor-not-allowed pointer-events-none",
+  disabled: "bg-muted cursor-not-allowed pointer-events-none",
   none: "border border-border",
 } as const;
 
@@ -73,7 +73,7 @@ export const Button = ({
     shapeClasses,
     disabledClasses,
     iconOnlyClasses,
-    className
+    className,
   );
 
   if (as === "link" && href) {

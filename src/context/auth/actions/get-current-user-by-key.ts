@@ -7,7 +7,7 @@ import { ApiError, request } from "@/axios/request";
 import { BackendResponse, User } from "@/types";
 
 export const getCurrentUserByKey = async <Key extends keyof User>(
-  endpoint: Key
+  endpoint: Key,
 ) => {
   try {
     const cookieStore = await cookies();

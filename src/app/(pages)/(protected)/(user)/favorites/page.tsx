@@ -5,7 +5,7 @@ import { Hero } from "./_components/hero";
 export default async function Favorites() {
   // const { data: drafts } = await getCurrentUserByKey("drafts");
   const recipes: RecipeCardProps[] = await fetch(
-    `${process.env.BACKEND_URL}/recipes`
+    `${process.env.BACKEND_URL}/recipes`,
   ).then((body) => body.json());
 
   console.log(recipes);

@@ -10,7 +10,7 @@ export default async function ProfilePage(
     // searchParams,
   }: {
     searchParams: Promise<{ tab?: "reviews" }>;
-  }
+  },
 ) {
   // const { data: user } = await getCurrentUser();
   // const { tab: activeTab } = await searchParams;
