@@ -1,135 +1,56 @@
-"use client";
-import { AxiosError } from "axios";
+import { useContext } from "react";
 import { useRouter } from "next/navigation";
-import { useCallback, useContext, useState } from "react";
-
-import { AuthContext } from "@/context";
-import { isResource, Maybe, Resource } from "@/types/";
-
+import * as actions from "./actions";
+import { AuthContext } from ".";
 import { AuthError } from "./error";
+import { AuthHook, LoginPayload, SignupPayload } from "./types";
 
-import type { LoginPayload, SignupPayload } from "./types";
-
-export const useAuth = () => {
+export const useAuth = (): AuthHook => {
   const context = useContext(AuthContext);
   const router = useRouter();
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [signupError, setSignupError] = useState<string | null>(null);
-  const [authLoading, setAuthLoading] = useState({
-    login: false,
-    signup: false,
-    logout: false,
-  });
 
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
 
-  const enhancedLogin = useCallback(
-    async (credentials: LoginPayload, redirectTo = "/recipes/browse") => {
-      setLoginError(null);
-      setAuthLoading((prev) => ({ ...prev, login: true }));
+  const { updateAuthState, ...state } = context;
 
-      try {
-        await context.login(credentials);
-        router.push(redirectTo);
-        return true;
-      } catch (error) {
-        let errorMessage = "Login failed";
+  const executeAction = async <T>(
+    action: () => Promise<T>,
+    successCallback?: (data: T) => void
+  ) => {
+    try {
+      const result = await action();
+      successCallback?.(result);
+      return result;
+    } catch (error) {
+      updateAuthState({ error: AuthError.fromError(error) });
+      throw error;
+    }
+  };
 
-        if (error instanceof AuthError) {
-          errorMessage = error.message;
-        } else if (error instanceof AxiosError) {
-          errorMessage = error.response?.data?.message || error.message;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-
-        setLoginError(errorMessage);
-        return false;
-      } finally {
-        setAuthLoading((prev) => ({ ...prev, login: false }));
+  const login = async (payload: LoginPayload) =>
+    executeAction(
+      () => actions.login(payload),
+      (user) => {
+        updateAuthState({ user, isAuthenticated: true });
       }
-    },
-    [context, router],
-  );
+    );
 
-  const enhancedSignup = useCallback(
-    async (credentials: SignupPayload, redirectTo = "/dashboard") => {
-      setSignupError(null);
-      setAuthLoading((prev) => ({ ...prev, signup: true }));
+  const logout = async () =>
+    executeAction(actions.logout, () => {
+      updateAuthState({ user: null, isAuthenticated: false });
+      router.push("/login");
+    });
 
-      try {
-        await context.signup(credentials);
-        router.push(redirectTo);
-        return true;
-      } catch (error) {
-        let errorMessage = "Signup failed";
-
-        if (error instanceof AuthError) {
-          errorMessage = error.message;
-        } else if (error instanceof AxiosError) {
-          errorMessage = error.response?.data?.message || error.message;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-
-        setSignupError(errorMessage);
-        return false;
-      } finally {
-        setAuthLoading((prev) => ({ ...prev, signup: false }));
-      }
-    },
-    [context, router],
-  );
-
-  const enhancedLogout = useCallback(
-    async (redirectTo = "/login") => {
-      setAuthLoading((prev) => ({ ...prev, logout: true }));
-
-      try {
-        await context.logout();
-        router.push(redirectTo);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Logout error:", error.message);
-        }
-      } finally {
-        setAuthLoading((prev) => ({ ...prev, logout: false }));
-      }
-    },
-    [context, router],
-  );
-
-  const isOwner = useCallback(
-    (resource: Maybe<string | Resource>): boolean => {
-      if (!context.user) return false;
-
-      if (typeof resource === "string") {
-        return context.user._id === resource;
-      }
-
-      if (isResource(resource)) {
-        return context.user._id === resource.user._id;
-      }
-
-      return false;
-    },
-    [context.user],
-  );
-
-  const isLoading = context.isLoading;
-  const isAuthenticated = context.isAuthenticated;
-  const user = context.user;
+  const signup = async (payload: SignupPayload) =>
+    executeAction(() => actions.signup(payload));
 
   return {
-    user,
-    isLoading,
-    isAuthenticated,
-    loginError,
-    signupError,
-    authLoading,
-    login: enhancedLogin,
-    signup: enhancedSignup,
-    logout: enhancedLogout,
-    isOwner,
+    ...state,
+    login,
+    logout,
+    signup,
+    updateAuthState,
   };
 };
