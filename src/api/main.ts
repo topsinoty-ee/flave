@@ -1,6 +1,7 @@
 import { ZodSchema, infer as ZodInfer } from "zod";
 import { ApiError } from "./error";
 import { ValidationError } from "@/lib/validation-error";
+import { Api } from ".";
 
 const DEFAULT_TIMEOUT = 10000;
 
@@ -9,7 +10,10 @@ type ApiConfig = RequestInit & {
   timeout?: number;
 };
 
-class Api {
+/**
+ * @deprecated This class is deprecated in favor of {@link Api} in the index. imma get back to it later
+ */
+class OldApi {
   private baseUrl: string;
   private defaultOptions: RequestInit;
   private fetch: typeof fetch;
@@ -80,6 +84,7 @@ class Api {
     includeHeadersFlag?: boolean
   ): Promise<unknown> {
     const url = new URL(endpoint, this.baseUrl);
+    console.log(url);
     const controller = new AbortController();
 
     let schema: SchemaType | undefined;
@@ -109,6 +114,7 @@ class Api {
 
     try {
       const response = await this.fetch(url.href, mergedOptions);
+      console.log(response);
 
       if (!response.ok) {
         throw await ApiError.fromResponse(response.clone());
@@ -190,6 +196,7 @@ class Api {
     schemaOrOptions?: ZodSchema<T> | RequestInit,
     optionsOrIncludeHeaders?: RequestInit | boolean
   ): Promise<T> {
+    console.log(endpoint, schemaOrOptions, optionsOrIncludeHeaders);
     if (schemaOrOptions instanceof ZodSchema) {
       return this.request(
         endpoint,
@@ -216,8 +223,8 @@ class Api {
     endpoint: string,
     body: unknown,
     options?: RequestInit,
-    includeHeaders?: boolean
-  ): Promise<T>;
+    includeHeaders?: true
+  ): Promise<T & { headers: Headers }>;
 
   async post<T>(
     endpoint: string,
@@ -334,4 +341,6 @@ class Api {
 if (typeof window === "undefined" && !process.env.BACKEND_URL) {
   throw new Error("Backend URL not set (server-side)");
 }
-export const API = new Api(process.env.BACKEND_URL || "https://api.flave.ee");
+export const API = new OldApi(
+  process.env.BACKEND_URL || "https://api.flave.ee"
+);
