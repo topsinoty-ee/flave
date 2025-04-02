@@ -18,14 +18,14 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   descriptionClassName,
 }) => (
   <div className={clsx("flex flex-col gap-1", className)}>
-    <div className="flex w-full gap-2.5 items-baseline">
+    <div className="flex w-full gap-2.5 items-center">
       <div className="flex gap-2.5 items-center">
         {icon}
         <h2 className={clsx("uppercase w-max text-nowrap", headerClassName)}>
           {title}
         </h2>
       </div>
-      <span className="w-full border-b-4 select-none border-yellow" />
+      <span className="w-full h-1 select-none bg-yellow" />
     </div>
     <p className={clsx("font-medium text-sm text-gray", descriptionClassName)}>
       {description}
