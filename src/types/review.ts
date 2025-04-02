@@ -6,6 +6,6 @@ export interface Review {
   recipe: Pick<Recipe, "_id">;
   title: string;
   content: string;
-  user: Pick<User, "_id" | "firstName" | "lastName" | "avatar">;
+  user: Pick<User, "_id" | "firstName" | "lastName" | "src">;
   rating: number;
 }

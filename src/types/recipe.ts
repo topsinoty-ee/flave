@@ -21,7 +21,7 @@ export type Recipe = {
   instructions: Array<string>;
   categories: Array<string>;
   tags: Array<Tag>;
-  user: Pick<User, "_id" | "firstName" | "lastName" | "avatar">;
+  user: Pick<User, "_id" | "firstName" | "lastName" | "src">;
   reviews: Array<Review>;
   ratingsAmount: number;
   ratingsAvg: number;
