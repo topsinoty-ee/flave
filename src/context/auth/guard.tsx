@@ -3,11 +3,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./hook";
+import { User } from "@/types";
 
 type AuthGuardProps = {
   children: React.ReactNode;
   redirectUrl?: string;
-  requireRoles?: string[];
+  requireRoles?: User["role"][];
 };
 
 export const AuthGuard = ({

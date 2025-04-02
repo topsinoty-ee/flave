@@ -1,4 +1,4 @@
-import { API } from "@/api/main";
+import { API } from "@/api";
 import { LoginPayload } from "../types";
 import { User } from "@/types";
 import { ApiError } from "@/api/error";
@@ -7,14 +7,13 @@ import { AuthError } from "../error";
 
 export async function login(payload: LoginPayload) {
   try {
-    const { headers, user } = await API.request<{ user: User }>(
+    API.enableDebug();
+    const { headers, data } = await API.post<{ user: User }>(
       "/users/login",
-      {
-        method: "POST",
-        body: JSON.stringify(payload),
-      },
-      true
+      payload,
+      { includeHeaders: true }
     );
+    API.enableDebug();
 
     const cookies = headers.get("set-cookie");
     console.log(headers);
@@ -23,7 +22,7 @@ export async function login(payload: LoginPayload) {
       console.log("It found cookies...check if they being set");
     }
 
-    return user;
+    return data.user;
   } catch (error) {
     if (error instanceof ApiError) {
       throw error;

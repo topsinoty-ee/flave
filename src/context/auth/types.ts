@@ -1,6 +1,23 @@
 import { User } from "@/types";
 import { AuthError } from "./error";
-import * as actions from "./actions";
+
+export interface AuthenticationResponse<ResponseData = unknown> {
+  result?: ResponseData;
+  error?: AuthError;
+  redirectPath?: string;
+}
+
+export type BareActionFunction<
+  ActionParameters extends unknown[] = unknown[],
+  ActionResult = unknown,
+> = (...args: ActionParameters) => Promise<ActionResult>;
+
+export type EnhancedActionFunction<
+  ActionParameters extends unknown[] = unknown[],
+  ActionResult = unknown,
+> = (
+  ...args: ActionParameters
+) => Promise<AuthenticationResponse<ActionResult>>;
 
 export type AuthState = {
   user: User | null;
@@ -13,10 +30,11 @@ export type AuthContextValue = AuthState & {
   updateAuthState: (newState: Partial<AuthState>) => void;
 };
 
-export type AuthHook = Partial<{
-  [Key in keyof typeof actions]: (typeof actions)[Key];
-}> &
-  AuthContextValue;
+export interface AuthActionResponse<Data = unknown> {
+  data?: Data;
+  error?: AuthError;
+  redirect?: string;
+}
 
 export type LoginPayload = {
   email: string;

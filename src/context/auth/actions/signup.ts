@@ -1,4 +1,4 @@
-import { API } from "@/api/main";
+import { API } from "@/api";
 import { SignupPayload } from "../types";
 import { User } from "@/types";
 import { ApiError } from "@/api/error";

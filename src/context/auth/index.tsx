@@ -19,6 +19,10 @@ const initialState: AuthState = {
 };
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
+export * from "./hook";
+export * from "./guard";
+export * from "./error";
+export * from "./types";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<AuthState>(initialState);

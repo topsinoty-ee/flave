@@ -1,3 +1,5 @@
+"use client";
+
 import { get } from "lodash";
 import { useContext } from "react";
 import { useFormStatus } from "react-dom";

@@ -2,13 +2,20 @@ export class AuthError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "AuthError";
+
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, AuthError);
+    }
   }
+
   static isAuthError(error: unknown): error is AuthError {
     return (
       error instanceof AuthError ||
       (typeof error === "object" && error !== null && "isAuthError" in error)
     );
   }
+
   static fromError(error: unknown): AuthError {
     if (this.isAuthError(error)) {
       return error;
@@ -37,6 +44,13 @@ export class AuthError extends Error {
       data = { value: error };
     }
 
-    return new AuthError(message);
+    const authError = new AuthError(message);
+
+    // Preserve the original stack trace if available
+    if (error instanceof Error && error.stack) {
+      authError.stack = `${authError.stack}\nOriginal stack:\n${error.stack}`;
+    }
+
+    return authError;
   }
 }

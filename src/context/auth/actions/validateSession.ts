@@ -1,5 +1,7 @@
+"use server";
+
 import { ApiError } from "@/api/error";
-import { API } from "@/api/main";
+import { API } from "@/api";
 import { User } from "@/types";
 import { cookies } from "next/headers";
 import { AuthError } from "../error";
@@ -11,6 +13,7 @@ export function validateSession(options: { detailed: true }): Promise<{
   sessionToken: string | null;
 }>;
 
+// ? checks on mount is session is valid
 export async function validateSession(options?: {
   detailed: boolean;
 }): Promise<boolean | { isValid: boolean; sessionToken?: string | null }> {

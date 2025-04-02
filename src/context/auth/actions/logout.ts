@@ -1,10 +1,13 @@
+"use server";
+
 import { ApiError } from "@/api/error";
-import { API } from "@/api/main";
+import { API } from "@/api";
 import { cookies } from "next/headers";
 import { AuthError } from "../error";
 
 export async function logout() {
   try {
+    API.enableDebug();
     await API.get("/users/logout");
     (await cookies()).delete("session_token");
   } catch (error) {
