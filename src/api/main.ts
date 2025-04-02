@@ -65,7 +65,13 @@ class Api {
     endpoint: string,
     options?: RequestInit,
     includeHeaders?: boolean
-  ): Promise<RequestedType>;
+  ): Promise<RequestedType & { headers: never }>;
+
+  async request<RequestedType>(
+    endpoint: string,
+    options?: RequestInit,
+    includeHeaders?: true
+  ): Promise<RequestedType & { headers: Headers }>;
 
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
