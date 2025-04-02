@@ -1,5 +1,5 @@
 import { Footer, Navbar } from "@/components";
-import { ProtectedRoute } from "@/context/auth/components/protected-route";
+import { AuthGuard } from "@/context";
 
 export default function ProtectedLayout({
   children,
@@ -16,7 +16,9 @@ export default function ProtectedLayout({
       />
       <main className="main">
         <div>
-          <ProtectedRoute>{children}</ProtectedRoute>
+          <AuthGuard redirectUrl="/login" requireRoles={["User"]}>
+            {children}
+          </AuthGuard>
         </div>
       </main>
       <Footer />
