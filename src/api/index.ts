@@ -1,7 +1,6 @@
 import { ZodSchema, infer as ZodInfer } from "zod";
 import { ApiError } from "./error";
 import { ValidationError } from "@/lib/validation-error";
-import { ApiDebugExtension } from "./debug";
 
 const DEFAULT_TIMEOUT = 10000;
 
@@ -30,7 +29,6 @@ export class Api {
     };
   }
 
-  public debug = new ApiDebugExtension(this);
   private debugMode = false;
   enableDebug() {
     this.debugMode = true;
@@ -245,12 +243,10 @@ export class Api {
     arg1?: ZodSchema<T> | RequestInit,
     arg2?: RequestInit
   ): Promise<T | { data: T; headers: Headers }> {
-    let schema: ZodSchema<T> | undefined;
     let options: RequestInit = {};
     let includeHeaders = false;
 
     if (arg1 instanceof ZodSchema) {
-      schema = arg1;
       options = arg2 ?? {};
       includeHeaders =
         (arg2 as { includeHeaders?: boolean })?.includeHeaders ?? false;

@@ -30,9 +30,13 @@ export async function validateSession(options?: {
   user?: boolean;
 }): Promise<
   | boolean
-  | { isValid: boolean; sessionToken: string | null }
-  | { isValid: boolean; sessionToken: string | null; currentUser: User | null }
-  | { currentUser: User | null }
+  | {
+      isValid: boolean;
+      sessionToken: string | null;
+    }
+  | {
+      currentUser: User | null;
+    }
 > {
   try {
     const sessionToken = (await cookies()).get("session_token")?.value ?? null;
@@ -68,14 +72,24 @@ export async function validateSession(options?: {
 
     return isValid;
   } catch (error) {
-    if (error instanceof ApiError || error instanceof AuthError) {
-      throw error;
+    //   if (error instanceof ApiError || error instanceof AuthError) {
+    //     throw error;
+    //   }
+    //   throw new ApiError(
+    //     "Session validation failed",
+    //     0,
+    //     "SESSION_INVALID",
+    //     String(error)
+    //   );
+    // }
+    console.log("validation failed", error);
+
+    if (options?.detailed) {
+      return options?.user
+        ? { isValid: false, sessionToken: null, currentUser: null }
+        : { isValid: false, sessionToken: null };
     }
-    throw new ApiError(
-      "Session validation failed",
-      0,
-      "SESSION_INVALID",
-      String(error)
-    );
+
+    return false;
   }
 }
