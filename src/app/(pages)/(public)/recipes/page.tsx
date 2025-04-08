@@ -39,7 +39,7 @@ export default async function RecipesPage({
       <Hero />
       <Form suggestions={suggestions.map((tag) => tag.value)} />
       {params.toString() ? (
-        <RecipeDisplayBlock data={recipes} />
+        <RecipeDisplayBlock data={recipes || []} limit={0} />
       ) : (
         <RecipeDisplayBlock params={["all"]} limit={0} />
       )}
