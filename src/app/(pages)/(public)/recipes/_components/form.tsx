@@ -26,7 +26,7 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
 
       return {
         success: true,
-        message: "Searching recipes...",
+        message: "no recipes found",
       };
     } catch (error) {
       console.error("Error updating search:", error);
