@@ -11,7 +11,7 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
 }) => {
   const router = useRouter();
   const searchSchema = z.object({
-    tags: z.array(z.string().max(32)).max(10),
+    tags: z.array(z.string().max(32)).max(10).optional(),
   });
 
   const searchAction = createAction(searchSchema, async (_, { tags }) => {
@@ -22,7 +22,7 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
         tags.forEach((tag) => params.append("tags", tag.trim()));
       }
 
-      router.push(`/recipes?${params.toString()}`);
+      router.push(`/recipes?${params.toString()}&matchAll=true`);
 
       return {
         success: true,
