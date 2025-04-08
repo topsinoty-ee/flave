@@ -31,7 +31,12 @@ export default async function RecipesPage({
   }
 
   // Fetch recipes based on search params
-  const recipes = await API.get<Recipe[]>(`recipes?${params.toString()}`);
+  const recipes = await API.get<Recipe[]>(`recipes?${params.toString()}`).catch(
+    (reason) => {
+      console.log(reason);
+      return [];
+    }
+  );
   console.log("Suggestions: ", suggestions);
 
   return (
