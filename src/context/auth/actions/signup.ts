@@ -1,3 +1,5 @@
+"use server";
+
 import { API } from "@/api";
 import { SignupPayload } from "../types";
 import { User } from "@/types";
@@ -7,7 +9,10 @@ import { AuthError } from "../error";
 
 export async function signup(payload: SignupPayload) {
   try {
-    const { headers, user } = await API.request<{ user: User }>(
+    const {
+      headers,
+      data: { user },
+    } = await API.request<{ user: User }>(
       "/users/signup",
       {
         method: "POST",
@@ -17,10 +22,8 @@ export async function signup(payload: SignupPayload) {
     );
 
     const cookies = headers.get("set-cookie");
-    console.log(headers);
     if (cookies) {
       await setCookiesFromHeader(cookies);
-      console.log("It found cookies...check if they being set");
     }
 
     return user;

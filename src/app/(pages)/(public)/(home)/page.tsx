@@ -10,13 +10,19 @@ export default async function Home() {
       <Hero />
       <CategoryMarquee
         items={Object.entries({
-          veggies: "",
-          protein: "",
-          dairy: "",
-          seafood: "",
-          desserts: "",
-          smoothies: "",
-          "low-calories": "",
+          salads: "/NEW-CATEG-ITEM-3.png",
+          soups: "/NEW-CATEG-ITEM-2.png",
+          sauces: "/sauce.png",
+          keto: "/NEW-CATEG-ITEM-4.png",
+          cocktails: "/cocktail.png",
+          veggies: "/NEW-CATEG-ITEM-5.png",
+          proteins: "/NEW-CATEG-ITEM-6.png",
+          seafoods: "/seafood.png",
+          "low-calories": "/NEW-CATEG-ITEM-8.png",
+          "low-carb": "/NEW-CATEG-ITEM-9.png",
+          desserts: "/NEW-CATEG-ITEM-10.png",
+          smoothies: "/NEW-CATEG-ITEM-11.png",
+          snacks: "/NEW-CATEG-ITEM-12.png",
         })}
         speed={25}
       />
@@ -26,13 +32,13 @@ export default async function Home() {
         params={["all"]}
         seeMore
       />
-      <section className="flex aspect-section-lg bg-black">
+      <section className="flex aspect-section-lg bg-black text-white">
         <div className="w-full flex items-center justify-center">
           <div className="aspect-[123/100]  bg-black h-full">
             <div className="w-full h-full p-20 flex flex-col items-center justify-center text-center gap-20">
-              <h2>Tons of recipes in our database</h2>
+              <h2 className="text-white">Tons of recipes in our database</h2>
               <div className="flex text-center items-center justify-center flex-col gap-10">
-                <h4>
+                <h4 className="text-white">
                   Interested in contributing? <br />
                   Or looking for more recipes?
                 </h4>

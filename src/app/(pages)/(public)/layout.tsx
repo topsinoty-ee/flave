@@ -6,22 +6,8 @@ export default function PublicLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="body">
-      <Navbar
-        links={[
-          { href: "/recipes", label: "All Recipes" },
-          { href: "/recipes/browse", label: "Browse" },
-          { href: "/recipes/create", label: "Create recipe" },
-        ]}
-        actions={[
-          { href: "/signup", children: "Sign up", variant: "primary" },
-          { href: "/login", children: "Login", variant: "secondary" },
-        ]}
-      />
-      <main className="main mt-25">
-        <div>{children}</div>
-      </main>
-      <Footer />
-    </div>
+    <main className="main mt-25 min-h-screen bg-white">
+      <div>{children}</div>
+    </main>
   );
 }

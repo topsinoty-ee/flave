@@ -1,30 +1,32 @@
-import { API } from "@/api/main";
+import { API } from "@/api";
 import { DisplayResource } from "../display";
 import { SectionHeaderProps } from "../section-header";
 import { RecipeCard, RecipeCardProps } from "./card";
 import Link from "next/link";
+import { validateSession } from "../../context/auth/actions/validateSession";
 
 type RecipeDisplayConfig = Partial<SectionHeaderProps> & {
-  params: string[];
+  params?: string[];
   limit?: number;
   fallbackMessage?: string;
   restricted?: Record<string, string>;
   exclude?: string[];
   seeMore?: boolean | "tags" | { text?: string; href: string };
+  data?: RecipeCardProps[]; // New prop for manual data input
 };
 
 const DEFAULT_RESTRICTIONS = {
   all: "/recipes",
-  top: "/recipes/highest-rated",
-  "top-faves": "/recipes/recent-top-rated",
+  "top-faves": "/recipes/highest-rated",
+  top: "/recipes/recent-top-rated",
 };
 
-const getTagsQuery = (params: string[]) =>
+const getTagsQuery = (params: string[] = []) =>
   params.map((t) => `tags=${encodeURIComponent(t)}`).join("&");
 
 const getSeeMoreLink = (
   seeMore: RecipeDisplayConfig["seeMore"],
-  tagsQuery: string,
+  tagsQuery: string
 ) => {
   if (!seeMore) return null;
 
@@ -47,34 +49,47 @@ const getSeeMoreLink = (
 };
 
 export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
-  params,
+  params = [],
   limit = 4,
   exclude,
   seeMore,
   restricted,
+  data: manualData,
   ...headerProps
 }) => {
-  const cleanParams = params.map((p) => p.trim().toLowerCase());
-  const finalRestrictions = { ...DEFAULT_RESTRICTIONS, ...restricted };
-  const matchedParam = cleanParams.find(
-    (param): param is keyof typeof finalRestrictions =>
-      param in finalRestrictions,
-  );
-  const tagsQuery = getTagsQuery(cleanParams);
+  let recipes: RecipeCardProps[] = [];
+  const { sessionToken } = await validateSession({ detailed: true });
 
-  const endpoint = matchedParam
-    ? finalRestrictions[matchedParam]
-    : `/recipes?${tagsQuery}${limit > 0 ? `&limit=${limit}` : ""}`;
+  if (manualData) {
+    recipes = manualData;
+  } else {
+    const cleanParams = params.map((p) => p.trim().toLowerCase());
+    const finalRestrictions = { ...DEFAULT_RESTRICTIONS, ...restricted };
+    const matchedParam = cleanParams.find(
+      (param): param is keyof typeof finalRestrictions =>
+        param in finalRestrictions
+    );
+    const tagsQuery = getTagsQuery(cleanParams);
 
-  const recipes = (await API.get<RecipeCardProps[]>(endpoint)) || [];
+    const endpoint = matchedParam
+      ? finalRestrictions[matchedParam]
+      : `/recipes?${tagsQuery}${limit > 0 ? `&limit=${limit}` : ""}`;
+
+    recipes =
+      (await API.get<RecipeCardProps[]>(endpoint, {
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      })) || [];
+  }
 
   const filteredRecipes = recipes.filter(
-    (recipe) => !exclude?.includes(recipe._id),
+    (recipe) => !exclude?.includes(recipe._id)
   );
   const slicedRecipes =
     limit > 0 ? filteredRecipes.slice(0, limit) : filteredRecipes;
 
   if (!slicedRecipes.length) return null;
+
+  const tagsQuery = getTagsQuery(params);
 
   return (
     <DisplayResource

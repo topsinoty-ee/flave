@@ -1,12 +1,21 @@
+import clsx from "clsx";
 import Image from "next/image";
 
-export const Logo = () => (
+export const Logo = ({
+  type = "light",
+  className,
+}: {
+  type: "dark" | "light";
+  className?: string;
+}) => (
   <div className="h-full logo max-h-20">
     <Image
       width={420}
       height={200}
-      className="max-h-20"
-      src="/logo.svg"
+      className={clsx("max-h-15", className)}
+      priority
+      quality={100}
+      src={type === "light" ? "/NEW-LOGO-BLACK.svg" : "/NEW-LOGO-WHITE.svg"}
       alt="flave logo"
     />
   </div>

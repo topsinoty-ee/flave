@@ -1,29 +1,50 @@
 import Link from "next/link";
-
-import { Button, ButtonProps } from "./button";
 import { Logo } from "./logo";
 
-interface NavbarProps {
-  links?: Array<{ label: string; href: string }>;
-  actions?: Array<ButtonProps>;
+export interface NavbarProps {
+  leftLinks?: Array<{ label: string; href: string }>;
+  rightLinks?: Array<{ label: string; href: string }>;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ links, actions }) => (
-  <header className="fixed top-0 left-0 w-full flex items-center justify-between py-5 shadow-lg rounded-b-3xl bg-background h-25 z-999">
-    <div className="flex items-center gap-5">
-      {links?.map(({ label, href }, idx) => (
-        <Link href={href} key={idx} className="uppercase">
-          {label}
-        </Link>
-      ))}
-    </div>
-    <Link href="/" className="absolute -translate-x-1/2 left-1/2">
-      <Logo />
-    </Link>
-    <div className="flex items-center gap-5">
-      {actions?.map((button, idx) => (
-        <Button {...button} as="link" key={idx} />
-      ))}
+export const Navbar: React.FC<NavbarProps> = ({
+  rightLinks = [],
+  leftLinks = [],
+}) => (
+  <header className="fixed top-0 w-full bg-background backdrop-blur-md shadow z-50 h-20">
+    <div className="container mx-auto px-5 sm:px-5 lg:px-10 h-full">
+      <div className="flex items-center justify-between h-full">
+        <nav className="flex items-center gap-5">
+          {leftLinks.map(({ label, href }, idx) => (
+            <Link
+              href={href}
+              key={`left-${idx}`}
+              className="font-medium text-sm text-black hover:text-gray-dark transition-colors uppercase"
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <Link href="/" className="flex items-center">
+            <Logo type="light" />
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-5">
+          <nav className="hidden md:flex items-center gap-5">
+            {rightLinks.map(({ label, href }, idx) => (
+              <Link
+                href={href}
+                key={`right-${idx}`}
+                className="font-medium text-black hover:text-gray-dark transition-colors uppercase"
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
 );

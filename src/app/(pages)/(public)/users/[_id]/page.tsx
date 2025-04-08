@@ -1,4 +1,4 @@
-import { API } from "@/api/main";
+import { API } from "@/api";
 import { knewave } from "@/app/layout";
 import { Image } from "@/components";
 import { User } from "@/types";
@@ -33,9 +33,7 @@ export default async function UserPage({
         </div>
         <div className="golden-circle bg-white self-center flex h-full max-h-[28.125rem] aspect-square place-content-center relative overflow-clip">
           <Image
-            src={
-              typeof user.avatar === "object" ? user.avatar.url : user.avatar
-            }
+            src={typeof user.src === "object" ? user.src.url : user.src}
             fallbackSrc="/images/user-fallback.png"
             width={450}
             height={450}
@@ -44,7 +42,7 @@ export default async function UserPage({
           />
         </div>
       </section>
-      <RecipeDisplayBlock recipes={user.recipes} />
+      {/* <RecipeDisplayBlock recipes={user.recipes} /> */}
     </>
   );
 }

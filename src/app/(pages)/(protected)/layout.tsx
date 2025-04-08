@@ -1,5 +1,5 @@
 import { Footer, Navbar } from "@/components";
-import { AuthGuard } from "@/context";
+import { AuthGuard } from "@/context/auth";
 
 export default function ProtectedLayout({
   children,
@@ -7,21 +7,10 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="body bg-foreground">
-      <Navbar
-        links={[
-          { href: "/", label: "Browse" },
-          { href: "/about", label: "All Recipes" },
-        ]}
-      />
-      <main className="main">
-        <div>
-          <AuthGuard redirectUrl="/login" requireRoles={["User"]}>
-            {children}
-          </AuthGuard>
-        </div>
-      </main>
-      <Footer />
+    <div className="body min-h-screen mt-10 bg-foreground">
+      <AuthGuard redirectUrl="/login" requireRoles={["User"]}>
+        {children}
+      </AuthGuard>
     </div>
   );
 }

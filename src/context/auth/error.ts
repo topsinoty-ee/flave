@@ -3,7 +3,6 @@ export class AuthError extends Error {
     super(message);
     this.name = "AuthError";
 
-    // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, AuthError);
     }
@@ -46,7 +45,6 @@ export class AuthError extends Error {
 
     const authError = new AuthError(message);
 
-    // Preserve the original stack trace if available
     if (error instanceof Error && error.stack) {
       authError.stack = `${authError.stack}\nOriginal stack:\n${error.stack}`;
     }

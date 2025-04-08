@@ -11,7 +11,7 @@ export interface User {
   // recipes: Array<Recipe>;
   savedDrafts: Array<Recipe>;
   reviews: Array<string>;
-  favouritedRecipes: Array<Recipe>;
+  favouritedRecipes: Array<string>; //Array<Recipe>;
   weightedTags: Array<{ tags: string; weight: number }>;
   description?: string;
 }

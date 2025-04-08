@@ -53,7 +53,7 @@ export class Api {
     });
   }
 
-  private logResponse(
+  private async logResponse(
     method: string,
     endpoint: string,
     response: Response,
@@ -66,6 +66,7 @@ export class Api {
       {
         headers: Object.fromEntries(response.headers.entries()),
         statusText: response.statusText,
+        body: await response.clone().json(),
       }
     );
   }

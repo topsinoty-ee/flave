@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import { Tag } from "@/types/tag";
-import { isRecipe } from "@/util";
+// import { isRecipe } from "@/util";
 
 import { Image } from "./image";
 
@@ -28,7 +28,7 @@ export const TagImage: React.FC<TagImageProps> = ({ value, _id }) => {
 
         const images = recipes
           .slice(0, 4)
-          .filter((r: unknown): r is { src: string } => isRecipe(r))
+          // .filter((r: unknown): r is { src: string } => isRecipe(r))
           .map((r) => r.src);
 
         if (images.length === 0) throw new Error("No valid images");

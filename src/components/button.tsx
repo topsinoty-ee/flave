@@ -1,14 +1,33 @@
+"use client";
+
 import clsx from "clsx";
 import Link from "next/link";
-import { ButtonHTMLAttributes, AnchorHTMLAttributes, MouseEvent } from "react";
+import {
+  ButtonHTMLAttributes,
+  AnchorHTMLAttributes,
+  MouseEventHandler,
+  ReactNode,
+} from "react";
+import { LinkProps } from "next/link";
+import { Loader2 } from "lucide-react";
 
 export const Variant = {
-  primary: "bg-black",
-  secondary: "bg-gray outline-none",
-  outline: "bg-muted border-border border",
-  danger: "bg-error-dark",
-  disabled: "bg-muted cursor-not-allowed pointer-events-none",
-  none: "border border-border",
+  primary: "bg-black text-white hover:bg-gray-dark active:bg-gray",
+  secondary:
+    "bg-gray-light text-gray-dark hover:bg-gray-light active:bg-gray outline-none",
+  outline:
+    "bg-transparent border border-gray hover:bg-gray-light active:bg-gray-light",
+  danger: "bg-error text-white hover:bg-error active:bg-error-dark",
+  success: "bg-success text-white hover:bg-success active:bg-success-dark",
+  warning: "bg-warning text-white hover:bg-warning active:bg-warning-dark",
+  ghost: "hover:bg-gray-light active:bg-gray",
+  disabled: "bg-gray text-gray-dark cursor-not-allowed",
+} as const;
+
+export const Size = {
+  sm: "text-sm py-1 px-2.5",
+  md: "text-base py-2.5 px-5",
+  lg: "text-xl py-2.5 px-10",
 } as const;
 
 export const Shape = {
@@ -16,104 +35,148 @@ export const Shape = {
   soft: "rounded-md",
   sharp: "rounded-sm",
   square: "rounded-none",
-  button: "rounded-lg",
+  default: "rounded-lg",
 } as const;
 
-import { LinkProps } from "next/link";
-
 type BaseButtonProps = {
-  as?: "button" | "link";
-  disabled?: boolean;
   variant?: keyof typeof Variant;
+  size?: keyof typeof Size;
   shape?: keyof typeof Shape;
-  icon?: React.ReactNode;
-  children?: React.ReactNode;
+  icon?: ReactNode;
+  iconPosition?: "left" | "right";
+  loading?: boolean;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  children?: ReactNode;
   className?: string;
+  ariaLabel?: string;
 };
 
-// Extend to include Next.js LinkProps
-export type ButtonProps = BaseButtonProps &
-  ButtonHTMLAttributes<HTMLButtonElement> &
-  Omit<
+export type ButtonAsButton = BaseButtonProps & {
+  as?: "button";
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+} & Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    keyof BaseButtonProps | "onClick" | "type"
+  > & {
+    type?: "button" | "submit" | "reset";
+  };
+
+export type ButtonAsLink = BaseButtonProps & {
+  as: "link";
+  href: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
+} & Omit<
     AnchorHTMLAttributes<HTMLAnchorElement>,
-    keyof ButtonHTMLAttributes<HTMLButtonElement> | keyof BaseButtonProps
+    keyof BaseButtonProps | "onClick" | "href"
   > &
   Omit<LinkProps, keyof AnchorHTMLAttributes<HTMLAnchorElement> | "href">;
 
-export const Button = ({
-  as = "button",
-  href,
-  onClick,
-  disabled = false,
-  variant = "primary",
-  shape = "button",
-  icon,
-  children,
-  className,
-  type = "button",
-  shallow,
-  passHref,
-  prefetch,
-  replace,
-  scroll,
-  locale,
-  ...props
-}: ButtonProps) => {
-  const baseClasses =
-    "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all outline-1 outline outline-offset-0 w-max no-underline shadow-sm";
-  const variantClasses = Variant[variant];
-  const shapeClasses = Shape[shape];
-  const disabledClasses = disabled
-    ? "opacity-50 cursor-not-allowed pointer-events-none"
-    : "";
-  const iconOnlyClasses = !children ? "p-5 aspect-square" : "";
-  const buttonClasses = clsx(
-    baseClasses,
-    variantClasses,
-    shapeClasses,
-    disabledClasses,
-    iconOnlyClasses,
+export type ButtonProps = ButtonAsButton | ButtonAsLink;
+
+export const Button = (props: ButtonProps) => {
+  const {
+    as = "button",
+    variant = "primary",
+    size = "md",
+    shape = "default",
+    icon,
+    iconPosition = "left",
+    loading = false,
+    disabled = false,
+    fullWidth = false,
+    children,
     className,
+    ariaLabel,
+    onClick,
+    ...rest
+  } = props;
+
+  const isDisabled = disabled || loading;
+  const isIconOnly = !children && !!icon;
+  const showLoader = loading && !isIconOnly;
+
+  const baseClasses = clsx(
+    "inline-flex items-center justify-center gap-2.5 font-medium transition-all",
+    "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+    "disabled:opacity-50 disabled:cursor-not-allowed",
+    "active:scale-[0.98] transition-transform",
+    Variant[variant],
+    Size[size],
+    Shape[shape],
+    {
+      "w-full": fullWidth,
+      "opacity-50 cursor-not-allowed": isDisabled,
+      "px-2.5 py-2.5": isIconOnly,
+      "pointer-events-none": isDisabled,
+    },
+    className
   );
 
-  if (as === "link" && href) {
-    // Create a type-safe handler for the Link component
-    const handleAnchorClick = onClick
-      ? (e: MouseEvent<HTMLAnchorElement>) => {
-          // This cast is safe because we're only using common properties
-          onClick(e as unknown as MouseEvent<HTMLButtonElement>);
-        }
-      : undefined;
+  const content = (
+    <>
+      {icon && iconPosition === "left" && (
+        <span className={clsx({ "animate-spin": loading })} aria-hidden="true">
+          {loading ? <Loader2 className="animate-spin" /> : icon}
+        </span>
+      )}
+      {children}
+      {showLoader && <Loader2 className="ml-2.5 animate-spin" />}
+      {icon && iconPosition === "right" && (
+        <span aria-hidden="true">{icon}</span>
+      )}
+    </>
+  );
+
+  if (as === "link") {
+    const { href, ...linkProps } = rest as ButtonAsLink;
+
+    if (isDisabled) {
+      return (
+        <span
+          className={baseClasses}
+          aria-disabled="true"
+          aria-label={ariaLabel}
+          role="button"
+        >
+          {content}
+        </span>
+      );
+    }
 
     return (
       <Link
         href={href}
-        className={buttonClasses}
-        onClick={handleAnchorClick}
-        shallow={shallow}
-        passHref={passHref}
-        prefetch={prefetch}
-        replace={replace}
-        scroll={scroll}
-        locale={locale}
-        {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
+        className={baseClasses}
+        aria-label={ariaLabel}
+        onClick={(e) => {
+          if (!isDisabled) {
+            (onClick as MouseEventHandler<HTMLAnchorElement>)?.(e);
+          }
+        }}
+        {...linkProps}
       >
-        {icon && <span>{icon}</span>}
-        {children}
+        {content}
       </Link>
     );
   }
 
+  const { type = "button", ...buttonProps } = rest as ButtonAsButton;
   return (
     <button
       type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={buttonClasses}
-      {...props}
+      className={baseClasses}
+      disabled={isDisabled}
+      aria-label={ariaLabel}
+      aria-busy={loading}
+      onClick={(e) => {
+        if (!isDisabled) {
+          (onClick as MouseEventHandler<HTMLButtonElement>)?.(e);
+        }
+      }}
+      {...buttonProps}
     >
-      {icon && <span>{icon}</span>}
-      {children}
+      {content}
     </button>
   );
 };

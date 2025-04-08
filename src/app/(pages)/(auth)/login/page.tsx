@@ -1,39 +1,77 @@
+// app/login/page.tsx
 import { Suspense } from "react";
+import { ClientLoginWrapper } from "./form";
 
-import { LoginForm } from "./form";
+const DEFAULT_REDIRECT_PATH = "/profile";
 
-function FormSkeleton() {
-  return (
-    <div className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-md rounded-lg space-y-4">
-      <div className="h-8 bg-gray-200 rounded animate-pulse w-1/2" />
+async function getRedirectPath(searchParams: Promise<{ continue?: string }>) {
+  try {
+    const params = await searchParams;
+    const continueParam = params.continue;
 
-      <div className="space-y-2">
-        <div className="h-4 bg-gray-200 rounded animate-pulse w-1/4" />
-        <div className="h-10 bg-gray-200 rounded animate-pulse" />
-      </div>
-      <div className="h-10 bg-gray-200 rounded animate-pulse" />
-    </div>
-  );
+    // Validate the redirect path
+    if (typeof continueParam !== "string" || !continueParam) {
+      return DEFAULT_REDIRECT_PATH;
+    }
+
+    // Basic security checks - prevent open redirect vulnerabilities
+    if (!isRelativeUrl(continueParam)) {
+      console.warn(`Invalid redirect path: ${continueParam}`);
+      return DEFAULT_REDIRECT_PATH;
+    }
+
+    // Additional validation if needed (e.g., check against allowed paths)
+    // You might want to implement a list of allowed paths
+    if (!isValidRedirectPath(continueParam)) {
+      console.warn(`Invalid redirect path: ${continueParam}`);
+      return DEFAULT_REDIRECT_PATH;
+    }
+
+    return continueParam;
+  } catch (error) {
+    console.error("Error processing redirect path:", error);
+    return DEFAULT_REDIRECT_PATH;
+  }
+}
+
+// Example helper functions (implement these in a separate file)
+function isRelativeUrl(url: string): boolean {
+  try {
+    // Simple check - should start with / and not with // or http(s)://
+    return (
+      url.startsWith("/") &&
+      !url.startsWith("//") &&
+      !url.match(/^https?:\/\//i)
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isValidRedirectPath(path: string): boolean {
+  // Add any additional path validation logic here
+  // For example, you might want to prevent redirects to auth pages
+  const forbiddenPaths = ["/login", "/logout", "/api"];
+  return !forbiddenPaths.some((forbidden) => path.startsWith(forbidden));
 }
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{
-    continue: string | `/${string}`;
-  }>;
+  searchParams: Promise<{ continue?: string }>;
 }) {
-  const params = await searchParams;
-  const redirectPath =
-    typeof params.continue === "string" && params.continue != ""
-      ? params.continue
-      : "profile";
+  let redirectPath = DEFAULT_REDIRECT_PATH;
+
+  try {
+    redirectPath = await getRedirectPath(searchParams);
+  } catch (error) {
+    console.error("Error determining redirect path:", error);
+    // Fall back to default path in case of error
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Suspense fallback={<FormSkeleton />}>
-        <LoginForm redirectPath={redirectPath} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ClientLoginWrapper redirectPath={redirectPath} />
+    </Suspense>
   );
 }

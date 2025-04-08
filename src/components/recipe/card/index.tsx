@@ -34,15 +34,15 @@ export const RecipeCard: FC<RecipeCardProps> = ({
   alt,
   title,
   reviews = [],
-  ratingsAvg = 0,
+  ratingsAvg,
+  ratingsAmount,
   user,
   className,
 }) => {
-  const rating = Math.min(Math.max(ratingsAvg, 0), 5).toFixed(1);
-
   return (
     <ErrorBoundary fallback={<FallbackComponent />}>
       <Link
+        title={title}
         href={`/recipes/${_id}`}
         className={clsx(
           "relative w-full overflow-hidden transition-all rounded-md shadow-md cursor-pointer min-w-72 max-w-80 bg-background group hover:shadow-lg",
@@ -60,23 +60,29 @@ export const RecipeCard: FC<RecipeCardProps> = ({
           />
         </div>
 
-        <div className="flex p-5 bg-base">
-          <div className="w-full">
-            <h6 className="truncate">{title}</h6>
-
-            <span className="text-sm italic text-gray-500">
-              {user.firstName} {user.lastName}
+        <div className="flex p-5 gap-5 w-full overflow-hidden">
+          {/* Left content - title and user info */}
+          <div className="flex-1 min-w-0 overflow-hidden">
+            <h6 className="truncate text-base font-medium text-black">
+              {title}
+            </h6>
+            <span className="text-sm text-gray-dark truncate block">
+              {user.firstName && user.lastName
+                ? `${user.firstName} ${user.lastName}`
+                : `@${user.username}`}
             </span>
           </div>
 
-          <div className="flex flex-col justify-end">
-            <span className="text-sm whitespace-nowrap">
-              {reviews.length > 100
+          {/* Right content - reviews and rating */}
+          <div className="flex flex-col justify-end items-end min-w-[fit-content]">
+            <span className="text-sm text-gray-500 whitespace-nowrap">
+              {ratingsAmount > 100
                 ? "100+ reviews"
-                : `${reviews.length} reviews`}
+                : `${ratingsAmount} ${ratingsAmount === 1 ? "review" : "reviews"}`}
             </span>
-            <span className="self-end font-medium text-primary">
-              ★ {rating}
+            <span className="font-medium text-primary whitespace-nowrap">
+              ★ {(ratingsAvg ?? 0).toFixed(1)}{" "}
+              {/* Assuming rating is a number */}
             </span>
           </div>
         </div>

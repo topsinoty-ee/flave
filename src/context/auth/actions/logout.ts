@@ -7,7 +7,6 @@ import { AuthError } from "../error";
 
 export async function logout() {
   try {
-    API.enableDebug();
     await API.get("/users/logout");
     (await cookies()).delete("session_token");
   } catch (error) {

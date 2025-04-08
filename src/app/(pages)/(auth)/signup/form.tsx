@@ -1,107 +1,41 @@
 "use client";
 
-import { Lock, Mail, User } from "lucide-react";
+import { ApiError } from "@/api/error";
+import { SectionHeader } from "@/components";
+import { useAuth } from "@/context/auth";
+import { FormProvider, Input, Submit } from "@/context/form";
+import { createAction } from "@/context/form/fn";
+import { Mail, Lock } from "lucide-react";
 import { Suspense } from "react";
-import { z } from "zod";
-
-import { useAuth } from "@/context";
-import { createAction, FormProvider } from "@/context/form";
-import { FormHeader, FormInput, SubmitButton } from "@/context/form/components";
-import Link from "next/link";
+import z from "zod";
 
 const SignupSchema = z.object({
-  firstName: z
-    .string({
-      required_error: "First name is required",
-      invalid_type_error: "First name must be a string",
-    })
-    .min(1, "First name cannot be empty")
-    .max(50, "First name cannot exceed 50 characters")
-    .regex(/^[A-Za-z]+$/, "First name can only contain letters"),
-
-  lastName: z
-    .string({
-      required_error: "Last name is required",
-      invalid_type_error: "Last name must be a string",
-    })
-    .min(1, "Last name cannot be empty")
-    .max(50, "Last name cannot exceed 50 characters")
-    .regex(/^[A-Za-z]+$/, "Last name can only contain letters"),
-
-  email: z
-    .string({
-      required_error: "Email is required",
-      invalid_type_error: "Email must be a string",
-    })
-    .email("Invalid email format")
-    .refine(
-      async (email) => {
-        const isEmailTaken = await checkIfEmailExists(email);
-        return !isEmailTaken;
-      },
-      {
-        message: "Email is already registered",
-      },
-    ),
-
-  password: z
-    .string({
-      required_error: "Password is required",
-      invalid_type_error: "Password must be a string",
-    })
-    .min(8, "Password must be at least 8 characters long")
-    .max(50, "Password cannot exceed 50 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .refine(
-      (password) => !password.includes(" "),
-      "Password cannot contain spaces",
-    ),
+  username: z.string().min(3),
+  email: z.string().email(),
+  password: z.string().min(8),
 });
 
-async function checkIfEmailExists(email: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(email === "existing@example.com");
-    }, 1000);
-  });
-}
+export function ClientSignupForm({ redirectPath }: { redirectPath: string }) {
+  const { signup, isLoading } = useAuth();
 
-export const SignupForm = ({ redirectPath = "/recipes/browse" }) => {
-  const { signup, signupError, authLoading } = useAuth();
-
-  const signupAction = createAction(SignupSchema, async (formData) => {
+  const signupAction = createAction(SignupSchema, async (_, formData) => {
     try {
-      const { firstName, lastName, email, password } = formData;
-      const success = await signup(
-        { firstName, lastName, email, password },
-        redirectPath,
-      );
-
-      if (!success) {
-        return {
-          success: false,
-          message: signupError || "Something went wrong",
-        };
-      }
-
+      await signup(formData, redirectPath);
       return {
         success: true,
-        message: "Signup successful!",
+        message: "Login successful!",
       };
     } catch (error) {
-      if (error instanceof Error)
+      if (ApiError.isApiError(error)) {
         return {
           success: false,
-          message: `An unexpected error occurred: ${error.message}`,
-        };
-      else {
-        return {
-          success: false,
-          message: `An unexpected error occurred: ${String(error)}`,
+          message: error.message,
         };
       }
+      return {
+        success: false,
+        message: `${error}`,
+      };
     }
   });
 
@@ -111,56 +45,65 @@ export const SignupForm = ({ redirectPath = "/recipes/browse" }) => {
       action={signupAction}
       className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-lg rounded-lg"
     >
-      <Suspense
-        fallback={
-          <div
-            role="status"
-            aria-label="Loading header"
-            className="h-30 transition-all bg-gray-light animate-pulse rounded"
-          />
-        }
-      >
-        <FormHeader title="Signup" description="Welcome back" />
-        <div className="flex flex-col gap-5">
-          <FormInput
-            name="firstName"
-            type="text"
-            placeholder="John"
-            icon={User}
-            aria-required="true"
-          />
-          <FormInput
-            name="lastName"
-            type="text"
-            placeholder="Doe"
-            icon={User}
-            aria-required="true"
-          />
-          <FormInput
-            name="email"
-            type="email"
-            placeholder="john@doe.com"
-            icon={Mail}
-            aria-required="true"
-          />
-          <FormInput
-            name="password"
-            type="password"
-            placeholder="*********"
-            icon={Lock}
-            aria-required="true"
-          />
-        </div>
-        <div className="flex gap-5 items-center">
-          <SubmitButton
-            loading={authLoading.signup}
-            className="bg-black text-white w-full py-2.5 rounded-md transition-colors"
-          >
-            Signup
-          </SubmitButton>
-          <Link href="/login">Login instead</Link>
-        </div>
-      </Suspense>
+      <SectionHeader title="Signup" description="Create an account" />
+      <div className="flex flex-col gap-5">
+        <Input
+          name="username"
+          type="text"
+          placeholder="Enter your username"
+          icon={Mail}
+          aria-required="true"
+        />
+        <Input
+          name="email"
+          type="email"
+          placeholder="Enter your email"
+          icon={Mail}
+          aria-required="true"
+        />
+        <Input
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          icon={Lock}
+          aria-required="true"
+        />
+      </div>
+      <div className="flex gap-5 items-center">
+        <Submit
+          isLoading={isLoading}
+          loadingText="Signing you up..."
+          className="bg-black text-white"
+        >
+          Signup
+        </Submit>
+        <a
+          href="/signup"
+          className="w-max whitespace-nowrap bg-gray-light text-gray-dark hover:bg-gray hover:text-black transition-colors duration-200 ease-in-out px-4 py-2 rounded-md"
+        >
+          Login
+        </a>
+      </div>
     </FormProvider>
   );
-};
+}
+
+function FormSkeleton() {
+  return (
+    <div className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-md rounded-lg space-y-4"></div>
+  );
+}
+
+export function ClientSignupWrapper({
+  redirectPath,
+}: {
+  redirectPath: string;
+}) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Suspense fallback={<FormSkeleton />}>
+        <ClientSignupForm redirectPath={redirectPath} />
+      </Suspense>
+    </div>
+  );
+}

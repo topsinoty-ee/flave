@@ -3,16 +3,16 @@ import { User } from "@/types";
 import { ArrowRight } from "lucide-react";
 
 export const Creator: React.FC<Partial<User>> = ({
-  avatar,
+  src,
   firstName,
   lastName,
-  description = "It's all over 🥺",
+  description = "No bio provided",
   _id,
 }) => {
   return (
     <section className="flex w-full bg-black outline-yellow outline-1 aspect-section-md rounded-lg gap-15 p-20">
       <Image
-        src={typeof avatar === "object" ? avatar.url : avatar}
+        src={typeof src === "object" ? src.url : src}
         fallbackSrc="/images/user-fallback.png"
         alt={`${firstName} ${lastName}`}
         className="h-max max-h-[40vh] max-w-[30%] golden-circle bg-gray-dark aspect-square"
