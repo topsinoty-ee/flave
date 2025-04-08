@@ -1,44 +1,38 @@
 "use client";
 import { FormProvider, Submit, TagInput } from "@/context/form";
-import { fetchRecipes } from "./server";
 import { createAction } from "@/context/form";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 export const MAX_TAGS = 5;
 
 export const Form: React.FC<{ suggestions: Array<string> }> = ({
   suggestions,
 }) => {
+  const router = useRouter();
   const searchSchema = z.object({
     tags: z.array(z.string().max(32)).max(10),
   });
 
   const searchAction = createAction(searchSchema, async (_, { tags }) => {
     try {
-      console.log("Raw tags input:", tags);
-
       const params = new URLSearchParams();
 
       if (tags?.length) {
         tags.forEach((tag) => params.append("tags", tag.trim()));
       }
 
-      const query = params.toString();
-      console.log("Query string:", query);
-
-      const data = await fetchRecipes(query);
+      router.push(`/recipes?${params.toString()}`);
 
       return {
         success: true,
-        message: `${data.length} recipes found`,
-        data,
+        message: "Searching recipes...",
       };
     } catch (error) {
-      console.error("Error searching recipes:", error);
+      console.error("Error updating search:", error);
       return {
         success: false,
-        message: "Failed to search recipes",
-        data: [],
+        message: "Failed to update search",
       };
     }
   });

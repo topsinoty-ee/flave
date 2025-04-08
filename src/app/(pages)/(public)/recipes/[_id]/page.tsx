@@ -231,15 +231,14 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
         ]}
         exclude={[recipe._id]}
       />
-      <section className="w-full flex flex-col gap-10 px-20">
+      {/* <section className="w-full flex flex-col gap-10 px-20">
         <SectionHeader
           icon={<MessageSquare size={32} className="stroke-3" />}
           title="Leave a review"
         />
         {/* <div>
           <DisplayResource Component={Review} data={recipe.reviews} />
-        </div> */}
-      </section>
+        </div>*/}
     </>
   );
 };
