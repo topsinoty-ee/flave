@@ -105,15 +105,15 @@ export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
           {...rest}
         >
           {children}
-          {state?.message && (
+          {/* {state?.message && (
             <small
               aria-live="polite"
               className="block mt-2 text-sm text-red-600"
             >
               {state.message}
             </small>
-          )}
-          <pre>{JSON.stringify(state)}</pre>
+          )} */}
+          {/* <pre>{JSON.stringify(state)}</pre> */}
         </form>
       </RHFProvider>
     </FormContext.Provider>
