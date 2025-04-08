@@ -1,10 +1,20 @@
-import { DisplayResource, RecipeCard } from "@/components";
+// "use client";
+// import { useState } from "react";
+// import { Recipe } from "@/types/recipe";
+// import { RecipeDisplayBlock } from "@/components";
+// import { Form } from "./form";
 
-export const RecipesDisplayBlock = async ({}) => {
-  return (
-    <>
-      <section></section>
-      <DisplayResource Component={RecipeCard} />
-    </>
-  );
-};
+// export function RecipesPageContent({ suggestions }: { suggestions: string[] }) {
+//   const [recipes, setRecipes] = useState<Recipe[] | null>(null);
+
+//   return (
+//     <>
+//       <Form suggestions={suggestions} />
+//       <RecipeDisplayBlock
+//         params={recipes === null ? ["all"] : []}
+//         data={recipes || []}
+//         limit={0}
+//       />
+//     </>
+//   );
+// }

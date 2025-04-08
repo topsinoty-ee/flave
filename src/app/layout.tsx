@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-
 import clsx from "clsx";
-import { Knewave, Plus_Jakarta_Sans } from "next/font/google";
-
+import { Knewave, Plus_Jakarta_Sans, Mulish } from "next/font/google";
 import { ContextProvider } from "@/context";
+import { Navbar, Footer, NavbarProps } from "@/components";
+import { validateSession } from "@/context/auth/actions";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta-sans",
@@ -12,7 +12,17 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
   adjustFontFallback: true,
   preload: true,
-  fallback: ["Arial", "Helvetica", "sans-serif"],
+  fallback: ["Arial", "sans-serif"],
+});
+
+const mulish = Mulish({
+  weight: ["1000"],
+  variable: "--font-mulish",
+  subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: true,
+  preload: true,
+  fallback: ["Arial"],
 });
 
 export const knewave = Knewave({
@@ -27,13 +37,33 @@ export const knewave = Knewave({
 
 export const metadata: Metadata = {
   title: "Flave",
+  description: "Discover and share amazing recipes",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const isLoggedIn = await validateSession();
+
+  const navbarProps: NavbarProps = {
+    leftLinks: [
+      { href: "/recipes", label: "Recipes" },
+      { href: "/browse", label: "Browse" },
+      { href: "/create", label: "Create" },
+    ],
+    rightLinks: isLoggedIn
+      ? [
+          { href: "/profile", label: "Profile" },
+          { href: "/favorites", label: "Favourites" },
+        ]
+      : [
+          { href: "/login", label: "Log In" },
+          { href: "/signup", label: "Sign Up" },
+        ],
+  };
+
   return (
     <ContextProvider>
       <html lang="en">
@@ -41,10 +71,13 @@ export default function RootLayout({
           className={clsx(
             jakarta.variable,
             knewave.variable,
-            "antialiased w-full min-h-screen",
+            mulish.variable,
+            "antialiased min-h-screen bg-background text-black"
           )}
         >
+          <Navbar {...navbarProps} />
           {children}
+          <Footer />
         </body>
       </html>
     </ContextProvider>

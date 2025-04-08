@@ -1,49 +1,40 @@
 "use client";
 
-import { Lock, Mail } from "lucide-react";
+import { ApiError } from "@/api/error";
+import { SectionHeader } from "@/components";
+import { useAuth } from "@/context/auth";
+import { FormProvider, Input, Submit } from "@/context/form";
+import { createAction } from "@/context/form/fn";
+import { Mail, Lock } from "lucide-react";
 import { Suspense } from "react";
-import { z } from "zod";
-import Link from "next/link";
-import { useAuth } from "@/context";
-import { createAction, FormProvider } from "@/context/form";
-import { FormHeader, FormInput, SubmitButton } from "@/context/form/components";
+import z from "zod";
 
 const LoginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string(),
 });
 
-export const LoginForm = ({ redirectPath = "/recipes/browse" }) => {
-  const { login, loginError, authLoading } = useAuth();
+export function ClientLoginForm({ redirectPath }: { redirectPath: string }) {
+  const { login, isLoading } = useAuth();
 
-  const loginAction = createAction(LoginSchema, async (formData) => {
+  const loginAction = createAction(LoginSchema, async (_, formData) => {
     try {
-      const { email, password } = formData;
-      const success = await login({ email, password }, redirectPath);
-
-      if (!success) {
-        return {
-          success: false,
-          message: loginError || "Invalid credentials",
-        };
-      }
-
+      await login(formData, redirectPath);
       return {
         success: true,
         message: "Login successful!",
       };
     } catch (error) {
-      if (error instanceof Error)
+      if (ApiError.isApiError(error)) {
         return {
           success: false,
-          message: `An unexpected error occurred: ${error.message}`,
-        };
-      else {
-        return {
-          success: false,
-          message: `An unexpected error occurred: ${String(error)}`,
+          message: error.message,
         };
       }
+      return {
+        success: false,
+        message: `${error}`,
+      };
     }
   });
 
@@ -53,42 +44,54 @@ export const LoginForm = ({ redirectPath = "/recipes/browse" }) => {
       action={loginAction}
       className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-lg rounded-lg"
     >
-      <Suspense
-        fallback={
-          <div
-            role="status"
-            aria-label="Loading header"
-            className="h-30 transition-all bg-gray-light animate-pulse rounded"
-          />
-        }
-      >
-        <FormHeader title="Login" description="Welcome back" />
-        <div className="flex flex-col gap-5">
-          <FormInput
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            icon={Mail}
-            aria-required="true"
-          />
-          <FormInput
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            icon={Lock}
-            aria-required="true"
-          />
-        </div>
-        <div className="flex gap-5 items-center">
-          <SubmitButton
-            loading={authLoading.login}
-            className="bg-black text-white w-full py-2.5 rounded-md transition-colors"
-          >
-            Login
-          </SubmitButton>
-          <Link href="/signup">Sign up instead</Link>
-        </div>
-      </Suspense>
+      <SectionHeader title="Login" description="Welcome back" />
+      <div className="flex flex-col gap-5">
+        <Input
+          name="email"
+          type="email"
+          placeholder="Enter your email"
+          icon={Mail}
+          aria-required="true"
+        />
+        <Input
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          icon={Lock}
+          aria-required="true"
+        />
+      </div>
+      <div className="flex gap-5 items-center">
+        <Submit
+          isLoading={isLoading}
+          loadingText="Logging in..."
+          className="bg-black text-white"
+        >
+          Login
+        </Submit>
+        <a
+          href="/signup"
+          className="w-max whitespace-nowrap bg-gray-light text-gray-dark hover:bg-gray hover:text-black transition-colors duration-200 ease-in-out px-4 py-2 rounded-md"
+        >
+          Signup
+        </a>
+      </div>
     </FormProvider>
   );
-};
+}
+
+function FormSkeleton() {
+  return (
+    <div className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-md rounded-lg space-y-4"></div>
+  );
+}
+
+export function ClientLoginWrapper({ redirectPath }: { redirectPath: string }) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Suspense fallback={<FormSkeleton />}>
+        <ClientLoginForm redirectPath={redirectPath} />
+      </Suspense>
+    </div>
+  );
+}

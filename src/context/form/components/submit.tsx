@@ -1,34 +1,51 @@
-import clsx from "clsx";
+"use client";
+
+import {
+  Button,
+  ButtonAsButton,
+  ButtonAsLink,
+  ButtonProps,
+} from "@/components/button";
 import { Loader2 } from "lucide-react";
+import { useFormStatus } from "react-dom";
+import { useFormContext } from "react-hook-form";
 
-import { Button, ButtonProps } from "@/components/";
+interface SubmitButtonProps extends ButtonAsButton {
+  isLoading?: boolean;
+  loadingText?: string;
+}
 
-import { useForm } from "../hook";
+export function Submit({
+  children,
+  isLoading,
+  loadingText = "Processing...",
+  className,
+  ...props
+}: SubmitButtonProps) {
+  const { formState } = useFormContext();
+  const { pending } = useFormStatus();
 
-type SubmitButtonProps = ButtonProps & { loading?: boolean };
-export const SubmitButton = (props: SubmitButtonProps) => {
-  const { isPending } = useForm();
-  const {
-    formState: { isSubmitting },
-  } = useForm();
-  const { children, className, loading = false, ...rest } = props;
+  const isSubmitting = pending || isLoading;
+  const isDisabled = !formState.isValid || isSubmitting;
+
   return (
     <Button
       type="submit"
-      disabled={isPending || isSubmitting}
-      aria-disabled={isPending || isSubmitting}
-      className={clsx(className)}
-      {...rest}
+      disabled={isDisabled}
+      aria-disabled={isDisabled}
+      className={`transition-all duration-200 ease-in-out bg-black text-white w-full py-2.5 rounded-md 
+        ${isDisabled ? "opacity-70 cursor-not-allowed" : "cursor-pointer hover:shadow-md"}
+        ${className}`}
+      {...props}
     >
-      {isPending || loading ? (
-        <Loader2
-          className={clsx(
-            "animate-spin pointer-events-none cursor-not-allowed",
-          )}
-        />
+      {isSubmitting ? (
+        <span className="flex items-center gap-2.5">
+          <Loader2 className="h-5 w-5 animate-spin" />
+          {loadingText}
+        </span>
       ) : (
         children
       )}
     </Button>
   );
-};
+}

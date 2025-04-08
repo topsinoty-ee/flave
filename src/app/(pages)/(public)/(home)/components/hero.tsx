@@ -2,7 +2,10 @@
 
 export const Hero = () => {
   return (
-    <section className="h-[calc(100vh+2rem)] flex w-full section bg-foreground -mt-5">
+    <section
+      style={{ backgroundAttachment: "none" }}
+      className="h-[calc(100vh+2rem)] flex w-full section bg-foreground bg-scroll -mt-5 p-0"
+    >
       {/* <div className="w-full h-[calc(90%-28px)] bg-black grid grid-cols-3 grid-rows-2">
         <Image src="/NEW-HERO-IMAGE-TOP-1.png" fill priority alt="" />
         <Image
@@ -24,7 +27,7 @@ export const Hero = () => {
           <h6>Yes or No</h6>
         </div>
       </div> */}
-      <div className="home-hero-bg w-full h-[calc(90%-28px)] bg-black bg-no-repeat bg-contain" />
+      <div className="home-hero-bg w-full h-[calc(90%-28px)] bg-black bg-no-repeat bg-cover" />
     </section>
   );
 };

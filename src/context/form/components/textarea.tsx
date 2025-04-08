@@ -1,0 +1,64 @@
+import { Check, X } from "lucide-react";
+import { ComponentProps } from "react";
+import { FieldValues, Path } from "react-hook-form";
+import { useFormContext } from "../hook";
+import { errorStyles, inputStyles, normalStyles, validStyles } from "./styles";
+import clsx from "clsx";
+
+export function Textarea<T extends FieldValues>({
+  name,
+  label,
+  ...props
+}: {
+  name: Path<T>;
+  label?: string;
+} & ComponentProps<"textarea">) {
+  const {
+    register,
+    formState: { errors },
+    getFieldState,
+  } = useFormContext<T>();
+
+  const fieldState = getFieldState(name);
+  const error = errors[name];
+  const isValid = !error && fieldState.isDirty;
+
+  return (
+    <div className="flex flex-col gap-1 w-full">
+      {label && (
+        <label className="block text-sm font-medium text-gray-dark">
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        <textarea
+          {...register(name)}
+          {...props}
+          className={clsx(
+            `${inputStyles} ${
+              error ? errorStyles : isValid ? validStyles : normalStyles
+            }`,
+            {
+              disabledStyles: props.disabled,
+              errorStyles: !!error,
+              validStyles: isValid,
+              normalStyles: !error && !isValid,
+            }
+          )}
+          aria-invalid={!!error}
+        />
+        {isValid && (
+          <div className="absolute right-2.5 top-3 text-success">
+            <Check className="h-5 w-5" />
+          </div>
+        )}
+      </div>
+      {error && (
+        <p className="text-sm text-error flex items-center gap-1">
+          <X className="h-5 w-5" />
+          {String(error.message || "Invalid input")}
+        </p>
+      )}
+    </div>
+  );
+}

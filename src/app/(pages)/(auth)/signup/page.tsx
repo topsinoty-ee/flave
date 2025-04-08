@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { SignupForm } from "./form";
+import { ClientSignupWrapper } from "./form";
 
 function FormSkeleton() {
   return (
@@ -32,7 +32,7 @@ export default async function SignupPage({
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Suspense fallback={<FormSkeleton />}>
-        <SignupForm redirectPath={redirectPath} />
+        <ClientSignupWrapper redirectPath={redirectPath} />
       </Suspense>
     </div>
   );

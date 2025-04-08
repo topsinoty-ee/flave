@@ -1,135 +1,174 @@
 "use client";
-import { AxiosError } from "axios";
+
+import { useContext } from "react";
 import { useRouter } from "next/navigation";
-import { useCallback, useContext, useState } from "react";
-
-import { AuthContext } from "@/context";
-import { isResource, Maybe, Resource } from "@/types/";
-
+import * as actions from "./actions";
+import {
+  AuthState,
+  BareActionFunction,
+  EnhancedActionFunction,
+  AuthenticationResponse,
+  LoginPayload,
+  SignupPayload,
+} from "./types";
+import { AuthContext } from ".";
 import { AuthError } from "./error";
 
-import type { LoginPayload, SignupPayload } from "./types";
+interface AuthenticationHookResult extends AuthState {
+  updateAuthState: (newState: Partial<AuthState>) => void;
+  actions: Record<string, EnhancedActionFunction>;
+}
 
-export const useAuth = () => {
+interface ActionExecutionOptions {
+  success?: string;
+  error?: string;
+}
+
+export interface AuthActions {
+  login(credentials: LoginPayload, redirectOptions?: string): Promise<void>;
+  login(
+    credentials: LoginPayload,
+    redirectOptions?: ActionExecutionOptions
+  ): Promise<void>;
+
+  logout(redirectOptions?: string): Promise<void>;
+  logout(redirectOptions?: ActionExecutionOptions): Promise<void>;
+
+  signup(
+    registrationData: SignupPayload,
+    redirectOptions?: string
+  ): Promise<void>;
+  signup(
+    registrationData: SignupPayload,
+    redirectOptions?: ActionExecutionOptions
+  ): Promise<void>;
+}
+
+export const useAuth = (): AuthenticationHookResult & AuthActions => {
   const context = useContext(AuthContext);
-  const router = useRouter();
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [signupError, setSignupError] = useState<string | null>(null);
-  const [authLoading, setAuthLoading] = useState({
-    login: false,
-    signup: false,
-    logout: false,
-  });
+  const navigationRouter = useRouter();
 
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  if (!context)
+    throw new Error(
+      "Authentication context must be used within an AuthenticationProvider"
+    );
 
-  const enhancedLogin = useCallback(
-    async (credentials: LoginPayload, redirectTo = "/recipes/browse") => {
-      setLoginError(null);
-      setAuthLoading((prev) => ({ ...prev, login: true }));
+  const { updateAuthState, ...authenticationState } = context;
 
+  const handleActionExecution = async <
+    ActionParameters extends unknown[],
+    ActionResult,
+  >(
+    action: BareActionFunction<ActionParameters, ActionResult>,
+    parameters: ActionParameters,
+    redirectOptions?: ActionExecutionOptions
+  ): Promise<ActionResult> => {
+    try {
+      updateAuthState({
+        isLoading: true,
+        error: null,
+      });
+      const actionResult = await action(...parameters);
+
+      if (redirectOptions?.success) {
+        navigationRouter.push(redirectOptions.success);
+      }
+
+      return actionResult;
+    } catch (error) {
+      const formattedError =
+        error instanceof Error
+          ? new AuthError(error.message)
+          : new AuthError("An unexpected authentication error occurred");
+
+      updateAuthState({
+        error: formattedError,
+        isLoading: false,
+      });
+
+      if (redirectOptions?.error) {
+        navigationRouter.push(redirectOptions.error);
+      }
+
+      throw formattedError;
+    } finally {
+      updateAuthState({ isLoading: false });
+    }
+  };
+
+  const createEnhancedAction = <
+    ActionParameters extends unknown[],
+    ActionResult,
+  >(
+    action: BareActionFunction<ActionParameters, ActionResult>
+  ): EnhancedActionFunction<ActionParameters, ActionResult> => {
+    return async (
+      ...parameters: ActionParameters
+    ): Promise<AuthenticationResponse<ActionResult>> => {
       try {
-        await context.login(credentials);
-        router.push(redirectTo);
-        return true;
+        const result = await action(...parameters);
+        return { result };
       } catch (error) {
-        let errorMessage = "Login failed";
-
-        if (error instanceof AuthError) {
-          errorMessage = error.message;
-        } else if (error instanceof AxiosError) {
-          errorMessage = error.response?.data?.message || error.message;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-
-        setLoginError(errorMessage);
-        return false;
-      } finally {
-        setAuthLoading((prev) => ({ ...prev, login: false }));
+        return {
+          error:
+            error instanceof Error
+              ? new AuthError(error.message)
+              : new AuthError("Action execution failed"),
+          result: undefined,
+        };
       }
-    },
-    [context, router],
+    };
+  };
+
+  const enhancedActions = Object.entries(actions).reduce(
+    (accumulator, [actionName, actionFunction]) => ({
+      ...accumulator,
+      [actionName]: createEnhancedAction(actionFunction as BareActionFunction),
+    }),
+    {} as Record<string, EnhancedActionFunction>
   );
 
-  const enhancedSignup = useCallback(
-    async (credentials: SignupPayload, redirectTo = "/dashboard") => {
-      setSignupError(null);
-      setAuthLoading((prev) => ({ ...prev, signup: true }));
+  const login = async (
+    credentials: LoginPayload,
+    redirectOptions?: string | ActionExecutionOptions
+  ): Promise<void> => {
+    const options =
+      typeof redirectOptions === "string"
+        ? { success: redirectOptions }
+        : redirectOptions;
 
-      try {
-        await context.signup(credentials);
-        router.push(redirectTo);
-        return true;
-      } catch (error) {
-        let errorMessage = "Signup failed";
+    await handleActionExecution(actions.login, [credentials], options);
+  };
 
-        if (error instanceof AuthError) {
-          errorMessage = error.message;
-        } else if (error instanceof AxiosError) {
-          errorMessage = error.response?.data?.message || error.message;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        }
+  const logout = async (
+    redirectOptions?: string | ActionExecutionOptions
+  ): Promise<void> => {
+    const options =
+      typeof redirectOptions === "string"
+        ? { success: redirectOptions }
+        : redirectOptions;
 
-        setSignupError(errorMessage);
-        return false;
-      } finally {
-        setAuthLoading((prev) => ({ ...prev, signup: false }));
-      }
-    },
-    [context, router],
-  );
+    await handleActionExecution(actions.logout, [], options);
+  };
 
-  const enhancedLogout = useCallback(
-    async (redirectTo = "/login") => {
-      setAuthLoading((prev) => ({ ...prev, logout: true }));
+  const signup = async (
+    registrationData: SignupPayload,
+    redirectOptions?: string | ActionExecutionOptions
+  ): Promise<void> => {
+    const options =
+      typeof redirectOptions === "string"
+        ? { success: redirectOptions }
+        : redirectOptions;
 
-      try {
-        await context.logout();
-        router.push(redirectTo);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Logout error:", error.message);
-        }
-      } finally {
-        setAuthLoading((prev) => ({ ...prev, logout: false }));
-      }
-    },
-    [context, router],
-  );
-
-  const isOwner = useCallback(
-    (resource: Maybe<string | Resource>): boolean => {
-      if (!context.user) return false;
-
-      if (typeof resource === "string") {
-        return context.user._id === resource;
-      }
-
-      if (isResource(resource)) {
-        return context.user._id === resource.user._id;
-      }
-
-      return false;
-    },
-    [context.user],
-  );
-
-  const isLoading = context.isLoading;
-  const isAuthenticated = context.isAuthenticated;
-  const user = context.user;
+    await handleActionExecution(actions.signup, [registrationData], options);
+  };
 
   return {
-    user,
-    isLoading,
-    isAuthenticated,
-    loginError,
-    signupError,
-    authLoading,
-    login: enhancedLogin,
-    signup: enhancedSignup,
-    logout: enhancedLogout,
-    isOwner,
+    ...authenticationState,
+    updateAuthState,
+    actions: enhancedActions,
+    login,
+    logout,
+    signup,
   };
 };

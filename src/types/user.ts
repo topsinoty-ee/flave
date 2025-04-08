@@ -1,15 +1,26 @@
+import { Recipe } from "./recipe";
+
 export interface User {
   _id: string;
-  userName?: string;
+  username?: string;
   firstName: string;
   lastName: string;
   email: string;
-  avatar: string | { url: string };
+  src: string | { url: string };
   role: "User" | "Admin";
-  recipes: Array<string>;
-  drafts: Array<string>;
+  // recipes: Array<Recipe>;
+  savedDrafts: Array<Recipe>;
   reviews: Array<string>;
-  favouritedRecipes: Array<string>;
+  favouritedRecipes: Array<string>; //Array<Recipe>;
   weightedTags: Array<{ tags: string; weight: number }>;
   description?: string;
+}
+
+export function isUser(user: unknown): user is User {
+  return (
+    typeof user === "object" &&
+    user !== null &&
+    "_id" in user &&
+    "username" in user
+  );
 }

@@ -1,7 +1,6 @@
 "use client";
 
-import clsx from "clsx";
-import { defaultTo } from "lodash";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createContext,
   startTransition,
@@ -9,112 +8,114 @@ import {
   useEffect,
 } from "react";
 import {
-  DefaultValues,
-  FormProvider as ReactHookFormProvider,
-  Path,
   useForm,
+  Path,
+  FormProvider as RHFProvider,
+  FieldValues,
 } from "react-hook-form";
 import { z, ZodObject, ZodRawShape } from "zod";
+import { FormContextConfig, FormProviderProps } from "./types";
+import clsx from "clsx";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+export function createFormContext<
+  TFieldValues extends FieldValues = FieldValues,
+>() {
+  return createContext<FormContextConfig<TFieldValues> | undefined>(undefined);
+}
 
-import { ActionStateFor, FormContextConfig } from "./types";
+export const FormContext = createFormContext();
+export * from "./hook";
+export * from "./types";
+export * from "./fn/createAction";
+export * from "./components";
 
-export const FormContext = createContext<FormContextConfig | undefined>(
-  undefined,
-);
+const appendFormData = (formData: FormData, key: string, value: unknown) => {
+  if (value === undefined || value === null) return;
 
-type FormProviderProps<
-  Schema extends ZodObject<ZodRawShape>,
-  DataType = unknown,
-> = {
-  schema: Schema;
-  action: (
-    _prevState: ActionStateFor<z.infer<Schema>, DataType> | null,
-    formData: FormData,
-  ) => Promise<ActionStateFor<z.infer<Schema>, DataType>>;
-  children: React.ReactNode;
-  onSubmit?: (data: z.infer<Schema>) => void;
-  defaultValues?: DefaultValues<z.infer<Schema>>;
-  className?: string;
-  formProps?: React.ComponentProps<"form">;
+  if (value instanceof Blob) {
+    formData.append(key, value);
+  } else if (value instanceof Date) {
+    formData.append(key, value.toISOString());
+  } else if (Array.isArray(value)) {
+    value.forEach((item, index) => {
+      appendFormData(formData, `${key}[${index}]`, item);
+    });
+  } else if (typeof value === "object") {
+    Object.entries(value).forEach(([subKey, subValue]) => {
+      appendFormData(formData, `${key}.${subKey}`, subValue);
+    });
+  } else {
+    formData.append(key, value.toString());
+  }
 };
 
-export const FormProvider = <
-  Schema extends ZodObject<ZodRawShape>,
-  DataType = unknown,
->({
+export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
   schema,
   action,
-  onSubmit,
   children,
   defaultValues,
   className,
-  formProps,
+  onSuccess,
+  onError,
   ...rest
-}: FormProviderProps<Schema, DataType>) => {
+}: FormProviderProps<Schema>) => {
   const [state, formAction, isPending] = useActionState(action, null);
   const methods = useForm<z.infer<Schema>>({
     resolver: zodResolver(schema),
     defaultValues,
+    mode: "onChange",
   });
 
   useEffect(() => {
     if (state?.fieldErrors) {
-      Object.entries(state.fieldErrors).forEach(([field, message]) => {
-        if (field === "root") {
-          methods.setError("root.server", {
-            type: "server",
-            message: String(message),
-          });
-        } else {
-          methods.setError(field as Path<z.infer<Schema>>, {
-            type: "server",
-            message: String(message),
-          });
-        }
+      Object.entries(state.fieldErrors).forEach(([field, errors]) => {
+        methods.setError(field as Path<z.infer<Schema>>, {
+          type: "server",
+          message: errors?.join(", "),
+        });
       });
+      onError?.(methods.formState.errors);
     }
 
-    if (state?.message && !state?.fieldErrors) {
-      methods.reset(defaultTo(defaultValues, {}));
+    if (state?.success) {
+      onSuccess?.(methods.getValues());
     }
-  }, [state, methods, defaultValues]);
+  }, [state, methods, onError, onSuccess]);
 
-  const handleSubmit = (data: z.infer<Schema>) => {
-    if (onSubmit) {
-      onSubmit(data);
-    }
+  const handleSubmit = methods.handleSubmit((data) => {
+    const formData = new FormData();
+    console.log("data: ", data);
+    Object.entries(data).forEach(([key, value]) => {
+      appendFormData(formData, key, value);
+    });
+
+    console.log(formData);
+
     startTransition(() => {
-      const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value as string | Blob);
-      });
       formAction(formData);
     });
-  };
+  });
 
   return (
-    <FormContext.Provider
-      value={{
-        isPending,
-        state,
-      }}
-    >
-      <ReactHookFormProvider {...methods}>
+    <FormContext.Provider value={{ isPending, state }}>
+      <RHFProvider {...methods}>
         <form
-          onSubmit={methods.handleSubmit(handleSubmit)}
-          className={clsx(className)}
-          {...formProps}
+          onSubmit={handleSubmit}
+          className={clsx("transition-all min-h-max", className)}
           {...rest}
         >
           {children}
-          {state?.message && <small aria-live="polite">{state.message}</small>}
+          {/* {state?.message && (
+            <small
+              aria-live="polite"
+              className="block mt-2 text-sm text-red-600"
+            >
+              {state.message}
+            </small>
+          )} */}
+          {/* <pre>{JSON.stringify(state)}</pre> */}
         </form>
-      </ReactHookFormProvider>
+      </RHFProvider>
     </FormContext.Provider>
   );
 };
-
-export * from "./fn";
-export * from "./hook";

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
-import { useAuth } from "@/context";
+import { useAuth } from "@/context/auth";
 import { Button } from "@/components";
 
 interface NavigationProps {

@@ -1,10 +1,20 @@
 "use server";
 
-import { request } from "@/axios/request";
+import { ApiError } from "@/api/error";
+import { API } from "@/api";
 import { cookies } from "next/headers";
+import { AuthError } from "../error";
 
-export const logout = async () => {
-  await request({ method: "POST", endpoint: "/users/logout" });
-  (await cookies()).delete("session_token");
-  // console.log(cookies());
-};
+export async function logout() {
+  try {
+    await API.get("/users/logout");
+    (await cookies()).delete("session_token");
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    } else if (error instanceof AuthError) {
+      throw error;
+    }
+    throw new ApiError("Logout failed", 0, "LOGOUT_FAILED", String(error));
+  }
+}

@@ -1,31 +1,32 @@
 "use server";
 
-import { ApiError, request } from "@/axios/request";
-import { AuthResponse, User } from "@/types";
-import { setCookiesFromHeader } from "@/util/cookies";
-
+import { API } from "@/api";
 import { LoginPayload } from "../types";
+import { User } from "@/types";
+import { ApiError } from "@/api/error";
+import { setCookiesFromHeader } from "../utils";
+import { AuthError } from "../error";
 
-export const login = async (data: LoginPayload) => {
+export async function login(payload: LoginPayload) {
   try {
-    const req = await request<AuthResponse<User>>({
-      method: "POST",
-      endpoint: "/users/login",
-      data,
+    const {
+      headers,
+      data: { user },
+    } = await API.post<{ user: User }>("/users/login", payload, {
+      includeHeaders: true,
     });
-
-    await setCookiesFromHeader(req.headers["set-cookie"]);
-
-    return req.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message || "Login failed");
-    } else if (error instanceof ApiError) {
-      throw new ApiError(error.message, {
-        message: error.message,
-        cause: typeof error.cause === "string" ? error.cause : undefined,
-      });
+    const cookies = headers.get("set-cookie");
+    if (cookies) {
+      await setCookiesFromHeader(cookies);
     }
-    throw new Error("An unexpected error occurred during login");
+
+    return user;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    } else if (error instanceof AuthError) {
+      throw error;
+    }
+    throw new ApiError("Login failed", 0, "LOGIN_FAILED", String(error));
   }
-};
+}

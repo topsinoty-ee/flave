@@ -1,30 +1,63 @@
-import { get } from "lodash";
 import { useContext } from "react";
-import { useFormStatus } from "react-dom";
-import { FieldError, FieldValues, useFormContext } from "react-hook-form";
+import {
+  FieldValues,
+  useFormContext as useRHFormContext,
+  Path,
+  DefaultValues,
+} from "react-hook-form";
+import { FormContext } from ".";
 
-import { FormContext } from "./";
-
-export const useForm = <
-  TypeOfFieldValues extends FieldValues = FieldValues,
+export const useFormContext = <
+  TFieldValues extends FieldValues = FieldValues,
 >() => {
   const context = useContext(FormContext);
-  const methods = useFormContext<TypeOfFieldValues>();
-  const { pending } = useFormStatus();
+  const methods = useRHFormContext<TFieldValues>();
 
-  if (!methods || !context)
-    throw new Error("useFormContext must be used within FormProvider");
+  if (!context || !methods) {
+    throw new Error("useFormContext must be used within a FormProvider");
+  }
 
   const { formState } = methods;
-  const error = get(formState.errors, "root.server") as FieldError | undefined;
+  const serverError = formState.errors.root?.server as FieldValues | undefined;
+  const isSubmitting = formState.isSubmitting || context.isPending;
 
   return {
     ...methods,
     ...context,
-    isSubmitting: pending || context.isPending || formState.isSubmitting,
+    isSubmitting,
+    serverError,
     submitCount: formState.submitCount,
-    error,
-    isPending: context.isPending,
     state: context.state,
+    setError: (name: Path<TFieldValues>, error: FieldValues) => {
+      methods.setError(name, error);
+    },
+    clearErrors: (name?: Path<TFieldValues>) => {
+      methods.clearErrors(name);
+    },
+    setValue: (
+      name: Path<TFieldValues>,
+      value: TFieldValues[Path<TFieldValues>],
+      options?: { shouldValidate?: boolean; shouldDirty?: boolean }
+    ) => {
+      methods.setValue(name, value, options);
+    },
+    getValues: (name: Path<TFieldValues>) => {
+      return methods.getValues(name);
+    },
+    reset: (values?: DefaultValues<TFieldValues>) => {
+      methods.reset(values);
+    },
+    setFocus: (name: Path<TFieldValues>) => {
+      methods.setFocus(name);
+    },
+    trigger: (name?: Path<TFieldValues> | Path<TFieldValues>[]) => {
+      return methods.trigger(name);
+    },
+    getFieldState: (name: Path<TFieldValues>) => {
+      return methods.getFieldState(name);
+    },
+    getFieldProps: (name: Path<TFieldValues>) => {
+      return methods.register(name);
+    },
   };
 };

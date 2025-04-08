@@ -3,5 +3,5 @@ export default function RecipePageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="mt-10 flex gap-10 flex-col">{children}</div>;
+  return <div className="flex gap-10 flex-col">{children}</div>;
 }

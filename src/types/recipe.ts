@@ -5,7 +5,7 @@ import type { Tag } from "./tag";
 type Ingredient = {
   value: string;
   quantity: number;
-  _id: string;
+  unitsOfMeasurement: string;
 };
 
 export type Recipe = {
@@ -20,8 +20,8 @@ export type Recipe = {
   ingredients: Array<Ingredient>;
   instructions: Array<string>;
   categories: Array<string>;
-  tags: Array<Tag>;
-  user: Pick<User, "_id" | "firstName" | "lastName" | "avatar">;
+  tags: Array<Omit<Tag, "recipes">>;
+  user: Pick<User, "_id" | "firstName" | "lastName" | "src" | "username">;
   reviews: Array<Review>;
   ratingsAmount: number;
   ratingsAvg: number;

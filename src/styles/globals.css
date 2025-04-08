@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --muted: hsl(0, 0%, 30%);
+  --muted: #4d4d4d;
   --font-jakarta-sans: Plus Jakarta Sans;
   --overlay: #141414af;
 }
 
 body {
   font-family: var(--font-jakarta-sans), Arial, Helvetica, sans-serif;
+  scroll-behavior: smooth;
 }
 
 @theme inline {
@@ -15,33 +16,33 @@ body {
 
   --color-*: initial;
 
-  --color-background: hsl(140, 2%, 100%);
-  --color-foreground: hsla(48, 95%, 52%, 1);
+  --color-background: #ffffff;
+  --color-foreground: #f5c518;
 
-  --color-yellow-light: hsl(48, 95%, 80%);
-  --color-yellow: hsl(48, 95%, 60%);
-  --color-yellow-dark: hsl(48, 95%, 40%);
+  --color-yellow-light: #f8e48c;
+  --color-yellow: #f5c518;
+  --color-yellow-dark: #d4a50c;
 
   --color-black: #141414;
-  --color-white: hsl(0, 0%, 100%);
+  --color-white: #ffffff;
 
   --color-muted: var(--muted);
 
-  --color-gray-light: hsl(0, 0%, 90%);
-  --color-gray: hsl(0, 0%, 70%);
-  --color-gray-dark: hsl(0, 0%, 50%);
+  --color-gray-light: #e6e6e6;
+  --color-gray: #b3b3b3;
+  --color-gray-dark: #808080;
 
-  --color-error-light: hsl(0, 100%, 90%);
-  --color-error: hsl(0, 100%, 70%);
-  --color-error-dark: hsl(0, 100%, 50%);
+  --color-error-light: #ffcccc;
+  --color-error: #ff6666;
+  --color-error-dark: #ff0000;
 
-  --color-success-light: hsl(120, 100%, 90%);
-  --color-success: hsl(120, 100%, 70%);
-  --color-success-dark: hsl(120, 100%, 50%);
+  --color-success-light: #ccffcc;
+  --color-success: #66ff66;
+  --color-success-dark: #00ff00;
 
-  --color-warning-light: hsl(40, 100%, 90%);
-  --color-warning: hsl(40, 100%, 70%);
-  --color-warning-dark: hsl(40, 100%, 50%);
+  --color-warning-light: #ffebcc;
+  --color-warning: #ffb366;
+  --color-warning-dark: #ff8000;
 }
 
 @theme {
@@ -53,6 +54,17 @@ body {
 }
 
 @layer base {
+  * {
+    box-sizing: border-box;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-0;
+  }
+
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -65,38 +77,30 @@ body {
     appearance: textfield;
   }
 
-  .bg-white,
-  .bg-background,
-  .bg-white *,
-  .bg-background *,
-  main * {
-    @apply text-black;
-  }
-
   .bg-black,
-  .bg-black * {
-    --muted: hsl(0, 0%, 60%);
+  .bg-black > * {
+    --muted: #999999;
     @apply text-white;
   }
 
-  .bg-black a {
-    @apply hover:text-gray-light;
+  ::placeholder {
+    @apply text-gray-dark opacity-75;
   }
 
   h1 {
-    @apply text-6xl font-semibold leading-tight;
+    @apply text-6xl font-black leading-tight tracking-tight;
   }
 
   h2 {
-    @apply text-4xl font-semibold;
+    @apply text-4xl font-extrabold tracking-tight;
   }
 
   h3 {
-    @apply text-3xl font-semibold;
+    @apply text-3xl font-bold tracking-tight;
   }
 
   h4 {
-    @apply text-2xl font-medium;
+    @apply text-2xl font-semibold tracking-tight;
   }
 
   h5 {
@@ -106,11 +110,33 @@ body {
   h6 {
     @apply text-lg font-normal;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply first:mt-0;
+  }
+
+  .bg-black,
+  .bg-black > * {
+    @apply text-white;
+  }
+  .bg-white,
+  .bg-background,
+  .bg-white > *,
+  .bg-background > * {
+    @apply text-black;
+  }
+
   h1,
   h2,
   h3,
   h4 {
     @apply uppercase;
+    font-family: var(--font-jakarta-sans), Arial, sans-serif;
   }
 
   h5,
@@ -121,46 +147,86 @@ body {
   .body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     min-height: 100vh;
     background-color: var(--background);
     overflow-x: hidden;
     color: var(--foreground);
-    @apply font-sans text-sm md:text-[1rem] place-content-evenly;
+    @apply font-sans text-sm md:text-[1rem];
+    position: relative;
   }
 
   footer,
   header {
     @apply flex-grow px-5 md:px-10 lg:px-20;
   }
-  /* 
-  .main > div {
-    @apply container mx-auto flex flex-col gap-10;
-  } */
-
-  /* .main > div > * {
-    @apply px-5 md:px-10 lg:px-20;
-  } */
 
   a {
-    @apply transition-colors text-muted hover:text-gray-dark;
+    @apply transition-colors text-muted focus:text-yellow-dark;
+    position: relative;
+    text-decoration: none;
   }
 
-  section {
-    @apply w-full;
+  input:invalid {
+    @apply border-error-dark ring-1 ring-error-dark;
+  }
+
+  input:valid {
+    @apply border-success-dark ring-1 ring-success-dark;
+  }
+  input:focus {
+    @apply border-yellow-dark ring-0;
+  }
+  input:focus-visible {
+    @apply border-yellow-dark ring-0;
+  }
+
+  .error-message {
+    @apply text-error-dark text-sm flex items-center gap-2.5;
+  }
+
+  @media (max-width: 768px) {
+    .hero-pattern {
+      background-position: 75% center;
+    }
+
+    .content-container {
+      @apply px-4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+
+  .password::-ms-clear,
+  .password::-ms-reveal,
+  input::-ms-clear,
+  input::-ms-reveal {
+    display: none;
   }
 }
 
 @layer components {
   .golden-circle {
     @apply border rounded-full aspect-square border-yellow;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
-}
 
-@layer utilities {
-  div:has(img).image-flex {
-    display: flex !important;
+  .golden-circle:hover {
+    @apply shadow-lg;
+    transform: scale(1.05);
+  }
+
+  .content-container {
+    @apply container mx-auto px-5 md:px-10 lg:px-20;
+    max-width: 1440px;
   }
 
   .body.bg-foreground,
@@ -172,7 +238,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
   }
-
   .drafts-hero-bg {
     background-image: url("../../public/images/drafts-bg.png");
   }
@@ -180,19 +245,27 @@ body {
   .diamond-pattern-bg {
     background-image: url("../../public/images/diamond-pattern.png");
   }
+
   .home-food-collage-for-hero-bg {
     background-image: url("../../public/images/collage-for-home-page.png");
   }
+
   .home-hero-bg {
     background-image: url("../../public/LANDING-PAGE-HERO.png");
   }
+
+  .user-hero-bg {
+    background-image: url("../../public/NEW-YELLOW-DECAL-WITH-MAN.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
   .browse-hero-bg {
     background-image: url("../../public/NEW-BROWSE-FULLHERO-W_TEXT.png");
-    /* background-color: var(--overlay); */
     background-size: 110%;
     background-position: 50% 90%;
-    /* background-blend-mode: multiply; */
   }
+
   .recipes-hero-bg {
     background-image: url("../../public/NEW-HERO-IMG-TOP-3.jpg");
     background-color: var(--overlay);
@@ -200,9 +273,44 @@ body {
     background-position: 50% 75%;
     background-blend-mode: multiply;
   }
+
+  .hero-pattern {
+    @apply relative overflow-hidden;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .hero-pattern::before {
+    content: "";
+    @apply absolute inset-0 bg-[var(--overlay)] opacity-50;
+    z-index: 0;
+    mix-blend-mode: multiply;
+  }
+
+  .recipe-details-man-decal-bg {
+    background-image: url("../../public/NEW-GRAY-DECAL-WITH-MAN.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0 80%;
+  }
 }
 
 @layer utilities {
+  div:has(img).image-flex {
+    display: flex !important;
+  }
+
+  .body.bg-foreground.bg-scroll,
+  .body.yellow.bg-scroll,
+  .section.bg-foreground.bg-scroll,
+  .section.bg-yellow.bg-scroll {
+    background-image: url("../../public/yellow-pattern-bg.png");
+    background-position: 0% center;
+    background-attachment: scroll;
+    background-size: 62.5%;
+    background-repeat: repeat;
+  }
   @keyframes scroll {
     0% {
       transform: translateX(0%);
@@ -214,16 +322,30 @@ body {
 
   .animate-marquee {
     animation: scroll var(--speed, 30s) linear infinite;
-    animation-name: scroll;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-fill-mode: forwards;
-    animation-play-state: running;
-    transition: --speed 1s ease;
+    will-change: transform;
   }
 
   .slow-on-hover:hover {
     --speed: 60s;
+  }
+
+  .loading-state {
+    @apply relative overflow-hidden;
+  }
+
+  .loading-state::after {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-[#f5c51833] to-transparent;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -231,11 +353,4 @@ body {
       animation: none;
     }
   }
-}
-
-.password::-ms-clear,
-.password::-ms-reveal,
-input::-ms-clear,
-input::-ms-reveal {
-  display: none;
 }
