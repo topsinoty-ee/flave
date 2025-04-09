@@ -37,51 +37,51 @@ class OldApi {
     endpoint: string,
     options: RequestInit,
     schema: SchemaType,
-    includeHeaders: true
+    includeHeaders: true,
   ): Promise<{ data: ZodInfer<SchemaType>; headers: Headers }>;
 
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
     options: RequestInit,
     schema: SchemaType,
-    includeHeaders?: false
+    includeHeaders?: false,
   ): Promise<ZodInfer<SchemaType>>;
 
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
     options: RequestInit,
-    schema: SchemaType
+    schema: SchemaType,
   ): Promise<ZodInfer<SchemaType>>;
 
   async request(
     endpoint: string,
     options: RequestInit,
-    includeHeaders: true
+    includeHeaders: true,
   ): Promise<{ data: unknown; headers: Headers }>;
 
   async request(
     endpoint: string,
     options?: RequestInit,
-    includeHeaders?: false
+    includeHeaders?: false,
   ): Promise<unknown>;
 
   async request<RequestedType>(
     endpoint: string,
     options?: RequestInit,
-    includeHeaders?: boolean
+    includeHeaders?: boolean,
   ): Promise<RequestedType & { headers: never }>;
 
   async request<RequestedType>(
     endpoint: string,
     options?: RequestInit,
-    includeHeaders?: true
+    includeHeaders?: true,
   ): Promise<RequestedType & { headers: Headers }>;
 
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
     options: RequestInit = {},
     schemaOrIncludeHeaders?: SchemaType | boolean,
-    includeHeadersFlag?: boolean
+    includeHeadersFlag?: boolean,
   ): Promise<unknown> {
     const url = new URL(endpoint, this.baseUrl);
     console.log(url);
@@ -125,7 +125,7 @@ class OldApi {
         throw new ApiError(
           `Non-JSON response from ${url.href}`,
           500,
-          "Invalid Content-Type"
+          "Invalid Content-Type",
         );
       }
 
@@ -139,7 +139,7 @@ class OldApi {
           if (!parseResult.success) {
             throw new ValidationError(
               `Response validation failed for ${url.href}`,
-              parseResult.error.issues
+              parseResult.error.issues,
             );
           }
           parsedData = parseResult.data;
@@ -154,7 +154,7 @@ class OldApi {
       throw new ApiError(
         `Invalid response structure from ${url.href}`,
         500,
-        "Missing 'data' property in response"
+        "Missing 'data' property in response",
       );
     } catch (error) {
       if (error instanceof ApiError || error instanceof ValidationError) {
@@ -172,7 +172,7 @@ class OldApi {
         "Unknown error occurred",
         0,
         "UNKNOWN_ERROR",
-        String(error)
+        String(error),
       );
     } finally {
       controller.abort();
@@ -182,19 +182,19 @@ class OldApi {
   async get<T>(
     endpoint: string,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async get<T>(
     endpoint: string,
     options?: RequestInit,
-    includeHeaders?: boolean
+    includeHeaders?: boolean,
   ): Promise<T>;
 
   async get<T>(
     endpoint: string,
     schemaOrOptions?: ZodSchema<T> | RequestInit,
-    optionsOrIncludeHeaders?: RequestInit | boolean
+    optionsOrIncludeHeaders?: RequestInit | boolean,
   ): Promise<T> {
     console.log(endpoint, schemaOrOptions, optionsOrIncludeHeaders);
     if (schemaOrOptions instanceof ZodSchema) {
@@ -202,13 +202,13 @@ class OldApi {
         endpoint,
         (optionsOrIncludeHeaders as RequestInit) ?? {},
         schemaOrOptions,
-        false
+        false,
       );
     }
     return this.request(
       endpoint,
       (schemaOrOptions as RequestInit) ?? {},
-      (optionsOrIncludeHeaders as boolean) ?? false
+      (optionsOrIncludeHeaders as boolean) ?? false,
     );
   }
 
@@ -216,21 +216,21 @@ class OldApi {
     endpoint: string,
     body: unknown,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async post<T>(
     endpoint: string,
     body: unknown,
     options?: RequestInit,
-    includeHeaders?: true
+    includeHeaders?: true,
   ): Promise<T & { headers: Headers }>;
 
   async post<T>(
     endpoint: string,
     body: unknown,
     schemaOrOptions?: ZodSchema<T> | RequestInit,
-    optionsOrIncludeHeaders?: RequestInit | boolean
+    optionsOrIncludeHeaders?: RequestInit | boolean,
   ): Promise<T> {
     const mergedOptions: RequestInit = {
       method: "POST",
@@ -242,13 +242,13 @@ class OldApi {
         endpoint,
         { ...mergedOptions, ...(optionsOrIncludeHeaders as RequestInit) },
         schemaOrOptions,
-        false
+        false,
       );
     }
     return this.request(
       endpoint,
       { ...mergedOptions, ...(schemaOrOptions as RequestInit) },
-      (optionsOrIncludeHeaders as boolean) ?? false
+      (optionsOrIncludeHeaders as boolean) ?? false,
     );
   }
 
@@ -256,21 +256,21 @@ class OldApi {
     endpoint: string,
     body: unknown,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async put<T>(
     endpoint: string,
     body: unknown,
     options?: RequestInit,
-    includeHeaders?: boolean
+    includeHeaders?: boolean,
   ): Promise<T>;
 
   async put<T>(
     endpoint: string,
     body: unknown,
     schemaOrOptions?: ZodSchema<T> | RequestInit,
-    optionsOrIncludeHeaders?: RequestInit | boolean
+    optionsOrIncludeHeaders?: RequestInit | boolean,
   ): Promise<T> {
     const mergedOptions: RequestInit = {
       method: "PUT",
@@ -282,50 +282,50 @@ class OldApi {
         endpoint,
         { ...mergedOptions, ...(optionsOrIncludeHeaders as RequestInit) },
         schemaOrOptions,
-        false
+        false,
       );
     }
     return this.request(
       endpoint,
       { ...mergedOptions, ...(schemaOrOptions as RequestInit) },
-      (optionsOrIncludeHeaders as boolean) ?? false
+      (optionsOrIncludeHeaders as boolean) ?? false,
     );
   }
 
   async delete<T>(
     endpoint: string,
     schema?: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async delete<T>(
     endpoint: string,
     options?: RequestInit,
-    includeHeaders?: boolean
+    includeHeaders?: boolean,
   ): Promise<T>;
 
   async delete<T>(
     endpoint: string,
     schemaOrOptions?: ZodSchema<T> | RequestInit,
-    optionsOrIncludeHeaders?: RequestInit | boolean
+    optionsOrIncludeHeaders?: RequestInit | boolean,
   ): Promise<T> {
     if (schemaOrOptions instanceof ZodSchema) {
       return this.request(
         endpoint,
         (optionsOrIncludeHeaders as RequestInit) ?? {},
         schemaOrOptions,
-        false
+        false,
       );
     }
     return this.request(
       endpoint,
       (schemaOrOptions as RequestInit) ?? {},
-      (optionsOrIncludeHeaders as boolean) ?? false
+      (optionsOrIncludeHeaders as boolean) ?? false,
     );
   }
 
   private cleanHeaders(
-    headers: Record<string, unknown>
+    headers: Record<string, unknown>,
   ): Record<string, string> {
     return Object.fromEntries(
       Object.entries(headers)
@@ -333,7 +333,7 @@ class OldApi {
         .map(([key, value]) => [
           key,
           String(value as NonNullable<typeof value>),
-        ])
+        ]),
     );
   }
 }
@@ -342,5 +342,5 @@ if (typeof window === "undefined" && !process.env.BACKEND_URL) {
   throw new Error("Backend URL not set (server-side)");
 }
 export const API = new OldApi(
-  process.env.BACKEND_URL || "https://api.flave.ee"
+  process.env.BACKEND_URL || "https://api.flave.ee",
 );

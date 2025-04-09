@@ -14,7 +14,7 @@ export interface FormProviderProps<Schema extends ZodObject<ZodRawShape>>
   schema: Schema;
   action: (
     prevState: ActionState<z.infer<Schema>> | null,
-    formData: FormData
+    formData: FormData,
   ) => Promise<ActionState<z.infer<Schema>>>;
   defaultValues?: DefaultValues<z.infer<Schema>>;
   onSuccess?: (data: z.infer<Schema>) => void;

@@ -8,12 +8,12 @@ export function createAction<InputType extends FieldValues>(
   schema: ZodSchema<InputType>,
   action: (
     prevState: ActionState<InputType> | null,
-    payload: InputType
-  ) => Promise<ActionState<InputType>>
+    payload: InputType,
+  ) => Promise<ActionState<InputType>>,
 ) {
   return async (
     prevState: ActionState<InputType> | null,
-    formData: FormData | FormDataLike
+    formData: FormData | FormDataLike,
   ) => {
     try {
       // Convert FormData to proper object structure
@@ -29,7 +29,7 @@ export function createAction<InputType extends FieldValues>(
           key,
           value instanceof Blob && !(value instanceof File)
             ? new File([value], "blob")
-            : (value as string | File)
+            : (value as string | File),
         );
       }
 

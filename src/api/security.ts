@@ -22,12 +22,12 @@ export class SecurityHelper {
   }
 
   static sanitizeHeaders(
-    headers: Record<string, unknown>
+    headers: Record<string, unknown>,
   ): Record<string, string> {
     return Object.fromEntries(
       Object.entries(headers)
         .filter(([_, value]) => value !== undefined && value !== null)
-        .map(([key, value]) => [key, String(value)])
+        .map(([key, value]) => [key, String(value)]),
     );
   }
 }

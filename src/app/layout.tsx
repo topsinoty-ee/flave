@@ -72,7 +72,7 @@ export default async function RootLayout({
             jakarta.variable,
             knewave.variable,
             mulish.variable,
-            "antialiased min-h-screen bg-background text-black"
+            "antialiased min-h-screen bg-background text-black",
           )}
         >
           <Navbar {...navbarProps} />

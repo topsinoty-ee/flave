@@ -28,7 +28,7 @@ export interface AuthActions {
   login(credentials: LoginPayload, redirectOptions?: string): Promise<void>;
   login(
     credentials: LoginPayload,
-    redirectOptions?: ActionExecutionOptions
+    redirectOptions?: ActionExecutionOptions,
   ): Promise<void>;
 
   logout(redirectOptions?: string): Promise<void>;
@@ -36,11 +36,11 @@ export interface AuthActions {
 
   signup(
     registrationData: SignupPayload,
-    redirectOptions?: string
+    redirectOptions?: string,
   ): Promise<void>;
   signup(
     registrationData: SignupPayload,
-    redirectOptions?: ActionExecutionOptions
+    redirectOptions?: ActionExecutionOptions,
   ): Promise<void>;
 }
 
@@ -50,7 +50,7 @@ export const useAuth = (): AuthenticationHookResult & AuthActions => {
 
   if (!context)
     throw new Error(
-      "Authentication context must be used within an AuthenticationProvider"
+      "Authentication context must be used within an AuthenticationProvider",
     );
 
   const { updateAuthState, ...authenticationState } = context;
@@ -61,7 +61,7 @@ export const useAuth = (): AuthenticationHookResult & AuthActions => {
   >(
     action: BareActionFunction<ActionParameters, ActionResult>,
     parameters: ActionParameters,
-    redirectOptions?: ActionExecutionOptions
+    redirectOptions?: ActionExecutionOptions,
   ): Promise<ActionResult> => {
     try {
       updateAuthState({
@@ -100,7 +100,7 @@ export const useAuth = (): AuthenticationHookResult & AuthActions => {
     ActionParameters extends unknown[],
     ActionResult,
   >(
-    action: BareActionFunction<ActionParameters, ActionResult>
+    action: BareActionFunction<ActionParameters, ActionResult>,
   ): EnhancedActionFunction<ActionParameters, ActionResult> => {
     return async (
       ...parameters: ActionParameters
@@ -125,12 +125,12 @@ export const useAuth = (): AuthenticationHookResult & AuthActions => {
       ...accumulator,
       [actionName]: createEnhancedAction(actionFunction as BareActionFunction),
     }),
-    {} as Record<string, EnhancedActionFunction>
+    {} as Record<string, EnhancedActionFunction>,
   );
 
   const login = async (
     credentials: LoginPayload,
-    redirectOptions?: string | ActionExecutionOptions
+    redirectOptions?: string | ActionExecutionOptions,
   ): Promise<void> => {
     const options =
       typeof redirectOptions === "string"
@@ -141,7 +141,7 @@ export const useAuth = (): AuthenticationHookResult & AuthActions => {
   };
 
   const logout = async (
-    redirectOptions?: string | ActionExecutionOptions
+    redirectOptions?: string | ActionExecutionOptions,
   ): Promise<void> => {
     const options =
       typeof redirectOptions === "string"
@@ -153,7 +153,7 @@ export const useAuth = (): AuthenticationHookResult & AuthActions => {
 
   const signup = async (
     registrationData: SignupPayload,
-    redirectOptions?: string | ActionExecutionOptions
+    redirectOptions?: string | ActionExecutionOptions,
   ): Promise<void> => {
     const options =
       typeof redirectOptions === "string"

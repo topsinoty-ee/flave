@@ -6,10 +6,10 @@ import { validateSession } from "./validateSession";
 
 export async function getCurrentUser(): Promise<User | null>;
 export async function getCurrentUser<Data>(
-  endpoint: string
+  endpoint: string,
 ): Promise<Data | null>;
 export async function getCurrentUser<Data = User>(
-  endpoint?: string
+  endpoint?: string,
 ): Promise<Data | User | null> {
   // Validate session and get token
   const { sessionToken, isValid, currentUser } = await validateSession({

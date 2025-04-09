@@ -27,7 +27,7 @@ function FileUploadContent<T extends FieldValues>({
         if (trimmed) acc[trimmed] = [];
         return acc;
       },
-      {} as Record<string, []>
+      {} as Record<string, []>,
     ),
     maxSize,
     multiple: false,

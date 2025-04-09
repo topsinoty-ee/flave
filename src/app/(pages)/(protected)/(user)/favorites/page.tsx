@@ -3,10 +3,14 @@ import { RecipeDisplayBlock } from "@/components";
 import { Hero } from "./_components/hero";
 import { getCurrentUser, validateSession } from "@/context/auth/actions";
 import { Recipe } from "@/types/recipe";
+import clsx from "clsx";
 
 export default async function Favorites() {
   const isValid = await validateSession();
-  const faves = await getCurrentUser<Recipe[]>("favourites");
+  const faves = await getCurrentUser<Recipe[]>("favourites").catch((reason) => {
+    console.log(reason);
+    return [];
+  });
 
   if (!isValid) {
     return <h1 className="text-3xl">User not found</h1>;
@@ -14,7 +18,13 @@ export default async function Favorites() {
   return (
     <>
       <Hero />
-      <RecipeDisplayBlock className="bg-black" data={faves || []} />
+      <section
+        className={clsx({
+          "bg-black w-full itmes-center justify center": !!faves,
+        })}
+      >
+        <RecipeDisplayBlock className="bg-black" data={faves || []} />
+      </section>
     </>
   );
 }

@@ -55,7 +55,7 @@ export class Api {
     method: string,
     endpoint: string,
     response: Response,
-    duration: number
+    duration: number,
   ) {
     if (!this.debugMode) return;
 
@@ -65,7 +65,7 @@ export class Api {
         headers: Object.fromEntries(response.headers.entries()),
         statusText: response.statusText,
         body: await response.clone().json(),
-      }
+      },
     );
   }
 
@@ -73,7 +73,7 @@ export class Api {
     method: string,
     endpoint: string,
     error: Error,
-    duration: number
+    duration: number,
   ) {
     if (!this.debugMode) return;
 
@@ -88,39 +88,39 @@ export class Api {
     endpoint: string,
     options: RequestInit,
     schema: SchemaType,
-    includeHeaders: true
+    includeHeaders: true,
   ): Promise<{ data: ZodInfer<SchemaType>; headers: Headers }>;
 
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
     options: RequestInit,
     schema: SchemaType,
-    includeHeaders?: false
+    includeHeaders?: false,
   ): Promise<ZodInfer<SchemaType>>;
 
   async request(
     endpoint: string,
     options: RequestInit,
-    includeHeaders: true
+    includeHeaders: true,
   ): Promise<{ data: unknown; headers: Headers }>;
 
   async request<DataType extends object>(
     endpoint: string,
     options: RequestInit,
-    includeHeaders: true
+    includeHeaders: true,
   ): Promise<{ data: DataType; headers: Headers }>;
 
   async request(
     endpoint: string,
     options?: RequestInit,
-    includeHeaders?: boolean
+    includeHeaders?: boolean,
   ): Promise<unknown>;
 
   async request<SchemaType extends ZodSchema>(
     endpoint: string,
     options: RequestInit = {},
     schemaOrIncludeHeaders?: SchemaType | boolean,
-    includeHeadersFlag?: boolean
+    includeHeadersFlag?: boolean,
   ): Promise<unknown> {
     const url = new URL(endpoint, this.baseUrl);
     const controller = new AbortController();
@@ -170,7 +170,7 @@ export class Api {
         throw new ApiError(
           `Non-JSON response from ${url.href}`,
           500,
-          "Invalid Content-Type"
+          "Invalid Content-Type",
         );
       }
 
@@ -183,7 +183,7 @@ export class Api {
         if (!parseResult.success) {
           throw new ValidationError(
             `Response validation failed for ${url.href}`,
-            parseResult.error.issues
+            parseResult.error.issues,
           );
         }
         parsedData = parseResult.data;
@@ -212,7 +212,7 @@ export class Api {
         "Unknown error occurred",
         0,
         "UNKNOWN_ERROR",
-        String(error)
+        String(error),
       );
     } finally {
       controller.abort();
@@ -223,25 +223,25 @@ export class Api {
 
   async get<T>(
     endpoint: string,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async get<T>(
     endpoint: string,
     schema: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async get<T>(
     endpoint: string,
     schema: ZodSchema<T>,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async get<T>(
     endpoint: string,
     arg1?: ZodSchema<T> | RequestInit,
-    arg2?: RequestInit
+    arg2?: RequestInit,
   ): Promise<T | { data: T; headers: Headers }> {
     let options: RequestInit = {};
     let includeHeaders = false;
@@ -264,34 +264,34 @@ export class Api {
   async post<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async post<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async post<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
     schema: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async post<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
     schema: ZodSchema<T>,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async post<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
     arg1?: ZodSchema<T> | RequestInit,
-    arg2?: RequestInit
+    arg2?: RequestInit,
   ): Promise<T | { data: T; headers: Headers }> {
     let schema: ZodSchema<T> | undefined;
     let options: RequestInit = {};
@@ -312,7 +312,7 @@ export class Api {
       this.cleanHeaders({
         ...this.defaultOptions.headers,
         ...options.headers,
-      })
+      }),
     );
 
     const isJson = !(body instanceof FormData) && !headers.has("Content-Type");
@@ -337,34 +337,34 @@ export class Api {
   async put<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async put<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async put<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
     schema: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async put<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
     schema: ZodSchema<T>,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async put<T>(
     endpoint: string,
     body: BodyInit | Record<string, unknown>,
     arg1?: ZodSchema<T> | RequestInit,
-    arg2?: RequestInit
+    arg2?: RequestInit,
   ): Promise<T | { data: T; headers: Headers }> {
     let schema: ZodSchema<T> | undefined;
     let options: RequestInit = {};
@@ -385,7 +385,7 @@ export class Api {
       this.cleanHeaders({
         ...this.defaultOptions.headers,
         ...options.headers,
-      })
+      }),
     );
 
     const isJson = !(body instanceof FormData) && !headers.has("Content-Type");
@@ -411,25 +411,25 @@ export class Api {
 
   async delete<T>(
     endpoint: string,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async delete<T>(
     endpoint: string,
     schema: ZodSchema<T>,
-    options?: RequestInit
+    options?: RequestInit,
   ): Promise<T>;
 
   async delete<T>(
     endpoint: string,
     schema: ZodSchema<T>,
-    options: RequestInit & { includeHeaders: true }
+    options: RequestInit & { includeHeaders: true },
   ): Promise<{ data: T; headers: Headers }>;
 
   async delete<T>(
     endpoint: string,
     arg1?: ZodSchema<T> | RequestInit,
-    arg2?: RequestInit
+    arg2?: RequestInit,
   ): Promise<T | { data: T; headers: Headers }> {
     let schema: ZodSchema<T> | undefined;
     let options: RequestInit = {};
@@ -449,12 +449,12 @@ export class Api {
     return this.request(
       endpoint,
       { ...options, method: "DELETE" },
-      includeHeaders
+      includeHeaders,
     ) as Promise<T | { data: T; headers: Headers }>;
   }
 
   private cleanHeaders(
-    headers: Record<string, unknown>
+    headers: Record<string, unknown>,
   ): Record<string, string> {
     return Object.fromEntries(
       Object.entries(headers)
@@ -462,7 +462,7 @@ export class Api {
         .map(([key, value]) => [
           key,
           String(value as NonNullable<typeof value>),
-        ])
+        ]),
     );
   }
 }
