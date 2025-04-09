@@ -1,19 +1,18 @@
 import { API } from "@/api";
 import { Recipe } from "@/types/recipe";
 import { Suspense } from "react";
-import { ClientSide, Review, FavButton } from "./_components";
+import { ClientSide } from "./_components";
 import { Metadata, ResolvingMetadata } from "next";
 import {
   Button,
   RecipeDisplayBlock,
-  SectionHeader,
   Image,
   Tag,
   DisplayResource,
 } from "@/components";
 import clsx from "clsx";
 import Link from "next/link";
-import { Clock, Ham, Loader2, MessageSquare } from "lucide-react";
+import { Clock, Ham, Loader2 } from "lucide-react";
 import { Creator } from "./_components/creator";
 
 export async function generateMetadata(
@@ -22,7 +21,7 @@ export async function generateMetadata(
   }: {
     params: Promise<{ _id: string }>;
   },
-  parent: ResolvingMetadata,
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { _id } = await params;
 
@@ -78,7 +77,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
   console.log(recipe.src);
   return (
     <>
-      <section className="flex gap-10 w-full aspect-section p-20 -mt-10 recipe-details-man-decal-bg">
+      <section className="flex gap-10 w-full aspect-section-lg p-20 -mt-10 recipe-details-man-decal-bg">
         <div className="flex-1 bg-gray/10 relative rounded-lg hover:bg-gray-dark/10 delay-750 ease-in duration-500 transition-all">
           <Image
             src={typeof recipe.src === "object" ? recipe.src.url : recipe.src}
@@ -107,9 +106,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               </div>
               <Link
                 href={`/users/${recipe.user._id}`}
-                className={clsx(
-                  "bg-black p-5 rounded-lg flex w-full h-25 gap-5",
-                )}
+                className={clsx("py-5 rounded-lg flex w-full h-25 gap-5")}
               >
                 <div className="w-15 aspect-square">
                   <Image
@@ -128,7 +125,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
                 <div className="w-full h-full flex justify-between">
                   <div className="w-full flex justify-between min-w-0">
                     <div className="flex flex-col justify-center items-start gap-1 min-w-0 overflow-hidden">
-                      <h4 className="text-white truncate w-full">
+                      <h4 className="text-black truncate w-full">
                         {recipe.user.firstName && recipe.user.lastName
                           ? `${recipe.user.firstName} ${recipe.user.lastName}`.trim()
                           : `@${recipe.user.username}`}
@@ -137,7 +134,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
                       {recipe.user.firstName &&
                         recipe.user.lastName &&
                         recipe.user.username && (
-                          <small className="text-gray-light truncate w-full">
+                          <small className="text-gray-dark truncate w-full">
                             @{recipe.user.username}
                           </small>
                         )}
@@ -198,7 +195,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
                 <li
                   key={idx}
                 >{`${value} - ${quantity}${unitsOfMeasurement}`}</li>
-              ),
+              )
             )}
           </ul>
         </div>
@@ -266,7 +263,7 @@ export async function generateStaticParams() {
     console.log(
       recipes.map((recipe) => ({
         _id: String(recipe._id),
-      })),
+      }))
     );
     return recipes.map((recipe) => ({
       _id: String(recipe._id),

@@ -48,9 +48,10 @@ body {
 @theme {
   --aspect-section-xs: 768/75;
   --aspect-section-sm: 384/75;
-  --aspect-section: 192/75;
   --aspect-section-md: 256/75;
-  --aspect-section-lg: 192/75;
+  --aspect-section: 192/75;
+  --aspect-section-lg: 128/75;
+  --aspect-section-xl: 64/75;
 }
 
 @layer base {

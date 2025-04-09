@@ -32,7 +32,7 @@ export default async function Home() {
         params={["all"]}
         seeMore
       />
-      <section className="flex aspect-section-lg bg-black text-white">
+      <section className="flex aspect-section bg-black text-white">
         <div className="w-full flex items-center justify-center">
           <div className="aspect-[123/100]  bg-black h-full">
             <div className="w-full h-full p-20 flex flex-col items-center justify-center text-center gap-20">

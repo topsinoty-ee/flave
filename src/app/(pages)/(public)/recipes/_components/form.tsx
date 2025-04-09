@@ -41,17 +41,29 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
   });
 
   return (
-    <FormProvider schema={searchSchema} action={searchAction} className="p-20">
-      <TagInput
-        name="tags"
-        maxTags={MAX_TAGS}
-        suggestions={suggestions}
-        placeholder="Search recipes..."
-        validateTag={(tag) => {
-          if (!/^[a-z0-9 ]+$/i.test(tag)) return "Alphanumeric only";
-          return true;
-        }}
-      />
+    <FormProvider
+      schema={searchSchema}
+      action={searchAction}
+      className="p-20 search-bar-bg aspect-section-md"
+    >
+      <div className="lg:max-w-3/5 md:max-w-3/5 flex flex-col gap-5 relative">
+        <div>
+          <h1>Plenty of recipes</h1>
+          <h3>At your fingertips</h3>
+        </div>
+        <TagInput
+          name="tags"
+          className=" bg-white"
+          maxTags={MAX_TAGS}
+          suggestions={suggestions}
+          placeholder="Search recipes..."
+          validateTag={(tag) => {
+            if (!/^[a-z0-9 ]+$/i.test(tag)) return "Alphanumeric only";
+            return true;
+          }}
+        />
+      </div>
+
       <Submit className="w-max mt-4">Search</Submit>
     </FormProvider>
   );
