@@ -125,7 +125,10 @@ export function FileUpload<T extends FieldValues>({
   return (
     <div className="flex flex-col gap-1 w-full">
       {label && (
-        <label htmlFor={name} className="block text-sm font-medium text-gray">
+        <label
+          htmlFor={name}
+          className="block text-sm font-medium text-gray-dark"
+        >
           {label}
         </label>
       )}
