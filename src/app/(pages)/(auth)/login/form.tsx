@@ -42,7 +42,7 @@ export function ClientLoginForm({ redirectPath }: { redirectPath: string }) {
     <FormProvider
       schema={LoginSchema}
       action={loginAction}
-      className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-lg rounded-lg"
+      className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-lg rounded-2xl"
     >
       <SectionHeader title="Login" description="Welcome back" />
       <div className="flex flex-col gap-5">
@@ -82,7 +82,7 @@ export function ClientLoginForm({ redirectPath }: { redirectPath: string }) {
 
 function FormSkeleton() {
   return (
-    <div className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-md rounded-lg space-y-4"></div>
+    <div className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-md rounded-2xl space-y-4"></div>
   );
 }
 

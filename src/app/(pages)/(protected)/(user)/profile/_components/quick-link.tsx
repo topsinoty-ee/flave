@@ -7,7 +7,7 @@ export const QuickLink: React.FC<{
   endpoint: string;
   details: { count: number; quantifier: string };
 }> = ({ name, details, endpoint }) => (
-  <div className="bg-black h-full w-full flex flex-col justify-between rounded-lg p-10">
+  <div className="bg-black h-full w-full flex flex-col justify-between rounded-2xl p-10">
     <SectionHeader title={name} />
     <div className="flex justify-between items-center">
       <span className="font-thin italic text-lg">

@@ -78,18 +78,18 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
   return (
     <>
       <section className="flex gap-10 w-full aspect-section-lg p-20 -mt-10 recipe-details-man-decal-bg">
-        <div className="flex-1 bg-gray/10 relative rounded-lg hover:bg-gray-dark/10 delay-750 ease-in duration-500 transition-all">
+        <div className="flex-1 bg-gray/10 relative rounded-2xl hover:bg-gray-dark/10 delay-750 ease-in duration-500 transition-all">
           <Image
             src={typeof recipe.src === "object" ? recipe.src.url : recipe.src}
             alt={recipe.alt || recipe.title}
             fill
-            className="w-full h-full flex justify-center items-center image-flex rounded-lg"
+            className="w-full h-full flex justify-center items-center image-flex rounded-2xl"
             priority
             quality={100}
           />
         </div>
 
-        <article className="flex-1 flex flex-col gap-5 rounded-lg bg-secondary">
+        <article className="flex-1 flex flex-col gap-5 rounded-2xl bg-secondary">
           <div className="flex flex-col gap-5">
             <h2>{recipe.title}</h2>
             <div className="flex flex-col w-full gap-5">
@@ -106,7 +106,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
               </div>
               <Link
                 href={`/users/${recipe.user._id}`}
-                className={clsx("py-5 rounded-lg flex w-full h-25 gap-5")}
+                className={clsx("py-5 rounded-2xl flex w-full h-25 gap-5")}
               >
                 <div className="w-15 aspect-square">
                   <Image
@@ -187,7 +187,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
         </article>
       </section>
       <section className="flex gap-10 px-20">
-        <div className="flex flex-col bg-gray-light gap-5 w-[70%] rounded-lg backdrop-blur-xs h-max p-10 min-h-80">
+        <div className="flex flex-col bg-gray-light gap-5 w-[70%] rounded-2xl backdrop-blur-xs h-max p-10 min-h-80">
           <h3 className="text-3xl font-semibold uppercase">Ingredients</h3>
           <ul className="list-none gap-1 flex flex-col">
             {recipe.ingredients.map(
@@ -200,7 +200,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
           </ul>
         </div>
 
-        <div className="w-full rounded-lg shadow-lg p-10 min-h-96 h-max flex flex-col gap-5">
+        <div className="w-full rounded-2xl shadow-lg p-10 min-h-96 h-max flex flex-col gap-5">
           <h3 className="text-3xl font-semibold uppercase">
             Instructions ({recipe.instructions.length})
           </h3>

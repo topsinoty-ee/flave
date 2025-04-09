@@ -4,7 +4,7 @@ import { ClientSignupWrapper } from "./form";
 
 function FormSkeleton() {
   return (
-    <div className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-md rounded-lg space-y-4">
+    <div className="w-max min-w-[50%] flex flex-col gap-5 p-5 bg-white shadow-md rounded-2xl space-y-4">
       <div className="h-8 bg-gray-200 rounded animate-pulse w-1/2" />
 
       <div className="space-y-2">

@@ -11,7 +11,7 @@ export const CustomerReviewCard: React.FC<CustomerReviewCardProps> = ({
   src,
   content,
 }) => (
-  <div className="w-full rounded-lg shadow bg-white flex flex-col p-5 gap-5">
+  <div className="w-full rounded-2xl shadow bg-white flex flex-col p-5 gap-5">
     <Image
       alt={name || "user"}
       fallbackSrc="/images/user-fallback.png"

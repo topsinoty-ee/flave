@@ -13,7 +13,7 @@ function ErrorFallback({
   resetErrorBoundary: () => void;
 }) {
   return (
-    <div role="alert" className="p-4 bg-error-light text-error rounded-lg">
+    <div role="alert" className="p-4 bg-error-light text-error rounded-2xl">
       <h2 className="text-lg font-bold">Something went wrong:</h2>
       <p className="mb-4">{error.message}</p>
       <Button

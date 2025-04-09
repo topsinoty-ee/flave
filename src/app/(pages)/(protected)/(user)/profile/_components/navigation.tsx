@@ -21,7 +21,7 @@ export default function ProfileNavigation({
   const { logout } = useAuth();
   return (
     <aside className="w-max min-w-[15%] h-full">
-      <nav className="rounded-lg bg-black h-max p-5 w-full">
+      <nav className="rounded-2xl bg-black h-max p-5 w-full">
         <ul className="flex flex-col gap-2.5 w-full">
           <li className="flex justify-between items-baseline gap-2.5 w-full">
             <Link

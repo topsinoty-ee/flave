@@ -28,7 +28,7 @@ export const ReviewsList = ({ userid, reviews }: ReviewsListProps) => {
         {reviews.map((review, index) => (
           <li
             key={`review-${index}-${userid}`}
-            className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
+            className="p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-sm"
           >
             <p className="text-gray-800 dark:text-gray-200">{review}</p>
           </li>

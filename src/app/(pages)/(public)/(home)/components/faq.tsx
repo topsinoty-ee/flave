@@ -13,7 +13,7 @@ export const Collapse = ({ title, content, className = "" }: CollapseProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`border rounded-lg overflow-hidden ${className}`}>
+    <div className={`border rounded-2xl overflow-hidden ${className}`}>
       <Button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full p-5 text-left flex justify-between items-center bg-gray hover:bg-gray-light transition-colors"

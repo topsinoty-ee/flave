@@ -10,7 +10,7 @@ export const Creator: React.FC<Partial<User>> = ({
   _id,
 }) => {
   return (
-    <section className="flex w-full bg-black outline-yellow outline-1 aspect-section-md rounded-lg gap-15 p-20">
+    <section className="flex w-full bg-black outline-yellow outline-1 aspect-section-md rounded-2xl gap-15 p-20">
       <Image
         src={typeof src === "object" ? src.url : src}
         fallbackSrc="/images/user-fallback.png"
