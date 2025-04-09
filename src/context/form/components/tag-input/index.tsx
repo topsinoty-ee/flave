@@ -155,7 +155,7 @@ export function TagInput<T extends FieldValues>({
       <div className="relative">
         <div
           className={clsx(
-            "flex flex-wrap gap-2 items-center p-2.5 rounded-lg border",
+            "flex flex-wrap gap-2 items-center p-2.5 rounded-2xl border",
             error ? errorStyles : normalStyles,
             className
           )}
@@ -211,7 +211,7 @@ export function TagInput<T extends FieldValues>({
             role="listbox"
             aria-label="Suggestions"
             className={clsx(
-              "absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-white border border-gray-light rounded-lg shadow-lg",
+              "absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-white border border-gray-light rounded-2xl shadow-lg",
               suggestionClassName
             )}
           >

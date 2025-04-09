@@ -37,7 +37,7 @@ export const SearchForm = () => {
       />
 
       <div className="grid gap-4 md:grid-cols-2">
-        <fieldset className="p-4 border rounded-lg">
+        <fieldset className="p-4 border rounded-2xl">
           <legend className="flex items-center gap-2 mb-4 font-medium">
             <Filter size={18} /> Filters
           </legend>

@@ -35,7 +35,7 @@ export const Shape = {
   soft: "rounded-md",
   sharp: "rounded-sm",
   square: "rounded-none",
-  default: "rounded-lg",
+  default: "rounded-2xl",
 } as const;
 
 type BaseButtonProps = {
@@ -110,7 +110,7 @@ export const Button = (props: ButtonProps) => {
       "px-2.5 py-2.5": isIconOnly,
       "pointer-events-none": isDisabled,
     },
-    className,
+    className
   );
 
   const content = (

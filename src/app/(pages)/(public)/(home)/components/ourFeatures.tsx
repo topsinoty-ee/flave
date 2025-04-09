@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const OurFeatures = () => {
   return (
-    <section className="flex items-center justify-center gap-20 rounded-lg bg-gray-light aspect-section-xs">
+    <section className="flex items-center justify-center gap-20 rounded-2xl bg-gray-light aspect-section-xs">
       {Object.entries({
         "Make do with ingredients at home": "/images/icons/mortar.png",
         "SAVE TIME BY USING WHAT YOU HAVE": "/images/icons/stopwatch.png",

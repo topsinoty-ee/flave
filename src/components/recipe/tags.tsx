@@ -19,7 +19,7 @@ export const Tag: FC<TagProps> = ({
   const icons = (() => {
     if (Array.isArray(icon)) {
       return icon.filter(
-        (node) => node !== null && node !== undefined && node !== false,
+        (node) => node !== null && node !== undefined && node !== false
       );
     }
     return icon ? [icon] : [];
@@ -31,13 +31,13 @@ export const Tag: FC<TagProps> = ({
     <span
       title={title}
       className={clsx(
-        "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg",
+        "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-2xl",
         "bg-black text-background whitespace-nowrap transition-colors",
         {
           "hover:text-gray-light": animate,
           "cursor-default": !animate,
         },
-        className,
+        className
       )}
     >
       {hasIcons &&

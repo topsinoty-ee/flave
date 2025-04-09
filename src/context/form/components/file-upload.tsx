@@ -27,7 +27,7 @@ function FileUploadContent<T extends FieldValues>({
         if (trimmed) acc[trimmed] = [];
         return acc;
       },
-      {} as Record<string, []>,
+      {} as Record<string, []>
     ),
     maxSize,
     multiple: false,
@@ -54,7 +54,7 @@ function FileUploadContent<T extends FieldValues>({
   return (
     <div
       {...getRootProps()}
-      className={`border-2 border-dashed rounded-lg p-5 text-center cursor-pointer transition-colors ${
+      className={`border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition-colors ${
         errors[name]
           ? "border-error bg-error-light"
           : isDragActive

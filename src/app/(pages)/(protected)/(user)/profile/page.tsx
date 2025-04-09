@@ -16,8 +16,8 @@ export default async function ProfilePage() {
   return (
     <>
       <section className="aspect-section-md gap-10 flex">
-        <div className="relative group aspect-square rounded-lg ">
-          <div className="w-full aspect-square relative bg-black overflow-clip rounded-lg">
+        <div className="relative group aspect-square rounded-2xl ">
+          <div className="w-full aspect-square relative bg-black overflow-clip rounded-2xl">
             <Image
               src={src ? src : fallback} // Fallback image || "/default-avatar.png"
               alt={`${user.firstName} ${user.lastName || ""}`.trim()}
@@ -33,7 +33,7 @@ export default async function ProfilePage() {
               priority
             />
           </div>
-          <div className="absolute top-0 opacity-0 transition-all duration-300 group-hover:opacity-100 gap-10 group-hover:bg-black/25 w-full h-full rounded-lg flex justify-center items-center">
+          <div className="absolute top-0 opacity-0 transition-all duration-300 group-hover:opacity-100 gap-10 group-hover:bg-black/25 w-full h-full rounded-2xl flex justify-center items-center">
             {[
               {
                 icon: <Eye />,
@@ -58,8 +58,8 @@ export default async function ProfilePage() {
             ))}
           </div>
         </div>
-        <div className="w-full rounded-lg max-w-full flex flex-col justify-between gap-10">
-          <div className="bg-black p-10 h-full rounded-lg">
+        <div className="w-full rounded-2xl max-w-full flex flex-col justify-between gap-10">
+          <div className="bg-black p-10 h-full rounded-2xl">
             <SectionHeader
               title={
                 user.firstName && user.lastName
@@ -97,7 +97,7 @@ export default async function ProfilePage() {
         <Button>Edit Profile</Button>
         <LogoutButton />
       </section>
-      <section className="bg-black flex justify-center items-center aspect-section-xs rounded-lg w-full">
+      <section className="bg-black flex justify-center items-center aspect-section-xs rounded-2xl w-full">
         <h3>More features coming soon</h3>
       </section>
     </>
