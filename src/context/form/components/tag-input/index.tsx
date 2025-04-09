@@ -48,14 +48,14 @@ export function TagInput<T extends FieldValues>({
         ? { valid: false, message: result }
         : { valid: result, message: "Invalid tag" };
     },
-    [validateTag],
+    [validateTag]
   );
 
   const filteredSuggestions = useMemo(() => {
     const currentTags = new Set(tags);
     return suggestions.filter(
       (s) =>
-        s.toLowerCase().includes(inputVal.toLowerCase()) && !currentTags.has(s),
+        s.toLowerCase().includes(inputVal.toLowerCase()) && !currentTags.has(s)
     );
   }, [suggestions, inputVal, tags]);
 
@@ -89,7 +89,7 @@ export function TagInput<T extends FieldValues>({
       validateSingleTag,
       allowCustomTags,
       suggestions,
-    ],
+    ]
   );
 
   const removeTag = useCallback(
@@ -99,7 +99,7 @@ export function TagInput<T extends FieldValues>({
       onTagsChange?.(newTags);
       inputRef.current?.focus();
     },
-    [tags, name, setValue, onTagsChange],
+    [tags, name, setValue, onTagsChange]
   );
 
   const handleKeyDown = useCallback(
@@ -126,7 +126,7 @@ export function TagInput<T extends FieldValues>({
         case "ArrowDown":
           e.preventDefault();
           setHighlightedIndex((prev) =>
-            Math.min(prev + 1, filteredSuggestions.length - 1),
+            Math.min(prev + 1, filteredSuggestions.length - 1)
           );
           break;
 
@@ -140,7 +140,7 @@ export function TagInput<T extends FieldValues>({
           break;
       }
     },
-    [inputVal, tags, addTags, removeTag, highlightedIndex, filteredSuggestions],
+    [inputVal, tags, addTags, removeTag, highlightedIndex, filteredSuggestions]
   );
 
   const disabled = props.disabled || isSubmitting;
@@ -156,7 +156,7 @@ export function TagInput<T extends FieldValues>({
             "flex flex-wrap gap-2 items-center px-3 py-2 rounded-lg border",
             error ? errorStyles : normalStyles,
             "focus-within:ring-2 focus-within:ring-primary/30",
-            className,
+            className
           )}
         >
           {tags.map((tag, i) => (
@@ -175,6 +175,7 @@ export function TagInput<T extends FieldValues>({
 
           <input
             {...props}
+            data-input-type="tag"
             ref={inputRef}
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
@@ -198,7 +199,7 @@ export function TagInput<T extends FieldValues>({
             <ChevronDown
               className={clsx(
                 "h-4 w-4 text-gray-400 transition-transform",
-                showSuggestions && "rotate-180",
+                showSuggestions && "rotate-180"
               )}
             />
           </div>
@@ -226,7 +227,7 @@ export function TagInput<T extends FieldValues>({
                 className={clsx(
                   "w-full px-4 py-2 text-left hover:bg-gray-50",
                   highlightedIndex === index && "bg-gray-50",
-                  "transition-colors",
+                  "transition-colors"
                 )}
                 aria-selected={highlightedIndex === index}
               >

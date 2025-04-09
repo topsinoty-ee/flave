@@ -3,6 +3,7 @@ import { FormProvider, Submit, TagInput } from "@/context/form";
 import { createAction } from "@/context/form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { fetchRecipes } from "./server";
 
 export const MAX_TAGS = 5;
 
@@ -21,12 +22,14 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
       if (tags?.length) {
         tags.forEach((tag) => params.append("tags", tag.trim()));
       }
+      const endpoint = `/recipes?${params.toString()}&matchAll=true`;
+      const data = await fetchRecipes(endpoint);
 
-      router.push(`/recipes?${params.toString()}&matchAll=true`);
+      router.push(endpoint);
 
       return {
         success: true,
-        message: "no recipes found",
+        // message: `Found ${data.length} recipes`,
       };
     } catch (error) {
       console.error("Error updating search:", error);

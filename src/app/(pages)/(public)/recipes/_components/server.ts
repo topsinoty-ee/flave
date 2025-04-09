@@ -15,6 +15,6 @@ export async function fetchRecipes(query: string) {
     headers: {
       Authorization: `Bearer ${sessionToken}`,
     },
-  });
+  }).catch(() => []);
   return data;
 }
