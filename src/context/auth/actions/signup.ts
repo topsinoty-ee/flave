@@ -18,7 +18,7 @@ export async function signup(payload: SignupPayload) {
         method: "POST",
         body: JSON.stringify(payload),
       },
-      true
+      true,
     );
 
     const cookies = headers.get("set-cookie");

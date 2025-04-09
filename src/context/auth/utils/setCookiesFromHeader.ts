@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 export async function setCookiesFromHeader(
-  setCookieHeader: string | string[] | undefined
+  setCookieHeader: string | string[] | undefined,
 ) {
   if (!setCookieHeader) return;
 
@@ -33,7 +33,7 @@ export async function setCookiesFromHeader(
           }
           return acc;
         },
-        {} as Record<string, string>
+        {} as Record<string, string>,
       );
 
       const options = {

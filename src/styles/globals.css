@@ -353,4 +353,16 @@ body {
       animation: none;
     }
   }
+
+  input[data-input-type="tag"],
+  input[data-input-type="tag"]:hover,
+  input[data-input-type="tag"]:focus,
+  input[data-input-type="tag"]:active,
+  input[data-input-type="tag"]:valid,
+  input[data-input-type="tag"]:invalid,
+  input[data-input-type="tag"]:focus-visible {
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
 }

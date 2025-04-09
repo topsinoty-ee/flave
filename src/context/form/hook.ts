@@ -37,7 +37,7 @@ export const useFormContext = <
     setValue: (
       name: Path<TFieldValues>,
       value: TFieldValues[Path<TFieldValues>],
-      options?: { shouldValidate?: boolean; shouldDirty?: boolean }
+      options?: { shouldValidate?: boolean; shouldDirty?: boolean },
     ) => {
       methods.setValue(name, value, options);
     },

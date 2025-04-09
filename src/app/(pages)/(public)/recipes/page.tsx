@@ -16,7 +16,13 @@ export default async function RecipesPage({
     headers: {
       Authorization: `Bearer ${sessionToken}`,
     },
-  });
+  })
+    .then((tags) => tags.map((tag) => tag.value))
+    .catch((reason) => {
+      return [JSON.stringify(reason)];
+    });
+
+  console.log(suggestions);
 
   // Handle search params
   const { tags } = await searchParams;
@@ -35,14 +41,14 @@ export default async function RecipesPage({
     (reason) => {
       console.log(reason);
       return [];
-    }
+    },
   );
   console.log("Suggestions: ", suggestions);
 
   return (
     <>
       <Hero />
-      <Form suggestions={suggestions.map((tag) => tag.value)} />
+      <Form suggestions={suggestions} />
       {params.toString() ? (
         <RecipeDisplayBlock data={recipes || []} limit={0} />
       ) : (

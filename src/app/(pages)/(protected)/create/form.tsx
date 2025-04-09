@@ -26,7 +26,7 @@ const ingredientSchema = z.object({
     .positive(err("Quantity must be positive (e.g., 2, not 0 or -1)"))
     .refine(
       (val) => val < 1000,
-      err("Whoa! That's too much. Use a smaller quantity")
+      err("Whoa! That's too much. Use a smaller quantity"),
     ),
   unitsOfMeasurement: z
     .string()
@@ -39,11 +39,11 @@ export const recipeSchema = z.object({
     .refine((file) => file.size > 0, err("Please select an image to upload"))
     .refine(
       (file) => file.size <= 5 * 1024 * 1024, // 5MB limit
-      err("Image must be smaller than 5MB")
+      err("Image must be smaller than 5MB"),
     )
     .refine(
       (file) => /^image\/(jpe?g|png|webp)$/i.test(file.type),
-      err("Only JPG, PNG, or WebP images are allowed")
+      err("Only JPG, PNG, or WebP images are allowed"),
     ),
   title: z.coerce
     .string()
@@ -63,7 +63,7 @@ export const recipeSchema = z.object({
     .nonnegative(err("Cooking time cannot be negative"))
     .refine(
       (val) => val < 24 * 60,
-      err("Duration exceeds 24 hours—double-check this!")
+      err("Duration exceeds 24 hours—double-check this!"),
     )
     .default(0),
   cookingMethod: z.coerce
@@ -80,7 +80,7 @@ export const recipeSchema = z.object({
     .array(
       z
         .string()
-        .min(1, err("Don't leave steps blank (e.g., 'Preheat oven to 350°F')"))
+        .min(1, err("Don't leave steps blank (e.g., 'Preheat oven to 350°F')")),
     )
     .min(1, err("Add at least one step to your instructions")),
   tags: z

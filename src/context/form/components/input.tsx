@@ -50,7 +50,7 @@ export function Input<T extends FieldValues>({
               errorStyles: !!error,
               validStyles: isValid,
               normalStyles: !error && !isValid,
-            }
+            },
           )}
           aria-invalid={!!error}
         />

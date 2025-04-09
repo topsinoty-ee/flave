@@ -21,7 +21,7 @@ const DefaultEmptyState = ({ className }: { className?: string }) => (
 );
 
 export const DisplayResource = <Resource extends object>(
-  props: DisplayResourceProps<Resource>
+  props: DisplayResourceProps<Resource>,
 ) => {
   const {
     Component,
@@ -71,7 +71,7 @@ export const DisplayResource = <Resource extends object>(
         <section
           className={clsx(
             "flex flex-col gap-10 p-20 transition-all",
-            className
+            className,
           )}
         >
           {content}

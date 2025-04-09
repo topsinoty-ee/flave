@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState, useRef, ComponentProps } from "react";
+import { useState, useRef, useCallback, useMemo, ComponentProps } from "react";
 import { useFormContext } from "../../hook";
-import { X, Check } from "lucide-react";
+import { X, Check, ChevronDown } from "lucide-react";
 import { FieldValues, Path } from "react-hook-form";
 import clsx from "clsx";
 import { Button } from "@/components";
@@ -28,77 +28,134 @@ export function TagInput<T extends FieldValues>({
 }: TagInputProps<T>) {
   const {
     setValue,
-    getValues,
+    watch,
     formState: { errors, isSubmitting },
   } = useFormContext<T>();
+  const tags: string[] = watch(name) || [];
 
   const [inputVal, setInputVal] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Initialize with form values (runs once)
-  useEffect(() => {
-    const initialValue = getValues(name);
-    if (Array.isArray(initialValue)) {
-      setTags(initialValue.filter(Boolean));
-    }
-  }, [name]);
+  const processTag = useCallback((tag: string) => tag.trim().slice(0, 32), []);
 
-  const processTag = (tag: string) => tag.trim().slice(0, 32);
+  const validateSingleTag = useCallback(
+    (tag: string) => {
+      const result = validateTag(tag);
+      return typeof result === "string"
+        ? { valid: false, message: result }
+        : { valid: result, message: "Invalid tag" };
+    },
+    [validateTag]
+  );
 
-  const validateSingleTag = (tag: string) => {
-    const result = validateTag(tag);
-    if (typeof result === "string") return { valid: false, message: result };
-    return { valid: result, message: "Invalid tag" };
-  };
+  const filteredSuggestions = useMemo(() => {
+    const currentTags = new Set(tags);
+    return suggestions.filter(
+      (s) =>
+        s.toLowerCase().includes(inputVal.toLowerCase()) && !currentTags.has(s)
+    );
+  }, [suggestions, inputVal, tags]);
 
-  const addTags = (newTags: string[]) => {
-    const processedTags = newTags.map(processTag).filter((t) => t.length > 0);
-    const validTags = processedTags
-      .filter((tag) => validateSingleTag(tag).valid)
-      .filter((tag) => !tags.includes(tag));
+  const addTags = useCallback(
+    (newTags: string[]) => {
+      const processedTags = newTags.map(processTag).filter((t) => t.length > 0);
 
-    if (maxTags && tags.length + validTags.length > maxTags) {
-      return;
-    }
+      const validTags = processedTags
+        .filter((tag) => {
+          if (!allowCustomTags && !suggestions.includes(tag)) return false;
+          return validateSingleTag(tag).valid;
+        })
+        .filter((tag) => !tags.includes(tag));
 
-    if (validTags.length > 0) {
-      const newTagList = [...tags, ...validTags];
-      setTags(newTagList);
-      setValue(name, newTagList as any, { shouldValidate: true });
-      onTagsChange?.(newTagList);
-      setInputVal("");
-    }
-  };
+      if (maxTags && tags.length + validTags.length > maxTags) return;
 
-  const removeTag = (index: number) => {
-    const newTags = tags.filter((_, i) => i !== index);
-    setTags(newTags);
-    setValue(name, newTags as any, { shouldValidate: true });
-    onTagsChange?.(newTags);
-    inputRef.current?.focus();
-  };
+      if (validTags.length > 0) {
+        const newTagList = [...tags, ...validTags];
+        setValue(name, newTagList as any, { shouldValidate: true });
+        onTagsChange?.(newTagList);
+        setInputVal("");
+      }
+    },
+    [
+      tags,
+      maxTags,
+      name,
+      setValue,
+      onTagsChange,
+      processTag,
+      validateSingleTag,
+      allowCustomTags,
+      suggestions,
+    ]
+  );
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && inputVal) {
-      e.preventDefault();
-      addTags([inputVal]);
-    } else if (e.key === "Backspace" && !inputVal && tags.length > 0) {
-      removeTag(tags.length - 1);
-    }
-  };
+  const removeTag = useCallback(
+    (index: number) => {
+      const newTags = tags.filter((_, i) => i !== index);
+      setValue(name, newTags as any, { shouldValidate: true });
+      onTagsChange?.(newTags);
+      inputRef.current?.focus();
+    },
+    [tags, name, setValue, onTagsChange]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      switch (e.key) {
+        case "Enter":
+          e.preventDefault();
+          if (highlightedIndex >= 0 && filteredSuggestions.length > 0) {
+            if (filteredSuggestions[highlightedIndex] !== undefined) {
+              addTags([filteredSuggestions[highlightedIndex]]);
+            }
+            setIsSuggestionsOpen(false);
+          } else if (inputVal) {
+            addTags(inputVal.split(/,\s?/));
+          }
+          break;
+
+        case "Backspace":
+          if (!inputVal && tags.length > 0) {
+            removeTag(tags.length - 1);
+          }
+          break;
+
+        case "ArrowDown":
+          e.preventDefault();
+          setHighlightedIndex((prev) =>
+            Math.min(prev + 1, filteredSuggestions.length - 1)
+          );
+          break;
+
+        case "ArrowUp":
+          e.preventDefault();
+          setHighlightedIndex((prev) => Math.max(prev - 1, -1));
+          break;
+
+        case "Escape":
+          setIsSuggestionsOpen(false);
+          break;
+      }
+    },
+    [inputVal, tags, addTags, removeTag, highlightedIndex, filteredSuggestions]
+  );
 
   const disabled = props.disabled || isSubmitting;
   const error = errors[name];
+  const showSuggestions = isSuggestionsOpen && filteredSuggestions.length > 0;
+  const tagsLimitReached = !!maxTags && tags.length >= maxTags;
 
   return (
-    <div className="flex flex-col gap-1 w-full">
+    <div className="flex flex-col gap-1 w-full" ref={containerRef}>
       <div className="relative">
         <div
           className={clsx(
             "flex flex-wrap gap-2 items-center px-3 py-2 rounded-lg border",
             error ? errorStyles : normalStyles,
-            "ring-0 focus-within:ring-0",
+            "focus-within:ring-2 focus-within:ring-primary/30",
             className
           )}
         >
@@ -107,35 +164,83 @@ export function TagInput<T extends FieldValues>({
               type="button"
               key={`${tag}-${i}`}
               onClick={() => removeTag(i)}
-              className="text-black hover:text-gray-dark px-2.5 py-1 rounded-lg inline-flex items-center gap-1 bg-gray-light "
+              className="text-sm hover:bg-gray-200 px-2.5 py-1 rounded-md inline-flex items-center gap-1 bg-gray-100 transition-colors"
               disabled={disabled}
+              aria-label={`Remove tag ${tag}`}
             >
-              {tag} <X className="h-2.5 w-2.5" />
+              {tag}
+              <X className="h-3.5 w-3.5 ml-1" />
             </button>
           ))}
 
           <input
             {...props}
+            data-input-type="tag"
             ref={inputRef}
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 min-w-15 ring-0 valid:ring-0 valid:border-none invalid:border-none valid:outline-none invalid:outline-none invalid:ring-0 focus-visible:ring-0 focus-within:ring-0 bg-transparent outline-none"
+            onFocus={() => setIsSuggestionsOpen(true)}
+            onBlur={() => setTimeout(() => setIsSuggestionsOpen(false), 200)}
+            className="flex-1 min-w-[100px] bg-transparent outline-none placeholder:text-gray-400"
             placeholder={
-              maxTags && tags.length >= maxTags
+              tagsLimitReached
                 ? "Maximum tags reached"
                 : props.placeholder || "Add tags..."
             }
-            disabled={disabled || (maxTags ? tags.length >= maxTags : false)}
+            disabled={disabled || tagsLimitReached}
+            aria-autocomplete="list"
           />
 
-          {!error && tags.length > 0 && (
-            <Check className="h-5 w-5 text-success" />
-          )}
+          <div className="flex items-center gap-2 ml-2">
+            {!error && tags.length > 0 && (
+              <Check className="h-4 w-4 text-green-600" />
+            )}
+            <ChevronDown
+              className={clsx(
+                "h-4 w-4 text-gray-400 transition-transform",
+                showSuggestions && "rotate-180"
+              )}
+            />
+          </div>
         </div>
+
+        {showSuggestions && (
+          <div
+            role="listbox"
+            aria-label="Suggestions"
+            className="absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg"
+          >
+            {filteredSuggestions.map((suggestion, index) => (
+              <div
+                role="option"
+                key={suggestion}
+                tabIndex={0}
+                onClick={() => addTags([suggestion])}
+                onMouseEnter={() => setHighlightedIndex(index)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    addTags([suggestion]);
+                  }
+                }}
+                className={clsx(
+                  "w-full px-4 py-2 text-left hover:bg-gray-50",
+                  highlightedIndex === index && "bg-gray-50",
+                  "transition-colors"
+                )}
+                aria-selected={highlightedIndex === index}
+              >
+                {suggestion}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {error && <p className="text-sm text-error">{String(error.message)}</p>}
+      {error && (
+        <p className="text-sm text-red-600 mt-1">{String(error.message)}</p>
+      )}
     </div>
   );
 }

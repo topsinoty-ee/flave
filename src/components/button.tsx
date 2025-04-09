@@ -17,7 +17,7 @@ export const Variant = {
     "bg-gray-light text-gray-dark hover:bg-gray-light active:bg-gray outline-none",
   outline:
     "bg-transparent border border-gray hover:bg-gray-light active:bg-gray-light",
-  danger: "bg-error text-white hover:bg-error active:bg-error-dark",
+  danger: "bg-error-dark text-white hover:bg-error active:bg-error-dark",
   success: "bg-success text-white hover:bg-success active:bg-success-dark",
   warning: "bg-warning text-white hover:bg-warning active:bg-warning-dark",
   ghost: "hover:bg-gray-light active:bg-gray",
@@ -110,7 +110,7 @@ export const Button = (props: ButtonProps) => {
       "px-2.5 py-2.5": isIconOnly,
       "pointer-events-none": isDisabled,
     },
-    className
+    className,
   );
 
   const content = (

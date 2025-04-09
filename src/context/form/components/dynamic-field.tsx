@@ -14,7 +14,7 @@ type DynamicFieldsProps<T extends FieldValues> = {
   defaultValue: any;
   renderField: (
     index: number,
-    handlePasteEvent?: (e: React.ClipboardEvent) => void
+    handlePasteEvent?: (e: React.ClipboardEvent) => void,
   ) => React.ReactNode;
   parser?: (line: string, index: number) => any;
 };
@@ -34,7 +34,7 @@ export function DynamicFields<T extends FieldValues>({
 
   const handlePasteEvent = (
     e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
+    index: number,
   ) => {
     if (parser) {
       handlePaste<T>({
@@ -64,8 +64,8 @@ export function DynamicFields<T extends FieldValues>({
                   e as React.ClipboardEvent<
                     HTMLInputElement | HTMLTextAreaElement
                   >,
-                  index
-                )
+                  index,
+                ),
               )}
             </div>
             <Button

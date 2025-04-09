@@ -2,6 +2,7 @@ import { Button, Image, SectionHeader } from "@/components";
 import { Edit, Eye } from "lucide-react";
 import { QuickLink } from "./_components/quick-link";
 import { getCurrentUser } from "@/context/auth/actions";
+import { LogoutButton } from "./_components/logout";
 
 export default async function ProfilePage() {
   const user = await getCurrentUser();
@@ -91,6 +92,10 @@ export default async function ProfilePage() {
             ))}
           </div>
         </div>
+      </section>
+      <section className="flex gap-5">
+        <Button>Edit Profile</Button>
+        <LogoutButton />
       </section>
       <section className="bg-black flex justify-center items-center aspect-section-xs rounded-lg w-full">
         <h3>More features coming soon</h3>

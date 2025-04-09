@@ -12,6 +12,7 @@ type RecipeDisplayConfig = Partial<SectionHeaderProps> & {
   restricted?: Record<string, string>;
   exclude?: string[];
   seeMore?: boolean | "tags" | { text?: string; href: string };
+  className?: string;
   data?: RecipeCardProps[]; // New prop for manual data input
 };
 
@@ -26,7 +27,7 @@ const getTagsQuery = (params: string[] = []) =>
 
 const getSeeMoreLink = (
   seeMore: RecipeDisplayConfig["seeMore"],
-  tagsQuery: string
+  tagsQuery: string,
 ) => {
   if (!seeMore) return null;
 
@@ -55,6 +56,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   seeMore,
   restricted,
   data: manualData,
+  className,
   ...headerProps
 }) => {
   let recipes: RecipeCardProps[] = [];
@@ -67,7 +69,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
     const finalRestrictions = { ...DEFAULT_RESTRICTIONS, ...restricted };
     const matchedParam = cleanParams.find(
       (param): param is keyof typeof finalRestrictions =>
-        param in finalRestrictions
+        param in finalRestrictions,
     );
     const tagsQuery = getTagsQuery(cleanParams);
 
@@ -82,12 +84,10 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
   }
 
   const filteredRecipes = recipes.filter(
-    (recipe) => !exclude?.includes(recipe._id)
+    (recipe) => !exclude?.includes(recipe._id),
   );
   const slicedRecipes =
     limit > 0 ? filteredRecipes.slice(0, limit) : filteredRecipes;
-
-  if (!slicedRecipes.length) return null;
 
   const tagsQuery = getTagsQuery(params);
 
@@ -95,6 +95,7 @@ export const RecipeDisplayBlock: React.FC<RecipeDisplayConfig> = async ({
     <DisplayResource
       Component={RecipeCard}
       data={slicedRecipes}
+      className={className}
       itemClassName="max-w-full"
       {...headerProps}
       after={getSeeMoreLink(seeMore, tagsQuery)}
