@@ -241,6 +241,7 @@ body {
   }
   .drafts-hero-bg {
     background-image: url("../../public/images/drafts-bg.png");
+    background-repeat: no-repeat;
   }
 
   .diamond-pattern-bg {
@@ -249,10 +250,12 @@ body {
 
   .home-food-collage-for-hero-bg {
     background-image: url("../../public/images/collage-for-home-page.png");
+    background-repeat: no-repeat;
   }
 
   .home-hero-bg {
-    background-image: url("../../public/LANDING-PAGE-HERO.png");
+    background-image: url("../../public/1920x880-HERO.png");
+    background-repeat: no-repeat;
   }
 
   .user-hero-bg {
@@ -262,17 +265,17 @@ body {
   }
 
   .browse-hero-bg {
-    background-image: url("../../public/NEW-BROWSE-FULLHERO-W_TEXT.png");
-    background-size: 110%;
-    background-position: 50% 90%;
+    background-image: url("../../public/browse-page.png");
+    background-size: 100%;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
   }
 
   .recipes-hero-bg {
-    background-image: url("../../public/NEW-HERO-IMG-TOP-3.jpg");
-    background-color: var(--overlay);
+    background-image: url("../../public/recipes-page.png");
     background-size: 100%;
-    background-position: 50% 75%;
-    background-blend-mode: multiply;
+    background-position: 50% 110%;
+    background-repeat: no-repeat;
   }
 
   .search-bar-bg {
