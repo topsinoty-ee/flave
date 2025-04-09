@@ -275,6 +275,12 @@ body {
     background-blend-mode: multiply;
   }
 
+  .search-bar-bg {
+    background-image: url("../../public/NEW-GRAY-DECAL-WITH-CHEF.png");
+    background-size: 100%;
+    background-position: 50% 100%;
+  }
+
   .hero-pattern {
     @apply relative overflow-hidden;
     background-size: cover;

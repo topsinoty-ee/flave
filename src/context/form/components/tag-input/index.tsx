@@ -14,16 +14,18 @@ interface TagInputProps<T extends FieldValues> extends ComponentProps<"input"> {
   allowCustomTags?: boolean;
   validateTag?: (tag: string) => boolean | string;
   onTagsChange?: (tags: string[]) => void;
+  suggestionClassName?: string;
 }
 
 export function TagInput<T extends FieldValues>({
   name,
   maxTags,
   suggestions = [],
-  allowCustomTags = true,
+  allowCustomTags = false,
   validateTag = () => true,
   onTagsChange,
   className,
+  suggestionClassName,
   ...props
 }: TagInputProps<T>) {
   const {
@@ -153,9 +155,8 @@ export function TagInput<T extends FieldValues>({
       <div className="relative">
         <div
           className={clsx(
-            "flex flex-wrap gap-2 items-center px-3 py-2 rounded-lg border",
+            "flex flex-wrap gap-2 items-center p-2.5 rounded-lg border",
             error ? errorStyles : normalStyles,
-            "focus-within:ring-2 focus-within:ring-primary/30",
             className
           )}
         >
@@ -164,7 +165,7 @@ export function TagInput<T extends FieldValues>({
               type="button"
               key={`${tag}-${i}`}
               onClick={() => removeTag(i)}
-              className="text-sm hover:bg-gray-200 px-2.5 py-1 rounded-md inline-flex items-center gap-1 bg-gray-100 transition-colors"
+              className="text-sm hover:bg-gray-light px-2.5 py-1 rounded-md inline-flex items-center gap-1 bg-gray/50 transition-colors"
               disabled={disabled}
               aria-label={`Remove tag ${tag}`}
             >
@@ -182,7 +183,7 @@ export function TagInput<T extends FieldValues>({
             onKeyDown={handleKeyDown}
             onFocus={() => setIsSuggestionsOpen(true)}
             onBlur={() => setTimeout(() => setIsSuggestionsOpen(false), 200)}
-            className="flex-1 min-w-[100px] bg-transparent outline-none placeholder:text-gray-400"
+            className="flex-1 min-w-25 bg-transparent outline-none placeholder:text-gray"
             placeholder={
               tagsLimitReached
                 ? "Maximum tags reached"
@@ -192,13 +193,13 @@ export function TagInput<T extends FieldValues>({
             aria-autocomplete="list"
           />
 
-          <div className="flex items-center gap-2 ml-2">
-            {!error && tags.length > 0 && (
-              <Check className="h-4 w-4 text-green-600" />
+          <div className="flex items-center gap-2.5 ml-2">
+            {!error && !allowCustomTags && tags.length > 0 && (
+              <Check className="h-5 w-5 text-success" />
             )}
             <ChevronDown
               className={clsx(
-                "h-4 w-4 text-gray-400 transition-transform",
+                "h-5 w-5 text-gray transition-transform",
                 showSuggestions && "rotate-180"
               )}
             />
@@ -209,7 +210,10 @@ export function TagInput<T extends FieldValues>({
           <div
             role="listbox"
             aria-label="Suggestions"
-            className="absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg"
+            className={clsx(
+              "absolute z-10 mt-1 w-full max-h-60 overflow-auto bg-white border border-gray-light rounded-lg shadow-lg",
+              suggestionClassName
+            )}
           >
             {filteredSuggestions.map((suggestion, index) => (
               <div
@@ -225,8 +229,8 @@ export function TagInput<T extends FieldValues>({
                   }
                 }}
                 className={clsx(
-                  "w-full px-4 py-2 text-left hover:bg-gray-50",
-                  highlightedIndex === index && "bg-gray-50",
+                  "w-full px-5 py-2.5 text-left hover:bg-gray-light",
+                  highlightedIndex === index && "bg-gray-light",
                   "transition-colors"
                 )}
                 aria-selected={highlightedIndex === index}
@@ -239,7 +243,7 @@ export function TagInput<T extends FieldValues>({
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 mt-1">{String(error.message)}</p>
+        <p className="text-sm text-error mt-1">{String(error.message)}</p>
       )}
     </div>
   );
