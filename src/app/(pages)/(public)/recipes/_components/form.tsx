@@ -5,14 +5,12 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { fetchRecipes } from "./server";
 
-export const MAX_TAGS = 5;
-
 export const Form: React.FC<{ suggestions: Array<string> }> = ({
   suggestions,
 }) => {
   const router = useRouter();
   const searchSchema = z.object({
-    tags: z.array(z.string().max(32)).max(10).optional(),
+    tags: z.array(z.string().max(32)).optional(),
   });
 
   const searchAction = createAction(searchSchema, async (_, { tags }) => {
@@ -24,7 +22,7 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
       }
       const endpoint = `/recipes?${params.toString()}&matchAll=true`;
       const data = await fetchRecipes(endpoint);
-
+      console.log("fetched recipes (data): ", data);
       router.push(endpoint);
 
       return {
@@ -54,7 +52,7 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
         <TagInput
           name="tags"
           className=" bg-white"
-          maxTags={MAX_TAGS}
+          maxTags={20}
           suggestions={suggestions}
           placeholder="Search recipes..."
           validateTag={(tag) => {
