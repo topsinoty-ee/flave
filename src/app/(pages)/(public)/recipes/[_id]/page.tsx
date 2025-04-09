@@ -97,7 +97,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
                 {recipe.tags.map(({ _id, value }) => (
                   <Link
                     key={_id}
-                    href={`/search?tags=${value.toLowerCase()}`}
+                    href={`/recipes?tags=${value.toLowerCase()}`}
                     className="no-underline"
                   >
                     <Tag>{value}</Tag>
