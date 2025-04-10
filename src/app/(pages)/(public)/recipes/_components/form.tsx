@@ -20,7 +20,7 @@ export const Form: React.FC<{ suggestions: Array<string> }> = ({
       if (tags?.length) {
         tags.forEach((tag) => params.append("tags", tag.trim()));
       }
-      const endpoint = `/recipes?${params.toString()}&matchAll=true`;
+      const endpoint = `/recipes?${params.toString()}`;
       const data = await fetchRecipes(endpoint);
       console.log("fetched recipes (data): ", data);
       router.push(endpoint);

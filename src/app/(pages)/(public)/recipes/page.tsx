@@ -35,12 +35,12 @@ export default async function RecipesPage({
   }
 
   // Fetch recipes based on search params
-  const recipes = await API.get<Recipe[]>(`recipes?${params.toString()}`).catch(
-    (reason) => {
-      console.log(reason);
-      return [];
-    }
-  );
+  const recipes = await API.get<Recipe[]>(
+    `recipes?${params.toString()}&matchAll=true`
+  ).catch((reason) => {
+    console.log(reason);
+    return [];
+  });
 
   return (
     <>
