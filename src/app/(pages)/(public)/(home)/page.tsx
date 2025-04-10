@@ -25,7 +25,7 @@ export default async function Home() {
           smoothies: "/NEW-CATEG-ITEM-11.png",
           snacks: "/NEW-CATEG-ITEM-12.png",
         })}
-        speed={25}
+        speed={35}
       />
       <RecipeDisplayBlock
         title={"Currently Hot"}
