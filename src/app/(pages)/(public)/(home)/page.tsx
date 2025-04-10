@@ -44,13 +44,7 @@ export default async function Home() {
                   Or looking for more recipes?
                 </h4>
                 <div className="flex gap-5 uppercase font-extrabold">
-                  <Button
-                    as="link"
-                    shape="square"
-                    href="/browse"
-                    variant="primary"
-                    className="bg-white text-black"
-                  >
+                  <Button as="link" shape="square" href="/browse">
                     Browse recipes
                   </Button>
                   <Button
@@ -58,7 +52,6 @@ export default async function Home() {
                     href="/create"
                     variant="primary"
                     shape="square"
-                    className="bg-white text-black"
                   >
                     Create recipe
                   </Button>
