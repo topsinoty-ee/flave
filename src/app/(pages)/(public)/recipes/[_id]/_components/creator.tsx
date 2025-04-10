@@ -28,6 +28,7 @@ export const Creator: React.FC<Partial<User>> = ({
 
         <div className="w-max flex gap-10">
           <Button
+            style={{ color: "var(--color-black)" }}
             as="link"
             href={`/users/${_id}`}
             icon={<ArrowRight className="order-1 stroke-black" />}
