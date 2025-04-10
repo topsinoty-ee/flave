@@ -31,7 +31,7 @@ export const Creator: React.FC<Partial<User>> = ({
             as="link"
             href={`/users/${_id}`}
             icon={<ArrowRight className="order-1 stroke-black" />}
-            className="bg-foreground outline-0 text-black"
+            className="bg-white outline-0 text-black"
           >
             View profile
           </Button>

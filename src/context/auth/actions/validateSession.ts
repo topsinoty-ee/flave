@@ -40,10 +40,8 @@ export async function validateSession(options?: {
 > {
   try {
     const sessionToken = (await cookies()).get("session_token")?.value ?? null;
-    console.log("I have Session Token", sessionToken);
 
     if (!sessionToken) {
-      console.log("I don't have Session Token");
       return options?.detailed
         ? options?.user
           ? { isValid: false, sessionToken: null, currentUser: null }
@@ -51,14 +49,11 @@ export async function validateSession(options?: {
         : false;
     }
 
-    API.enableDebug();
     const currentUser = await API.get("users/me", {
       headers: { Authorization: `Bearer ${sessionToken}` },
     });
-    console.log("Current User", currentUser);
 
     const isValid = !!currentUser && isUser(currentUser);
-    API.disableDebug();
 
     if (options?.detailed) {
       return options?.user

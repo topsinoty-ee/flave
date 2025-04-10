@@ -6,7 +6,6 @@ import { validateSession } from "@/context/auth/actions";
 
 export default async function Browse() {
   const isLoggedIn = await validateSession();
-  console.log("isLoggedIn", isLoggedIn);
   return (
     <>
       <Hero />

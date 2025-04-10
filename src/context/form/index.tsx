@@ -89,7 +89,7 @@ export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
       appendFormData(formData, key, value);
     });
 
-    console.log(formData);
+    console.log("handle SUbmit formdata: ", formData);
 
     startTransition(() => {
       formAction(formData);

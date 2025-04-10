@@ -1,4 +1,9 @@
-import { Listbox } from "@headlessui/react";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 import { Check, X } from "lucide-react";
 import { ComponentProps } from "react";
 import { FieldValues, Path } from "react-hook-form";
@@ -13,83 +18,100 @@ export function Dropdown<T extends FieldValues>({
 }: {
   name: Path<T>;
   label?: string;
-  options: {
-    value: string;
-    label: string;
-    Icon?: React.ComponentType<{ className?: string }>;
-  }[];
+  options: (
+    | string
+    | {
+        value: string;
+        label: string;
+        Icon?: React.ComponentType<{ className?: string }>;
+      }
+  )[];
 } & ComponentProps<"select">) {
   const {
     setValue,
     watch,
     formState: { errors },
   } = useFormContext<T>();
-  const selectedValue = watch(name);
+  const selectedValue = watch(name) || "";
+
+  // Normalize options into a consistent object structure
+  const normalizedOptions = options.map((option) => {
+    if (typeof option === "string") {
+      return { value: option, label: option, Icon: undefined };
+    }
+    return option;
+  });
+
+  const selectedOption = normalizedOptions.find(
+    (opt) => opt.value === selectedValue
+  );
 
   return (
-    <Listbox value={selectedValue} onChange={(value) => setValue(name, value)}>
-      <div className="space-y-1">
+    <Listbox
+      value={selectedValue}
+      onChange={(value) => setValue(name, value as T[Path<T>])}
+    >
+      <div className="flex-col flex gap-1">
         {label && (
-          <label className="block text-sm font-medium text-gray-700">
-            {label}
-          </label>
+          <label className="block text-sm font-medium text-gray">{label}</label>
         )}
         <div className="relative">
-          <Listbox.Button
+          <ListboxButton
             className={`${inputStyles} text-left pr-10 ${
               errors[name] ? errorStyles : normalStyles
             }`}
           >
-            <div className="flex items-center gap-2">
-              {options.find((opt) => opt.value === selectedValue)?.Icon && (
-                <div className="h-5 w-5 text-gray-400">
-                  <selectedValue.Icon
+            <div className="flex items-center gap-2.5">
+              {selectedOption?.Icon && (
+                <div className="h-5 w-5 text-gray">
+                  <selectedOption.Icon
                     className="h-5 w-5 text-gray"
                     aria-hidden="true"
                   />
                 </div>
               )}
-              {options.find((opt) => opt.value === selectedValue)?.label ||
-                "Select..."}
+              {selectedOption?.label || "Select..."}
             </div>
-          </Listbox.Button>
-          <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1 ring-1 ring-black ring-opacity-5 focus:outline-none">
-            {options.map((option) => (
-              <Listbox.Option
+          </ListboxButton>
+          <ListboxOptions className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1 ring-1 ring-black ring-opacity-5 focus:outline-none">
+            {normalizedOptions.map((option) => (
+              <ListboxOption
                 key={option.value}
                 value={option.value}
-                className={({ active }) =>
-                  `cursor-default select-none relative py-2 pl-3 pr-9 ${
-                    active ? "bg-blue-50 text-blue-900" : "text-gray-900"
+                className={({ selected }) =>
+                  `cursor-default select-none relative py-2.5 pl-3 pr-9 ${
+                    selected ? "bg-gray-light text-gray-dark" : "text-black"
                   }`
                 }
               >
                 {({ selected }) => (
                   <div className="flex items-center gap-2">
                     {option.Icon && (
-                      <div className="h-5 w-5 text-gray-400">
+                      <div className="h-5 w-5 text-gray">
                         <option.Icon className="h-5 w-5" />
                       </div>
                     )}
                     <span
-                      className={`block truncate ${selected ? "font-medium" : "font-normal"}`}
+                      className={`block truncate ${
+                        selected ? "font-medium" : "font-normal"
+                      }`}
                     >
                       {option.label}
                     </span>
                     {selected && (
-                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500">
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray">
                         <Check className="h-5 w-5" />
                       </span>
                     )}
                   </div>
                 )}
-              </Listbox.Option>
+              </ListboxOption>
             ))}
-          </Listbox.Options>
+          </ListboxOptions>
         </div>
         {errors[name] && (
-          <p className="text-sm text-red-600 flex items-center gap-1">
-            <X className="h-4 w-4" />
+          <p className="text-sm text-error flex items-center gap-1">
+            <X className="h-5 w-5" />
             {errors[name]?.message?.toString()}
           </p>
         )}
