@@ -25,7 +25,7 @@ export default async function Home() {
           smoothies: "/NEW-CATEG-ITEM-11.png",
           snacks: "/NEW-CATEG-ITEM-12.png",
         })}
-        speed={25}
+        speed={35}
       />
       <RecipeDisplayBlock
         title={"Currently Hot"}
@@ -44,12 +44,12 @@ export default async function Home() {
                   Or looking for more recipes?
                 </h4>
                 <div className="flex gap-5 uppercase font-extrabold">
-                  <Button as="link" shape="square" href="/recipes/browse">
+                  <Button as="link" shape="square" href="/browse">
                     Browse recipes
                   </Button>
                   <Button
                     as="link"
-                    href="/recipes/create"
+                    href="/create"
                     variant="primary"
                     shape="square"
                   >
@@ -63,7 +63,7 @@ export default async function Home() {
         </div>
         <div className="aspect-[720/660] bg-cover bg-no-repeat home-food-collage-for-hero-bg" />
       </section>
-      <section className="w-full flex gap-20 items=center justify-center p-20 pb-40">
+      <section className="w-full flex gap-20 items=center justify-center p-20">
         {[
           ["/tiktok-card.png", "#"],
           ["/instagram-card.png", "https://www.instagram.com/flavedotee/"],

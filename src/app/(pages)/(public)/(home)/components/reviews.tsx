@@ -4,6 +4,7 @@ import { CustomerReviewCard } from "@/components/customer-review";
 export const ReviewsList = () => (
   <DisplayResource
     Component={CustomerReviewCard}
+    className="pb-40"
     data={[
       {
         content:
