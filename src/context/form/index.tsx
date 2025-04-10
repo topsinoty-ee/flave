@@ -89,7 +89,7 @@ export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
       appendFormData(formData, key, value);
     });
 
-    console.log(formData);
+    console.log("handle SUbmit formdata: ", formData);
 
     startTransition(() => {
       formAction(formData);
@@ -113,7 +113,9 @@ export const FormProvider = <Schema extends ZodObject<ZodRawShape>>({
               {state.message}
             </small>
           )}
-          {/* <pre>{JSON.stringify(state)}</pre> */}
+          {process.env.NODE_ENV === "development" ? (
+            <pre>{JSON.stringify(state, null, 2)}</pre>
+          ) : null}
         </form>
       </RHFProvider>
     </FormContext.Provider>

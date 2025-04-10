@@ -1,8 +1,9 @@
-import { Button, RecipeDisplayBlock } from "@/components";
+import { Button, Image, RecipeDisplayBlock } from "@/components";
 // import { fetchRecipes } from "@/util";
 
 import { CategoryMarquee, Hero } from "./components";
 import { ReviewsList } from "./components/reviews";
+import Link from "next/link";
 
 export default async function Home() {
   return (
@@ -63,6 +64,21 @@ export default async function Home() {
         <div className="aspect-[720/660] bg-cover bg-no-repeat home-food-collage-for-hero-bg" />
       </section>
       <ReviewsList />
+      <section className="w-full flex gap-20 items=center justify-center p-20 pb-40">
+        {[
+          ["/tiktok-card.png", "#"],
+          ["/instagram-card.png", "https://www.instagram.com/flavedotee/"],
+        ].map((social, index) => (
+          <Link key={index} href={social[1] || "#"}>
+            <Image
+              src={social[0] || ""}
+              alt={social[0] || "Social image"}
+              quality={100}
+            />
+          </Link>
+        ))}
+      </section>
+
       {/* <FAQBlock /> */}
     </>
   );

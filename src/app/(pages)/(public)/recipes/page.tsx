@@ -22,8 +22,6 @@ export default async function RecipesPage({
       return [JSON.stringify(reason)];
     });
 
-  console.log(suggestions);
-
   // Handle search params
   const { tags } = await searchParams;
   const params = new URLSearchParams();
@@ -41,9 +39,8 @@ export default async function RecipesPage({
     (reason) => {
       console.log(reason);
       return [];
-    },
+    }
   );
-  console.log("Suggestions: ", suggestions);
 
   return (
     <>

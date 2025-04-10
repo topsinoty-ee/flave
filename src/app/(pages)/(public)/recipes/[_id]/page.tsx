@@ -70,11 +70,9 @@ function LoadingFallback() {
 
 const RecipeContent = async ({ _id }: { _id: string }) => {
   const recipe = await API.get<Recipe>("recipes/" + _id);
-  console.log(recipe);
   const [start, end] = getDurationBucket(recipe.cookingDuration);
 
   const cookingDuration = `${start}-${end} mins`;
-  console.log(recipe.src);
   return (
     <>
       <section className="flex gap-10 w-full aspect-section-lg p-20 -mt-10 recipe-details-man-decal-bg">
@@ -97,7 +95,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
                 {recipe.tags.map(({ _id, value }) => (
                   <Link
                     key={_id}
-                    href={`/search?tags=${value.toLowerCase()}`}
+                    href={`/recipes?tags=${value.toLowerCase()}`}
                     className="no-underline"
                   >
                     <Tag>{value}</Tag>
@@ -207,7 +205,7 @@ const RecipeContent = async ({ _id }: { _id: string }) => {
           <ol className="flex flex-col gap-4 pl-0">
             {recipe.instructions.map((instruction, idx) => (
               <li key={idx} className="flex items-center gap-2.5">
-                <div className="flex-shrink-0 flex items-center justify-center aspect-square golden-circle w-5 h-5 rounded-full bg-black text-white text-sm font-medium">
+                <div className="flex-shrink-0 flex items-center justify-center aspect-square w-5 h-5 rounded-full bg-black text-white text-sm font-medium">
                   {idx + 1}
                 </div>
 

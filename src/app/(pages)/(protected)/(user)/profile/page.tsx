@@ -6,7 +6,6 @@ import { LogoutButton } from "./_components/logout";
 
 export default async function ProfilePage() {
   const user = await getCurrentUser();
-  console.log("profile:", user);
   if (!user) {
     return <h1 className="text-3xl">User not found</h1>;
   }

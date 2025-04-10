@@ -16,7 +16,7 @@ const MarqueeItem: React.FC<{ text: string; src: string }> = ({
     <div className="relative aspect-square w-full overflow-hidden golden-circle rounded-full">
       <Image src={src} alt={text || "Category image"} fill quality={95} />
     </div>
-    <h5 className="uppercase truncate max-w-[90%] text-white">{text}</h5>
+    <h5 className="uppercase truncate max-w-[90%] text-white">#{text}</h5>
   </div>
 );
 
