@@ -37,7 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Link
                 href={href}
                 key={`right-${idx}`}
-                className="font-medium text-black hover:text-gray-dark transition-colors uppercase"
+                className="font-medium text-sm text-black hover:text-gray-dark transition-colors uppercase"
               >
                 {label}
               </Link>
