@@ -63,7 +63,7 @@ export default async function Home() {
         </div>
         <div className="aspect-[720/660] bg-cover bg-no-repeat home-food-collage-for-hero-bg" />
       </section>
-      <section className="w-full flex gap-20 items=center justify-center p-20 pb-40">
+      <section className="w-full flex gap-20 items=center justify-center p-20">
         {[
           ["/tiktok-card.png", "#"],
           ["/instagram-card.png", "https://www.instagram.com/flavedotee/"],
