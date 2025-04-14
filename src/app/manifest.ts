@@ -10,14 +10,16 @@ export default function manifest(): MetadataRoute.Manifest {
     dir: "auto",
     icons: [
       {
-        src: "/android-chrome-192x192.png",
+        src: "/favicon/android-chrome-192x192.png",
         sizes: "192x192",
         type: "image/png",
+        purpose: "monochrome",
       },
       {
-        src: "/android-chrome-512x512.png",
+        src: "/favicon/android-chrome-512x512.png",
         sizes: "512x512",
         type: "image/png",
+        purpose: "monochrome",
       },
     ],
     theme_color: "#f5c518",
