@@ -18,6 +18,7 @@ export function Dropdown<T extends FieldValues>({
 }: {
   name: Path<T>;
   label?: string;
+  defaultOptionLabel?: string;
   options: (
     | string
     | {
@@ -70,7 +71,7 @@ export function Dropdown<T extends FieldValues>({
                   />
                 </div>
               )}
-              {selectedOption?.label || "Select..."}
+              {selectedOption?.label || props.defaultOptionLabel || "Select..."}
             </div>
           </ListboxButton>
           <ListboxOptions className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1 ring-1 ring-black ring-opacity-5 focus:outline-none">

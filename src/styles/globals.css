@@ -169,17 +169,17 @@ body {
     text-decoration: none;
   }
 
-  input:invalid {
+  input:invalid,
+  textarea:invalid {
     @apply border-error-dark ring-1 ring-error-dark;
   }
 
-  input:valid {
-    @apply border-success-dark ring-1 ring-success-dark;
-  }
-  input:focus {
+  input:focus,
+  textarea:focus {
     @apply border-yellow-dark ring-0;
   }
-  input:focus-visible {
+  input:focus-visible,
+  textarea:focus-visible {
     @apply border-yellow-dark ring-0;
   }
 
