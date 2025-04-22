@@ -1,26 +1,93 @@
 @import "tailwindcss";
+@import "flave-ui-lib/dist/assets/lib/components/Image/image.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    color-scheme: light;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply text-base bg-background;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+    --font-jakarta: var(--font-next-jakarta);
+    --font-mulish: var(--font-next-mulish);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    --color-*: initial;
+
+    --color-background: #fffffa;
+    --color-foreground: #f5c518;
+
+    --color-light-yellow: #f8e48c;
+    --color-yellow: #f5c518;
+    --color-dark-yellow: #d4a50c;
+
+    --color-black: #141414;
+    --color-white: #ffffff;
+
+    --color-light-gray: #e6e6e6;
+    --color-gray: #b3b3b3;
+    --color-dark-gray: #808080;
+
+    --color-light-error: #ffcccc;
+    --color-error: #ff6666;
+    --color-dark-error: #ff0000;
+
+    --color-light-success: #ccffcc;
+    --color-success: #66ff66;
+    --color-dark-success: #00ff00;
+
+    --color-light-warning: #ffebcc;
+    --color-warning: #ffb366;
+    --color-dark-warning: #ff8000;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-jakarta-sans), Arial, sans-serif;
+}
+
+h1 {
+    @apply text-5xl sm:text-6xl font-black leading-tight tracking-tight;
+}
+
+h2 {
+    @apply text-3xl sm:text-4xl font-extrabold tracking-tight;
+}
+
+h3 {
+    @apply text-2xl sm:text-3xl font-bold tracking-tight;
+}
+
+h4 {
+    @apply text-xl sm:text-2xl font-semibold tracking-tight;
+}
+
+h5 {
+    @apply text-lg sm:text-xl font-medium;
+}
+
+h6 {
+    @apply text-base sm:text-lg font-normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @apply first:mt-0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    @apply uppercase font-mulish;
+}
+
+h5,
+h6 {
+    @apply capitalize;
 }
